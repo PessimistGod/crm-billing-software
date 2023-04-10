@@ -1,35 +1,39 @@
 import mongoose from 'mongoose';
 
-const contactSchema = new mongoose.Schema({
+const accountSchema = new mongoose.Schema({
     imageName: {
         type: String,
         required: true,
     },
-    contactOwner: {
+    accountOwner: {
         type: String,
         required: true,
     },
-    companyName: {
+    accountName: {
         type: String,
         required: true,
     },
-    vendorName: {
+    accountSite: {
         type: String,
         required: false,
     },
-    jobTitle: {
+    parentAccount: {
         type: String,
         required: false,
     },
-    salutation: {
+    accountNumber: {
         type: String,
         required: false,
     },
-    name: {
+    revenue: {
         type: String,
         required: false,
     },
-    email: {
+    ownership: {
+        type: String,
+        required: true,
+    },
+    employee: {
         type: String,
         required: false,
     },
@@ -38,14 +42,6 @@ const contactSchema = new mongoose.Schema({
         required: false,
     },
     website: {
-        type: String,
-        required: false,
-    },
-    leadSource: {
-        type: String,
-        required: false,
-    },
-    DOB: {
         type: String,
         required: false,
     },
@@ -72,6 +68,6 @@ const contactSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 mongoose.models = {}
-const Contact = mongoose.model('Contact', contactSchema);
+const Account = mongoose.model('Account', accountSchema);
 
-export default Contact;
+export default Account;

@@ -8,23 +8,21 @@ const createContact = () => {
     const [imageName, setImageName] = useState(null);
     const [imagePreview, setImagePreview] = useState(null)
     const [contactOwner, setContactOwner] = useState("")
-    const [company, setCompany] = useState("")
+    const [companyName, setCompanyName] = useState("")
+    const [vendorName, setVendorName] = useState("")
+    const [jobTitle, setJobTitle] = useState("")
     const [salutation, setSalutation] = useState("")
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [phone, setPhone] = useState("")
     const [website, setWebsite] = useState("")
-    const [industry, setIndustry] = useState("")
-    const [contactSource, setContactSource] = useState("")
-    const [contactStatus, setContactStatus] = useState("")
-    const [revenue, setRevenue] = useState("")
+    const [leadSource, setLeadSource] = useState("")
+    const [DOB, setDOB] = useState("")
     const [country, setCountry] = useState("")
     const [street, setStreet] = useState("")
     const [state, setState] = useState("")
     const [city, setCity] = useState("")
     const [zipcode, setZipcode] = useState("")
-    const [vendorName, setVendorName] = useState("")
-    const [jobTitle, setJobTitle] = useState("")
 
 
 
@@ -35,8 +33,14 @@ const createContact = () => {
         if (e.target.name == 'contactOwner') {
             setContactOwner(e.target.value)
         }
-        if (e.target.name == 'company') {
-            setCompany(e.target.value)
+        if (e.target.name == 'companyName') {
+            setCompanyName(e.target.value)
+        }
+        if (e.target.name == 'vendorName') {
+            setVendorName(e.target.value)
+        }
+        if (e.target.name == 'jobTitle') {
+            setJobTitle(e.target.value)
         }
         if (e.target.name == 'salutation') {
             setSalutation(e.target.value)
@@ -53,17 +57,11 @@ const createContact = () => {
         if (e.target.name == 'website') {
             setWebsite(e.target.value)
         }
-        if (e.target.name == 'industry') {
-            setIndustry(e.target.value)
+        if (e.target.name == 'leadSource') {
+            setLeadSource(e.target.value)
         }
-        if (e.target.name == 'contactSource') {
-            setContactSource(e.target.value)
-        }
-        if (e.target.name == 'contactStatus') {
-            setContactStatus(e.target.value)
-        }
-        if (e.target.name == 'revenue') {
-            setRevenue(e.target.value)
+        if (e.target.name == 'DOB') {
+            setDOB(e.target.value)
         }
         if (e.target.name == 'country') {
             setCountry(e.target.value)
@@ -80,12 +78,8 @@ const createContact = () => {
         if (e.target.name == 'zipcode') {
             setZipcode(e.target.value)
         }
-        if (e.target.name == 'vendorName') {
-            setVendorName(e.target.value)
-        }
-        if (e.target.name == 'jobTitle') {
-            setJobTitle(e.target.value)
-        }
+
+
 
     }
 
@@ -95,7 +89,7 @@ const createContact = () => {
     const ContactCreate = async () => {
         try {
 
-            const data = { imageName, contactOwner, company, salutation, name, email, phone, website, industry, contactSource, vendorName, jobTitle, contactStatus, revenue, country, street, state, city, zipcode };
+            const data = { imageName, contactOwner, companyName, vendorName, jobTitle, salutation, name, email, phone, website, leadSource, DOB, country, street, state, city, zipcode };
 
             let CreateContact = await fetch(`/api/Create/contactCreate`, {
                 method: "POST",
@@ -165,7 +159,7 @@ const createContact = () => {
 
                     <div>
                         <form className="w-full max-w-lg mx-auto mt-8">
-                        <div className="mb-4">
+                            <div className="mb-4">
                                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="imageName">
                                     Image URL :
                                 </label>
@@ -198,10 +192,10 @@ const createContact = () => {
                                     <input onChange={handleChange} name='contactOwner' value={contactOwner} className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 contacting-tight focus:outline-none focus:bg-white" id="contactOwner" type="text" placeholder="Contact Owner" />
                                 </div>
                                 <div className="w-full md:w-1/2 px-3">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="Company">
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="companyName">
                                         Company Name
                                     </label>
-                                    <input onChange={handleChange} name='company' value={company} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500" id="Company" type="text" placeholder="Company Name" />
+                                    <input onChange={handleChange} name='companyName' value={companyName} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500" id="companyName" type="text" placeholder="Company Name" />
                                 </div>
                             </div>
 
@@ -245,10 +239,10 @@ const createContact = () => {
                                 </div>
 
                                 <div className="w-full md:w-1/2 px-3">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="Name">
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="name">
                                         Name
                                     </label>
-                                    <input onChange={handleChange} name='name' value={name} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500" id="Name" type="text" placeholder="John Doe" />
+                                    <input onChange={handleChange} name='name' value={name} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500" id="name" type="text" placeholder="John Doe" />
                                 </div>
                             </div>
 
@@ -278,19 +272,22 @@ const createContact = () => {
                                     <input onChange={handleChange} name='website' value={website} className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 contacting-tight focus:outline-none focus:bg-white" id="Website" type="email" placeholder="www.domain.com" />
                                 </div>
                                 <div className="w-full md:w-1/2 px-3">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="Industry">
-                                        Industry
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="leadSource">
+                                        Lead Source
                                     </label>
                                     <div className="relative">
-                                        <select onChange={handleChange} name='industry'
+                                        <select onChange={handleChange} name='leadSource'
                                             className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded contacting-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                            id='Industry'
-                                            value={industry}
+                                            id='leadSource'
+                                            value={leadSource}
                                         >
                                             <option value={""}></option>
-                                            <option value={"Small"}>Small</option>
-                                            <option value={"Medium"}>Medium</option>
-                                            <option value={"Large"}>Large</option>
+                                            <option value={"Advertisement"}>Advertisement</option>
+                                            <option value={"Employee Referral"}>Employee Referral</option>
+                                            <option value={"External Referral"}>External Referral</option>
+                                            <option value={"Website Research"}>Website Research</option>
+
+
                                         </select>
                                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                                             <svg className="fill-current h-4 w-4" viewBox="0 0 20 20"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z" /><path fillRule="evenodd" d="M3.832 8.116a.5.5 0 01.707 0L10 13.293l5.46-5.461a.5.5 0 01.707.707l-5.748 5.748a1.5 1.5 0 01-2.121 0L3.125 8.823a.5.5 0 010-.707z" clipRule="evenodd" /></svg>
@@ -300,40 +297,22 @@ const createContact = () => {
                             </div>
 
 
-                            <div className="flex flex-wrap -mx-3 mb-2">
-                                <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="source">
-                                        Contact Source
-                                    </label>
-                                    <input onChange={handleChange} name='contactSource' value={contactSource} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500" id="source" type="text" placeholder="Contact Source" />
-                                </div>
-                                <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="status">
-                                        Contact Status
-                                    </label>
-                                    <div className="relative">
-                                        <select onChange={handleChange} name='contactStatus' value={contactStatus} className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded contacting-tight focus:outline-none focus:bg-white focus:border-gray-500" id="status">
-                                            <option value=""></option>
-                                            <option value="NotContacted">Open - Not Contacted</option>
-                                            <option value="Contacted">Working - Contacted</option>
-                                            <option value="Converted">Closed - Converted</option>
-                                            <option value="NotConverted">Closed - Not Converted</option>
 
-                                        </select>
-                                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                            <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="revenue">
-                                        Annual Revenue
+
+
+                            <div className="flex flex-wrap -mx-3 mb-6">
+                                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="DOB">
+                                        DOB
                                     </label>
-                                    <input onChange={handleChange} name='revenue' value={revenue} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500" id="revenue" type="text" placeholder="₹" />
+                                    <input onChange={handleChange} name='DOB' value={DOB} className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 contacting-tight focus:outline-none focus:bg-white" id="contactSource" type="date" placeholder="Lead Source" />
+                                    {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
                                 </div>
+
                             </div>
                         </form>
                     </div>
+
 
 
                     <div>

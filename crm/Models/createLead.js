@@ -49,27 +49,25 @@ const leadSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  address: {
-    country: {
-      type: String,
-      required: false,
-    },
-    street: {
-      type: String,
-      required: false,
-    },
-    state: {
-      type: String,
-      required: false,
-    },
-    city: {
-      type: String,
-      required: false,
-    },
-    zipcode: {
-      type: String,
-      required: false,
-    },
+  country: {
+    type: String,
+    required: false,
+  },
+  street: {
+    type: String,
+    required: false,
+  },
+  state: {
+    type: String,
+    required: false,
+  },
+  city: {
+    type: String,
+    required: false,
+  },
+  zipcode: {
+    type: String,
+    required: false,
   }
 }, { timestamps: true });
 

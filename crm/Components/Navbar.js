@@ -167,7 +167,7 @@ const Navbar = () => {
                 <div className='pr-2'>
                   <div className="relative inline-block text-left">
                     <div>
-                      
+
 
                       <button type="button" className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-50" id="menu-button" aria-expanded="true" aria-haspopup="true" onClick={ShowAdditionalCreateMenu}>
 
@@ -180,11 +180,11 @@ const Navbar = () => {
                     <div id='additionalRightMenuID' className="absolute hidden right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex="-1">
                       <div className="py-1" role="none">
                         <Link href={'/Create/createLead'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-0">Create Lead</Link>
-                        <Link href={'/Create/createContact'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-1">Create Contact</Link>
+                        <Link href={'/Create/createContact'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-1">Create Contact</Link>
                       </div>
                       <div className="py-1" role="none">
-                        <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-2">Archive</Link>
-                        <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-3">Move</Link>
+                        <Link href={'/Create/createAccounts'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-2">Create Accounts</Link>
+                        <Link href={'/Create/createDeals'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-3">Create Deals</Link>
                       </div>
                       <div className="py-1" role="none">
                         <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-4">Share</Link>
@@ -195,36 +195,36 @@ const Navbar = () => {
                       </div>
                     </div>
                   </div>
-                  </div>
-                 
-
-
-                  <div className='pr-4'>
-
-
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-8 w-8 ">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-
-
-
-                  </div>
-                  <div className='md:hidden pr-4'>
-                    {menuClose ? (<RxHamburgerMenu size={28} className="absolute right-7 top-[1.10rem]" onClick={showLeftMenu} />) : (<MdClose size={30} className="absolute right-7 top-[1.10rem]" onClick={showLeftMenu} />)}
-                  </div>
-
-                </div>
                 </div>
 
-            
 
+
+                <div className='pr-4'>
+
+
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-8 w-8 ">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+
+
+
+                </div>
+                <div className='md:hidden pr-4'>
+                  {menuClose ? (<RxHamburgerMenu size={28} className="absolute right-7 top-[1.10rem]" onClick={showLeftMenu} />) : (<MdClose size={30} className="absolute right-7 top-[1.10rem]" onClick={showLeftMenu} />)}
+                </div>
+
+              </div>
             </div>
-          </div>
-          <div>
 
 
 
           </div>
+        </div>
+        <div>
+
+
+
+        </div>
 
       </section>
 
