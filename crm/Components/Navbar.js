@@ -91,35 +91,35 @@ const Navbar = () => {
                 >
                   <ul className="block md:flex">
                     <li>
-                      <Link href={'#'}
+                      <Link href={'/'}
                         className="text-dark hover:text-blue-600 flex py-2 text-base font-medium md:ml-12 md:inline-flex"
                       >
                         Home
                       </Link>
                     </li>
                     <li>
-                      <Link href={'#'}
+                      <Link href={'/Display/displayLead'}
                         className="text-dark hover:text-blue-600 flex py-2 text-base font-medium md:ml-12 md:inline-flex"
                       >
                         Leads
                       </Link>
                     </li>
                     <li>
-                      <Link href={'#'}
+                      <Link href={'/Display/displayContact'}
                         className="text-dark hover:text-blue-600 flex py-2 text-base font-medium md:ml-12 md:inline-flex"
                       >
                         Contacts
                       </Link>
                     </li>
                     <li>
-                      <Link href={'#'}
+                      <Link href={'/Display/displayAccount'}
                         className="text-dark hover:text-blue-600 flex py-2 text-base font-medium md:ml-12 md:inline-flex"
                       >
                         Accounts
                       </Link>
                     </li>
                     <li>
-                      <Link href={'#'}
+                      <Link href={'/Display/displayDeal'}
                         className="text-dark hover:text-blue-600 flex py-2 text-base font-medium md:ml-12 md:inline-flex"
                       >
                         Deals
@@ -184,7 +184,7 @@ const Navbar = () => {
                       </div>
                       <div className="py-1" role="none">
                         <Link href={'/Create/createAccounts'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-2">Create Accounts</Link>
-                        <Link href={'/Create/createDeals'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-3">Create Deals</Link>
+                        <Link href={'/Create/createDeal'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-3">Create Deals</Link>
                       </div>
                       <div className="py-1" role="none">
                         <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-4">Share</Link>

@@ -1,39 +1,31 @@
 import mongoose from 'mongoose';
 
-const leadSchema = new mongoose.Schema({
-  imageName: {
+const dealSchema = new mongoose.Schema({
+  dealOwner: {
     type: String,
     required: true,
   },
-  leadOwner: {
+  dealName: {
     type: String,
     required: true,
   },
-  company: {
-    type: String,
-    required: true,
-  },
-  salutation: {
+  amount: {
     type: String,
     required: false,
   },
-  name: {
+  closingDate: {
     type: String,
     required: false,
   },
-  email: {
+  accountName: {
     type: String,
     required: false,
   },
-  phone: {
+  type: {
     type: String,
     required: false,
   },
-  website: {
-    type: String,
-    required: false,
-  },
-  industry: {
+  expectedRevenue: {
     type: String,
     required: false,
   },
@@ -41,37 +33,21 @@ const leadSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  leadStatus: {
-    type: String,
-    required: true,
-  },
-  revenue: {
+  campaignSource: {
     type: String,
     required: false,
   },
-  country: {
+  contactName: {
     type: String,
     required: false,
   },
-  street: {
-    type: String,
-    required: false,
-  },
-  state: {
-    type: String,
-    required: false,
-  },
-  city: {
-    type: String,
-    required: false,
-  },
-  zipcode: {
+  description: {
     type: String,
     required: false,
   }
 }, { timestamps: true });
 
 mongoose.models = {}
-const Lead = mongoose.model('Lead', leadSchema);
+const Deal = mongoose.model('Deal', dealSchema);
 
-export default Lead;
+export default Deal;

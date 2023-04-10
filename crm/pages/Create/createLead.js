@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const createContact = () => {
+const CreateLead = () => {
     const [imageName, setImageName] = useState('');
     const [leadOwner, setLeadOwner] = useState("")
     const [company, setCompany] = useState("")
@@ -382,4 +382,4 @@ const createContact = () => {
     )
 }
 
-export default createContact
+export default CreateLead

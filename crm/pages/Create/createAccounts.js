@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const createContact = () => {
+const createAccount = () => {
     const [imageName, setImageName] = useState('');
     const [accountOwner, setAccountOwner] = useState("")
     const [accountName, setAccountName] = useState("")
@@ -388,4 +388,4 @@ const createContact = () => {
     )
 }
 
-export default createContact
+export default createAccount
