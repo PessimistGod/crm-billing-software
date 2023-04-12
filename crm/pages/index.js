@@ -10,6 +10,12 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      <section className='container bg-white flex items-center justify-center h-screen'>
+        <div className='font-extrabold text-4xl text-purple-600'>
+          Welcome to Our Customer Relation Management System!
+        </div>
+      </section>
       
      
     </>

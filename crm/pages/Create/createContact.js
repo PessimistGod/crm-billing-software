@@ -152,6 +152,8 @@ const createContact = () => {
                 </Link>
                 <button onClick={ContactCreate} className='px-5 py-2 mt-6 bg-blue-600 text-sm lg:text-base text-white rounded-[4px] shadow-md'>Create Contact</button>
             </div>
+            <h4 className='text-black font-extrabold text-xl text-center mt-4'>Create Contact</h4>
+
             <div className='container mx-auto'>
                 <div className='overflow-x-auto grid lg:grid-cols-2 mt-16'>
 

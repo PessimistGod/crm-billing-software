@@ -58,7 +58,7 @@ const Navbar = () => {
   return (
     <>
       <section
-        className="flex w-full items-center bg-white overflow-x-clip sticky top-0 z-20"
+        className="flex w-full items-center bg-white overflow-x-clip sticky top-0 z-20 shadow-lg"
       >
         <div className="container mx-auto sticky">
           <div className="relative -mx-4 flex items-center justify-between">
@@ -136,19 +136,22 @@ const Navbar = () => {
                         </div>
                         <div className="absolute hidden right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" id='additionalMenuID' role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex="-1">
                           <div className="py-1" role="none">
-                            <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-0">Edit</Link>
-                            <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-1">Duplicate</Link>
+                            <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-0">Products</Link>
+                            <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-1">Sales Order</Link>
                           </div>
                           <div className="py-1" role="none">
-                            <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-2">Archive</Link>
-                            <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-3">Move</Link>
+                            <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-2">Purchase Order</Link>
+                            <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-3">Vendors</Link>
                           </div>
                           <div className="py-1" role="none">
-                            <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-4">Share</Link>
-                            <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-5">Add to favorites</Link>
+                            <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-4">Invoices</Link>
+                            
                           </div>
                           <div className="py-1" role="none">
-                            <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-6">Delete</Link>
+                            <Link href={'#'} className="text-gray-700 px-4 py-2 text-sm flex items-center" role="menuitem" tabIndex="-1" id="menu-item-6"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+</svg>
+New Module</Link>
                           </div>
                         </div>
                       </div>
@@ -187,11 +190,15 @@ const Navbar = () => {
                         <Link href={'/Create/createDeal'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-3">Create Deals</Link>
                       </div>
                       <div className="py-1" role="none">
-                        <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-4">Share</Link>
-                        <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-5">Add to favorites</Link>
+                        <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-4">Create Product</Link>
+                        <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-5">Create Sales</Link>
                       </div>
                       <div className="py-1" role="none">
-                        <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-6">Delete</Link>
+                        <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-4">Create Purchase</Link>
+                        <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-5">Create Vendors</Link>
+                      </div>
+                      <div className="py-1" role="none">
+                        <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-6">Create Invoice</Link>
                       </div>
                     </div>
                   </div>

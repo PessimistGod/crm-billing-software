@@ -12,11 +12,12 @@ import {
 import { CgProfile } from "react-icons/cg";
 import { FaRegComments } from "react-icons/fa";
 import { BiMessageSquareDots } from "react-icons/bi";
+import Link from 'next/link';
 
 const Sidebar = () => {
 
   return (
-    <div className='sticky top-0 z-20'>
+    <div className='sticky top-0 z-30'>
       <Disclosure as="nav" >
         <div id="leftMenuComp" className="shadow-lg border rounded-3xl p-6 w-1/2 h-screen bg-white top-1 left-0 lg:w-60  peer-focus:left-0 peer:transition ease-out delay-150 duration-200 hidden">
           <div className="flex flex-col justify-start item-center">
@@ -26,33 +27,44 @@ const Sidebar = () => {
             <div className=" my-4 border-b border-gray-100 pb-4">
               <div className="flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
                 <MdOutlineSpaceDashboard className="text-2xl text-gray-600 group-hover:text-white " />
+                <Link href={'/'}>
                 <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
                 Home
                 </h3>
+                </Link>
               </div>
               <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
                 <CgProfile className="text-2xl text-gray-600 group-hover:text-white " />
+                <Link href={'/Display/displayLead'}>
                 <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
                 Leads
                 </h3>
+                </Link>
               </div>
               <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
                 <FaRegComments className="text-2xl text-gray-600 group-hover:text-white " />
-                <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
-                Contacts
-                </h3>
-              </div>
-              <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-                <MdOutlineAnalytics className="text-2xl text-gray-600 group-hover:text-white " />
-                <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
-                Accounts
-                </h3>
-              </div>
-              <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-                <BiMessageSquareDots className="text-2xl text-gray-600 group-hover:text-white " />
+                <Link href={'/Display/displayDeal'}>
                 <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
                 Deals
                 </h3>
+                </Link>
+              </div>
+              <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+                <MdOutlineAnalytics className="text-2xl text-gray-600 group-hover:text-white " />
+                <Link href={'/Display/displayAccount'}>
+                <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
+                Accounts
+                </h3>
+                </Link>
+              </div>
+              <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+                <BiMessageSquareDots className="text-2xl text-gray-600 group-hover:text-white " />
+                <Link href={'/Display/displayContact'}>
+                <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
+                Contacts
+
+                </h3>
+                </Link>
               </div>
       
             </div>

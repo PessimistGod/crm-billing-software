@@ -35,10 +35,10 @@ const DisplayDeal = ({ deals }) => {
                     </td>
                     <td className="px-4 py-3 text-ms font-semibold border">{deals[item].dealName}</td>
                     <td className="px-4 py-3 text-md border">
-                      <span className="px-2 py-1 font-semibold dealing-tight text-purple-700 rounded-sm">
+                      {deals[item].amount && <span className="px-2 py-1 font-semibold dealing-tight text-purple-700 rounded-sm">
                         {' '}
-                        {deals[item].amount}{' '}
-                      </span>
+                        ₹{deals[item].amount}{' '}
+                      </span>}
                     </td>
                     <td className="px-4 py-3 text-sm border">{deals[item].type}</td>
                     <td className="px-4 py-3 text-sm border">{deals[item].closingDate}</td> 
