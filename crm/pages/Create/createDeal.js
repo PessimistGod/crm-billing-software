@@ -17,8 +17,7 @@ const createDeal = () => {
     const [contactName, setContactName] = useState("")
     const [description, setDescription] = useState("")
 
-
-
+    
     const handleChange = (e) => {
         if (e.target.name == 'dealOwner') {
             setDealOwner(e.target.value)

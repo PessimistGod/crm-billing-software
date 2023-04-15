@@ -17,7 +17,7 @@ const DisplayAccount = ({ accounts }) => {
                 <th className="px-4 py-3">Account Owner</th>
                 <th className="px-4 py-3">Account Name</th>
                 <th className="px-4 py-3">Ownership</th>
-                <th className="px-4 py-3">Annual Revenue</th>
+                <th className="px-4 -py-3">Annual Revenue</th>
                 <th className="px-4 py-3">Parent Account</th>
                 <th className="px-4 py-3">View</th>
               </tr>

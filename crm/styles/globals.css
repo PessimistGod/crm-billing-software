@@ -10,3 +10,23 @@
 body{
     @apply bg-[#eaedef];
 }
+
+/* height */
+#nprogress .bar {
+    height: 4px;
+  }
+  
+  #nprogress .bar {
+    background-color: rgb(0, 0, 0) !important;
+  }
+  
+  /* color of progress */
+  #nprogress .peg {
+    box-shadow: 0 0 10px rgb(0, 0, 0), 0 0 5px rgb(0, 0, 0) !important;
+  }
+  
+  /* spinner */
+  #nprogress .spinner {
+    display: none;
+  }
+  

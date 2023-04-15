@@ -148,8 +148,8 @@ const Navbar = () => {
                             
                           </div>
                           <div className="py-1" role="none">
-                            <Link href={'#'} className="text-gray-700 px-4 py-2 text-sm flex items-center" role="menuitem" tabIndex="-1" id="menu-item-6"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+                            <Link href={'#'} className="text-gray-700 px-4 py-2 text-sm flex items-center" role="menuitem" tabIndex="-1" id="menu-item-6"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4 mr-1">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
 </svg>
 New Module</Link>
                           </div>
