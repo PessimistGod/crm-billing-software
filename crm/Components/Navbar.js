@@ -190,15 +190,15 @@ New Module</Link>
                         <Link href={'/Create/createDeal'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-3">Create Deals</Link>
                       </div>
                       <div className="py-1" role="none">
-                        <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-4">Create Product</Link>
-                        <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-5">Create Sales</Link>
+                        <Link href={'/Create/createProduct'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-4">Create Product</Link>
+                        <Link href={'/Create/createSales'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-5">Create Sales</Link>
                       </div>
                       <div className="py-1" role="none">
-                        <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-4">Create Purchase</Link>
-                        <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-5">Create Vendors</Link>
+                        <Link href={'/Create/createPurchase'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-4">Create Purchase</Link>
+                        <Link href={'/Create/createVendor'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-5">Create Vendors</Link>
                       </div>
                       <div className="py-1" role="none">
-                        <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-6">Create Invoice</Link>
+                        <Link href={'/Create/createInvoice'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-6">Create Invoice</Link>
                       </div>
                     </div>
                   </div>

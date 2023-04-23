@@ -1,23 +1,505 @@
 import mongoose from 'mongoose';
 
-const leadSchema = new mongoose.Schema({
+const saleSchema = new mongoose.Schema({
+  salesOwner: {
+    type: String,
+    required: true,
+  },
+  dealName: {
+    type: String,
+    required: true,
+  },
+  subject: {
+    type: String,
+    required: true,
+  },
+  purchaseOrder: {
+    type: String,
+    required: false,
+  },
+  customerNumber: {
+    type: String,
+    required: false,
+  },
+  dueDate: {
+    type: String,
+    required: false,
+  },
+  carrier: {
+    type: String,
+    required: false,
+  },
+  contactName: {
+    type: String,
+    required: false,
+  },
+  salesCommission: {
+    type: String,
+    required: false,
+  },
+  status: {
+    type: String,
+    required: false,
+  },
+  accName: {
+    type: String,
+    required: false,
+  },
+  billingStreet: {
+    type: String,
+    required: false,
+  },
+  shippingStreet: {
+    type: String,
+    required: false,
+  },
+  billingCity: {
+    type: String,
+    required: false,
+  },
+  billingState: {
+    type: String,
+    required: false,
+  },
+  billingCode: {
+    type: String,
+    required: false,
+  },
+  billingCountry: {
+    type: String,
+    required: false,
+  },
+  shippingCity: {
+    type: String,
+    required: false,
+  },
+  shippingState: {
+    type: String,
+    required: false,
+  },
+  shippingCode:{
+    type: String,
+    required: false,
+  },
+  shippingCountry:{
+    type: String,
+    required: false,
+  },
+  rows: {
+    type: [
+      {
+        sn: {
+          type: Number,
+          required: true
+        },
+        prodName: {
+          type: String,
+          required: true
+        },
+        qty: {
+          type: Number,
+          required: true
+        },
+        price: {
+          type: Number,
+          required: true
+        },
+        amount: {
+          type: Number,
+          required: true
+        },
+        discount: {
+          type: Number,
+          required: true
+        },
+        tax: {
+          type: Number,
+          required: true
+        },
+        total: {
+          type: Number,
+          required: true
+        }
+      }
+    ],
+},
+subTotal:{
+    type: String,
+    required: false,
+  },
+  totalDiscount:{
+    type: String,
+    required: false,
+  },
+  totalTax:{
+    type: String,
+    required: false,
+  },
+  grandTotal:{
+    type: String,
+    required: false,
+  }
+}, { timestamps: true });
+
+mongoose.models = {}
+const Sales = mongoose.model('Sale', saleSchema);
+
+export default Sales;
+
+
+
+
+
+            {rows.map((row, index) => (
+        <div key={index}>
+          <input
+            type="text"
+            value={row.sn}
+            onChange={(e) => {
+              const updatedRows = [...rows];
+              updatedRows[index].sn = e.target.value;
+              setRows(updatedRows);
+            }}
+          />
+          <input
+            type="text"
+            value={row.prodName}
+            onChange={(e) => {
+              const updatedRows = [...rows];
+              updatedRows[index].prodName = e.target.value;
+              setRows(updatedRows);
+            }}
+          />
+             <input
+            type="text"
+            value={row.prodName}
+            onChange={(e) => {
+              const updatedRows = [...rows];
+              updatedRows[index].prodName = e.target.value;
+              setRows(updatedRows);
+            }}
+          />
+             <input
+            type="text"
+            value={row.prodName}
+            onChange={(e) => {
+              const updatedRows = [...rows];
+              updatedRows[index].prodName = e.target.value;
+              setRows(updatedRows);
+            }}
+          />
+             <input
+            type="text"
+            value={row.prodName}
+            onChange={(e) => {
+              const updatedRows = [...rows];
+              updatedRows[index].prodName = e.target.value;
+              setRows(updatedRows);
+            }}
+          />
+          <button onClick={() => handleRemoveRow(index)}>Remove Row</button>
+        </div>
+      ))}
+
+      <button onClick={handleAddRow}>Add Row</button>
+
+
+
+
+
+
+
+
+
+
+
+
+      const [salesOwner, setSalesOwner] = useState(null);
+    const [dealName, setDealName] = useState("")
+    const [subject, setSubject] = useState("")
+    const [purchaseOrder, setPurchaseOrder] = useState("")
+    const [customerNumber, setCustomerNumber] = useState("")
+    const [dueDate, setDueDate] = useState("")
+    const [carrier, setCarrier] = useState("")
+    const [contactName, setContactName] = useState("")
+    const [salesCommission, setSalesCommission] = useState("")
+    const [status, setStatus] = useState("")
+    const [accName, setAccName] = useState("")
+    const [billingStreet, setBillingStreet] = useState("")
+    const [shippingStreet, setShippingStreet] = useState("")
+    const [billingCity, setBillingCity] = useState("")
+    const [billingState, setBillingState] = useState("")
+    const [billingCode, setBillingCode] = useState("")
+    const [billingCountry, setBillingCountry] = useState("")
+    const [shippingCity, setShippingCity] = useState("")
+    const [shippingState, setShippingState] = useState("")
+    const [shippingCode, setShippingCode] = useState("")
+    const [shippingCountry, setShippingCountry] = useState("")
+
+    const [rows, setRows] = useState([
+        {
+            sn: '',
+            prodName: '',
+            qty: '',
+            price: '',
+            amount: '',
+            discount: '',
+            tax: '',
+            total: '',
+        },
+    ]);
+    const [subTotal, setSubTotal] = useState("")
+    const [totalDiscount, setTotalDiscount] = useState("")
+    const [totalTax, setTotalTax] = useState("")
+    const [grandTotal, setGrandTotal] = useState("")
+
+
+
+
+
+
+
+
+<input
+            type="text"
+            value={row.prodName}
+            className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            onChange={(e) => {
+              const updatedRows = [...rows];
+              updatedRows[index].prodName = e.target.value;
+              setRows(updatedRows);
+            }}
+          />
+               <input
+            type="text"
+            value={row.qty}
+            className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            onChange={(e) => {
+              const updatedRows = [...rows];
+              updatedRows[index].qty = e.target.value;
+              setRows(updatedRows);
+            }}
+          />
+                      <input
+            type="text"
+            value={row.price}
+            className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            onChange={(e) => {
+              const updatedRows = [...rows];
+              updatedRows[index].price = e.target.value;
+              setRows(updatedRows);
+            }}
+          />
+                   <input
+            type="text"
+            value={row.amount}
+            className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            onChange={(e) => {
+              const updatedRows = [...rows];
+              updatedRows[index].amount = e.target.value;
+              setRows(updatedRows);
+            }}
+          />
+                  <input
+            type="text"
+            value={row.discount}
+            className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            onChange={(e) => {
+              const updatedRows = [...rows];
+              updatedRows[index].discount = e.target.value;
+              setRows(updatedRows);
+            }}
+          />
+                        <input
+            type="text"
+            value={row.tax}
+            className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            onChange={(e) => {
+              const updatedRows = [...rows];
+              updatedRows[index].tax = e.target.value;
+              setRows(updatedRows);
+            }}
+          />
+                       <input
+            type="text"
+            value={row.total}
+            className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            onChange={(e) => {
+              const updatedRows = [...rows];
+              updatedRows[index].total = e.target.value;
+              setRows(updatedRows);
+            }}
+          />
+
+
+
+
+          import mongoose from 'mongoose';
+
+const purchaseSchema = new mongoose.Schema({
+  purchaseOwner: {
+    type: String,
+    required: true,
+  },
+  vendorName: {
+    type: String,
+    required: true,
+  },
+  subject: {
+    type: String,
+    required: false,
+  },
+  purchaseOrder: {
+    type: String,
+    required: false,
+  },
+  customerNumber: {
+    type: String,
+    required: false,
+  },
+  dueDate: {
+    type: String,
+    required: false,
+  },
+  carrier: {
+    type: String,
+    required: false,
+  },
+  contactName: {
+    type: String,
+    required: false,
+  },
+  salesCommission: {
+    type: String,
+    required: false,
+  },
+  status: {
+    type: String,
+    required: false,
+  },
+  accName: {
+    type: String,
+    required: false,
+  },
+  billingStreet: {
+    type: String,
+    required: false,
+  },
+  shippingStreet: {
+    type: String,
+    required: false,
+  },
+  billingCity: {
+    type: String,
+    required: false,
+  },
+  billingState: {
+    type: String,
+    required: false,
+  },
+  billingCode: {
+    type: String,
+    required: false,
+  },
+  billingCountry: {
+    type: String,
+    required: false,
+  },
+  shippingCity: {
+    type: String,
+    required: false,
+  },
+  shippingState: {
+    type: String,
+    required: false,
+  },
+  shippingCode:{
+    type: String,
+    required: false,
+  },
+  shippingCountry:{
+    type: String,
+    required: false,
+  },
+  rows: {
+    type: [
+      {
+        sn: {
+          type: String,
+          required: false
+        },
+        prodName: {
+          type: String,
+          required: false
+        },
+        qty: {
+          type: String,
+          required: false
+        },
+        price: {
+          type: String,
+          required: false
+        },
+        amount: {
+          type: String,
+          required: false
+        },
+        discount: {
+          type: String,
+          required: false
+        },
+        tax: {
+          type: String,
+          required: false
+        },
+        total: {
+          type: String,
+          required: false
+        }
+      }
+    ],
+},
+subTotal:{
+    type: String,
+    required: false,
+  },
+  totalDiscount:{
+    type: String,
+    required: false,
+  },
+  totalTax:{
+    type: String,
+    required: false,
+  },
+  grandTotal:{
+    type: String,
+    required: false,
+  }
+}, { timestamps: true });
+
+mongoose.models = {}
+const Purchase = mongoose.model('Purchase', purchaseSchema);
+
+export default Purchase;
+
+
+
+import mongoose from 'mongoose';
+
+const vendorSchema = new mongoose.Schema({
   imageName: {
     type: String,
     required: true,
   },
-  leadOwner: {
+  vendorOwner: {
     type: String,
     required: true,
   },
-  company: {
+  vendorName: {
     type: String,
     required: true,
   },
-  salutation: {
-    type: String,
-    required: false,
-  },
-  name: {
+  phone: {
     type: String,
     required: false,
   },
@@ -25,27 +507,15 @@ const leadSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  phone: {
-    type: String,
-    required: false,
-  },
   website: {
     type: String,
     required: false,
   },
-  industry: {
+  account: {
     type: String,
     required: false,
   },
-  leadSource: {
-    type: String,
-    required: false,
-  },
-  leadStatus: {
-    type: String,
-    required: true,
-  },
-  revenue: {
+  category: {
     type: String,
     required: false,
   },
@@ -68,10 +538,244 @@ const leadSchema = new mongoose.Schema({
   zipcode: {
     type: String,
     required: false,
+  },
+  description: {
+    type: String,
+    required: false,
   }
 }, { timestamps: true });
 
 mongoose.models = {}
-const Lead = mongoose.model('Lead', leadSchema);
+const Vendor = mongoose.model('Vendor', vendorSchema);
+export default Vendor;
 
-export default Lead;
+
+
+
+
+
+
+
+
+
+    const [imageName, setImageName] = useState('');
+    const [vendorOwner, setVendorOwner] = useState("")
+    const [vendorName, setVendorName] = useState("")
+    const [email, setEmail] = useState("")
+    const [phone, setPhone] = useState("")
+    const [website, setWebsite] = useState("")
+    const [account, setAccount] = useState("")
+    const [category, setCategory] = useState("")
+    const [country, setCountry] = useState("")
+    const [street, setStreet] = useState("")
+    const [state, setState] = useState("")
+    const [city, setCity] = useState("")
+    const [zipcode, setZipcode] = useState("")
+    const [description, setDescription] = useState("");
+
+
+
+    const handleChange = (e) => {
+        if (e.target.name == 'imageName') {
+            setImageName(e.target.value)
+        }
+        if (e.target.name == 'vendorOwner') {
+            setVendorOwner(e.target.value)
+        }
+        if (e.target.name == 'vendorName') {
+            setVendorName(e.target.value)
+        }
+        if (e.target.name == 'email') {
+            setEmail(e.target.value)
+        }
+        if (e.target.name == 'phone') {
+            setPhone(e.target.value)
+        }
+        if (e.target.name == 'website') {
+            setWebsite(e.target.value)
+        }
+        if (e.target.name == 'account') {
+            setAccount(e.target.value)
+        }
+        if (e.target.name == 'category') {
+            setCategory(e.target.value)
+        }
+        if (e.target.name == 'country') {
+            setCountry(e.target.value)
+        }
+        if (e.target.name == 'street') {
+            setStreet(e.target.value)
+        }
+        if (e.target.name == 'state') {
+            setState(e.target.value)
+        }
+        if (e.target.name == 'city') {
+            setCity(e.target.value)
+        }
+        if (e.target.name == 'zipcode') {
+            setZipcode(e.target.value)
+        }
+        if (e.target.name == 'description') {
+            setDescription(e.target.value)
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+    import mongoose from 'mongoose';
+
+const invoiceSchema = new mongoose.Schema({
+  invoiceOwner: {
+    type: String,
+    required: true,
+  },
+  salesOrder: {
+    type: String,
+    required: true,
+  },
+  subject: {
+    type: String,
+    required: false,
+  },
+  purchaseOrder: {
+    type: String,
+    required: false,
+  },
+  customerNumber: {
+    type: String,
+    required: false,
+  },
+  invoiceDate:{
+    type: String,
+    required: false,
+  },
+  dueDate: {
+    type: String,
+    required: false,
+  },
+  
+  contactName: {
+    type: String,
+    required: false,
+  },
+  salesCommission: {
+    type: String,
+    required: false,
+  },
+  status: {
+    type: String,
+    required: false,
+  },
+  accName: {
+    type: String,
+    required: false,
+  },
+  billingStreet: {
+    type: String,
+    required: false,
+  },
+  shippingStreet: {
+    type: String,
+    required: false,
+  },
+  billingCity: {
+    type: String,
+    required: false,
+  },
+  billingState: {
+    type: String,
+    required: false,
+  },
+  billingCode: {
+    type: String,
+    required: false,
+  },
+  billingCountry: {
+    type: String,
+    required: false,
+  },
+  shippingCity: {
+    type: String,
+    required: false,
+  },
+  shippingState: {
+    type: String,
+    required: false,
+  },
+  shippingCode:{
+    type: String,
+    required: false,
+  },
+  shippingCountry:{
+    type: String,
+    required: false,
+  },
+  rows: {
+    type: [
+      {
+        sn: {
+          type: String,
+          required: false
+        },
+        prodName: {
+          type: String,
+          required: false
+        },
+        qty: {
+          type: String,
+          required: false
+        },
+        price: {
+          type: String,
+          required: false
+        },
+        amount: {
+          type: String,
+          required: false
+        },
+        discount: {
+          type: String,
+          required: false
+        },
+        tax: {
+          type: String,
+          required: false
+        },
+        total: {
+          type: String,
+          required: false
+        }
+      }
+    ],
+},
+subTotal:{
+    type: String,
+    required: false,
+  },
+  totalDiscount:{
+    type: String,
+    required: false,
+  },
+  totalTax:{
+    type: String,
+    required: false,
+  },
+  grandTotal:{
+    type: String,
+    required: false,
+  }
+}, { timestamps: true });
+
+mongoose.models = {}
+const Invoice = mongoose.model('Invoice', invoiceSchema);
+
+export default Invoice;

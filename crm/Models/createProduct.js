@@ -1,76 +1,85 @@
 import mongoose from 'mongoose';
 
-const leadSchema = new mongoose.Schema({
+const productSchema = new mongoose.Schema({
   imageName: {
     type: String,
     required: true,
   },
-  leadOwner: {
+  productInfo: {
     type: String,
     required: true,
   },
-  company: {
+  productOwner: {
     type: String,
     required: true,
   },
-  salutation: {
+  productCode: {
     type: String,
     required: false,
   },
-  name: {
+  productName: {
     type: String,
     required: false,
   },
-  email: {
+  vendorName: {
     type: String,
     required: false,
   },
-  phone: {
+  productActive: {
     type: String,
     required: false,
   },
-  website: {
+  manufacturer: {
     type: String,
     required: false,
   },
-  industry: {
+  category: {
     type: String,
     required: false,
   },
-  leadSource: {
+  salesStartDate: {
     type: String,
     required: false,
   },
-  leadStatus: {
-    type: String,
-    required: true,
-  },
-  revenue: {
+  salesEndDate: {
     type: String,
     required: false,
   },
-  country: {
+  supportStartDate: {
     type: String,
     required: false,
   },
-  street: {
+  supportEndDate: {
     type: String,
     required: false,
   },
-  state: {
+  unitPrice: {
     type: String,
     required: false,
   },
-  city: {
+  tax: {
     type: String,
     required: false,
   },
-  zipcode: {
+  taxable: {
+    type: String,
+    required: false,
+  },
+  qty: {
+    type: String,
+    required: false,
+  },
+  unit: {
+    type: String,
+    required: false,
+  },
+  description: {
     type: String,
     required: false,
   }
 }, { timestamps: true });
 
 mongoose.models = {}
-const Lead = mongoose.model('Lead', leadSchema);
-export default Lead;
+const ProductList = mongoose.model('ProductList', productSchema);
+
+export default ProductList;

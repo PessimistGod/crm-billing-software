@@ -1,23 +1,19 @@
 import mongoose from 'mongoose';
 
-const leadSchema = new mongoose.Schema({
+const vendorSchema = new mongoose.Schema({
   imageName: {
     type: String,
     required: true,
   },
-  leadOwner: {
+  vendorOwner: {
     type: String,
     required: true,
   },
-  company: {
+  vendorName: {
     type: String,
     required: true,
   },
-  salutation: {
-    type: String,
-    required: false,
-  },
-  name: {
+  phone: {
     type: String,
     required: false,
   },
@@ -25,27 +21,15 @@ const leadSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  phone: {
-    type: String,
-    required: false,
-  },
   website: {
     type: String,
     required: false,
   },
-  industry: {
+  account: {
     type: String,
     required: false,
   },
-  leadSource: {
-    type: String,
-    required: false,
-  },
-  leadStatus: {
-    type: String,
-    required: true,
-  },
-  revenue: {
+  category: {
     type: String,
     required: false,
   },
@@ -68,9 +52,13 @@ const leadSchema = new mongoose.Schema({
   zipcode: {
     type: String,
     required: false,
+  },
+  description: {
+    type: String,
+    required: false,
   }
 }, { timestamps: true });
 
 mongoose.models = {}
-const Lead = mongoose.model('Lead', leadSchema);
-export default Lead;
+const Vendor = mongoose.model('Vendor', vendorSchema);
+export default Vendor;
