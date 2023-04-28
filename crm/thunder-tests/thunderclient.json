@@ -84,5 +84,24 @@
       "form": []
     },
     "tests": []
+  },
+  {
+    "_id": "a94947ce-9369-46ad-9a53-05dc043c8139",
+    "colId": "11cb9b41-885c-488d-98da-5f811dce113b",
+    "containerId": "",
+    "name": "company",
+    "url": "http://localhost:3000/api/Authenticate/companyRegister",
+    "method": "POST",
+    "sortNum": 60000,
+    "created": "2023-04-28T19:03:25.270Z",
+    "modified": "2023-04-28T19:36:36.191Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\r\n  \"ownerName\": \"sdvca\",\r\n  \"companyName\": \"sdvgca\",\r\n  \"companyStreet\": \"sdvca\",\r\n  \"companyCity\": \"sdvca\",\r\n  \"companyState\": \"sdvca\",\r\n  \"companyZipcode\": \"sdvca\",\r\n  \"companyCountry\":\"sdvca\"\r\n  }",
+      "form": []
+    },
+    "tests": []
   }
 ]

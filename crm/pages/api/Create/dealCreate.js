@@ -7,7 +7,7 @@ export default async function dealCreate(req, res) {
       const deal = new Deal(req.body);
 
       // Check for required fields
-      const requiredFields = [ { key: 'dealOwner', message: 'Deal Owner field is required' } , { key: 'dealName', message: 'Deal Name field is required' } *];
+      const requiredFields = [ { key: 'dealOwner', message: 'Deal Owner field is required' } , { key: 'dealName', message: 'Deal Name field is required' }];
       for (const field of requiredFields) {
         if (!deal[field.key]) {
           return res.status(400).json({ error: field.message });

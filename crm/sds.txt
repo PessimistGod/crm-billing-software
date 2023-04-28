@@ -779,3 +779,21 @@ mongoose.models = {}
 const Invoice = mongoose.model('Invoice', invoiceSchema);
 
 export default Invoice;
+
+
+
+
+
+
+
+
+
+  const [ownerName, setOwnerName] = useState("")
+  const [companyName, setCompanyName] = useState("")
+  const [gstin, setGstin] = useState("")
+  const [companyStreet, setCompanyStreet] = useState("")
+  const [companyCity, setCompanyCity] = useState("")
+  const [companyState, setCompanyState] = useState("")
+  const [companyZipcode, setCompanyZipcode] = useState("")
+  const [companyCountry, setCompanyCountry] = useState("")
+  const [companyWebsite, setCompanyWebsite] = useState("")

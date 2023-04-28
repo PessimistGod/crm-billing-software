@@ -54,6 +54,25 @@ const Navbar = () => {
     }
   }
 
+  function RightDisplayDrop() {
+
+    let addiRightMenuID = document.getElementById("additionalRightMenuID");
+    addiRightMenuID.style.display = ""
+    addiRightMenuID.style.position = ""
+
+
+  }
+
+
+  function LeftDisplayDrop() {
+
+    let addiMenuID = document.getElementById("additionalMenuID");
+    addiMenuID.style.display = ""
+    addiMenuID.style.position = ""
+
+
+  }
+
 
   return (
     <>
@@ -134,24 +153,24 @@ const Navbar = () => {
 
                           </button>
                         </div>
-                        <div className="absolute hidden right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" id='additionalMenuID' role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex="-1">
+                        <div onMouseLeave={LeftDisplayDrop} className="absolute hidden right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" id='additionalMenuID' role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex="-1">
                           <div className="py-1" role="none">
-                            <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-0">Products</Link>
-                            <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-1">Sales Order</Link>
+                            <Link href={'#'} className="text-gray-700 hover:text-blue-600 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-0">Products</Link>
+                            <Link href={'#'} className="text-gray-700 hover:text-blue-600 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-1">Sales Order</Link>
                           </div>
                           <div className="py-1" role="none">
-                            <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-2">Purchase Order</Link>
-                            <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-3">Vendors</Link>
+                            <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-2">Purchase Order</Link>
+                            <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-3">Vendors</Link>
                           </div>
                           <div className="py-1" role="none">
-                            <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-4">Invoices</Link>
-                            
+                            <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-4">Invoices</Link>
+
                           </div>
                           <div className="py-1" role="none">
                             <Link href={'#'} className="text-gray-700 px-4 py-2 text-sm flex items-center" role="menuitem" tabIndex="-1" id="menu-item-6"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4 mr-1">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
-</svg>
-New Module</Link>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
+                            </svg>
+                              New Module</Link>
                           </div>
                         </div>
                       </div>
@@ -180,7 +199,7 @@ New Module</Link>
                         </svg>
                       </button>
                     </div >
-                    <div id='additionalRightMenuID' className="absolute hidden right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex="-1">
+                    <div id='additionalRightMenuID' onMouseLeave={RightDisplayDrop} className="absolute hidden right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex="-1" >
                       <div className="py-1" role="none">
                         <Link href={'/Create/createLead'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-0">Create Lead</Link>
                         <Link href={'/Create/createContact'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-1">Create Contact</Link>
@@ -190,15 +209,15 @@ New Module</Link>
                         <Link href={'/Create/createDeal'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-3">Create Deals</Link>
                       </div>
                       <div className="py-1" role="none">
-                        <Link href={'/Create/createProduct'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-4">Create Product</Link>
-                        <Link href={'/Create/createSales'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-5">Create Sales</Link>
+                        <Link href={'/Create/createProduct'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-4">Create Product</Link>
+                        <Link href={'/Create/createSales'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-5">Create Sales</Link>
                       </div>
                       <div className="py-1" role="none">
-                        <Link href={'/Create/createPurchase'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-4">Create Purchase</Link>
-                        <Link href={'/Create/createVendor'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-5">Create Vendors</Link>
+                        <Link href={'/Create/createPurchase'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-4">Create Purchase</Link>
+                        <Link href={'/Create/createVendor'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-5">Create Vendors</Link>
                       </div>
                       <div className="py-1" role="none">
-                        <Link href={'/Create/createInvoice'} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-6">Create Invoice</Link>
+                        <Link href={'/Create/createInvoice'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-6">Create Invoice</Link>
                       </div>
                     </div>
                   </div>

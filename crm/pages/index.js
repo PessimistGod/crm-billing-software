@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Link from 'next/link';
 import { useRouter } from 'next/router'
 import { useEffect } from 'react';
 
@@ -27,10 +28,14 @@ useEffect(() => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <section className='container bg-white flex items-center justify-center h-screen'>
+      <section className='container bg-white flex items-center justify-center h-screen flex-col'>
         <div className='font-extrabold text-4xl text-purple-600'>
           Welcome to Our Customer Relation Management System!
         </div>
+        <Link href={'/Create/createCompany'}>
+          <button className="px-8 mt-5 py-3 bg-blue-600">Add Company</button>
+          </Link>
+      
       </section>
       
      

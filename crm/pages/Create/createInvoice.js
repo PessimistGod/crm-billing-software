@@ -142,20 +142,26 @@ const createSales = () => {
         if (e.target.name == 'subTotal') {
             setSubTotal(e.target.value)
         }
-
-
-
-
     }
 
         const subTotals = rows.reduce((total, row) => {
             const itemTotal = (row.price * row.qty);
             return total + itemTotal;
-          }, 0);
-          const grandTotals = rows.reduce((total, row) => {
+        }, 0);
+
+
+        const grandTotals = rows.reduce((total, row) => {
             const itemTotal = (row.price * row.qty) + ((row.price * row.qty) * (row.tax/100)) - row.discount;
             return total + itemTotal;
-          }, 0);
+        }, 0);
+
+        const grandDiscount = rows.reduce((total, row) => {
+            const itemTotal = Number.parseInt(row.discount);
+            if(itemTotal === 'NaN'){
+                return 0
+            }
+            return total + itemTotal;
+        }, 0);
           
     
     const InvoiceCreate = async () => {
@@ -603,17 +609,7 @@ const createSales = () => {
                         </tr>
 
 
-                        <tr className='hidden'>
-                            <td>
-
-                                <input
-                                    type="text"
-                                    value={subTotals}
-                                    className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-2 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                />
-
-                            </td>
-                        </tr>
+                
 
                     </tbody>))}
 
@@ -642,7 +638,7 @@ const createSales = () => {
                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="totalDiscount">
                                 Total Discount
                             </label>
-                            <input onChange={handleChange} name='totalDiscount' value={totalDiscount} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500" id="totalDiscount" type="text" placeholder="Total Discount" />
+                            <input onChange={handleChange} name='totalDiscount' value={grandDiscount} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500" id="totalDiscount" type="text" placeholder="Total Discount" />
                         </div>
                         <div className="w-full md:w-1/2 px-3">
                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="totalTax">
@@ -655,7 +651,7 @@ const createSales = () => {
                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grandTotal">
                                 Grand Total
                             </label>
-                            <input onChange={handleChange} name='grandTotal' value={grandTotal} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grandTotal" type="text" placeholder="Grand Total" />
+                            <input onChange={handleChange} name='grandTotal' value={grandTotals} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grandTotal" type="text" placeholder="Grand Total" />
 
                         </div>
                     </div>
