@@ -24,7 +24,7 @@ export default async function handler(req, res) {
         if(!user.isVerified){
             return res.status(401).json({ message: 'Please Signup' });
         }
-        const token = jwt.sign({ email: user.email, phone: user.phone, username: user.username,  }, process.env.JWT_SECRET);
+        const token = jwt.sign({ id: user._id, email: user.email, phone: user.phone, username: user.username, isVerified: user.isVerified }, process.env.JWT_SECRET);
         return res.status(200).json({ token });
     } else {
         res.status(405).json({ message: 'Method not allowed' });

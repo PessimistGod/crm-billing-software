@@ -1,23 +1,30 @@
-import Head from 'next/head'
+import Head from 'next/head';
 import Link from 'next/link';
-import { useRouter } from 'next/router'
-import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import Company from '@/Models/createCompany';
+import connectDB from '@/Middleware/db';
+import jwt_decode from 'jwt-decode';
+import Signup from '@/Models/signup';
 
-export default function Home() {
+const Home = ({ company }) => {
   const router = useRouter();
+  const [registration, setRegistration] = useState('');
 
-
-
-useEffect(() => {
-  const token = localStorage.getItem('token')
-  if(!token){
-    router.push('/Authenticate/Login')
-
-  }else{
-   console.log("token exist")
-  }
-}, [])
-
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    try {
+      if (token) {
+        const decodedToken = jwt_decode(token);
+        setRegistration(decodedToken.id);
+      } else {
+        router.push('/Authenticate/Login');
+      }
+    } catch (error) {
+      console.error(error);
+      router.push('/Authenticate/Login');
+    }
+  }, []);
 
   return (
     <>
@@ -28,17 +35,54 @@ useEffect(() => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <section className='container bg-white flex items-center justify-center h-screen flex-col'>
-        <div className='font-extrabold text-4xl text-purple-600'>
+      <section className="container bg-white flex items-center justify-center h-screen flex-col">
+        <div className="font-extrabold text-4xl text-purple-600">
           Welcome to Our Customer Relation Management System!
         </div>
-        <Link href={'/Create/createCompany'}>
+        <Link href="/Create/createCompany">
           <button className="px-8 mt-5 py-3 bg-blue-600">Add Company</button>
-          </Link>
-      
+        </Link>
+
+        {company &&
+          company
+            .filter((author) => (author.author === registration))
+            .map((item) => (
+              <div key={item._id}>{item._id}</div>
+            ))}
       </section>
-      
-     
     </>
-  )
+  );
+};
+
+export default Home;
+
+export async function getServerSideProps(context) {
+  try {
+    await connectDB();
+
+    const company = await Company.find({})
+
+    const companyDetails = company.map((item) => ({
+      _id: item.id,
+      ownerName: item.ownerName,
+      companyName: item.companyName,
+      companyStreet: item.companyStreet,
+      companyCity: item.companyCity,
+      companyState: item.companyState,
+      companyZipcode: item.companyZipcode,
+      companyCountry: item.companyCountry,
+      author: (item.author)?(JSON.stringify(item.author).slice(1, -1)):"",
+    }));
+    console.log(companyDetails)
+    return {
+      props: {
+        company: companyDetails,
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      props: { company: [] },
+    };
+  }
 }

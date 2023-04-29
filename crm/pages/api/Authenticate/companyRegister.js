@@ -29,7 +29,7 @@ export default async function handler(req, res) {
           }
           const companyExists = await Company.findOne({ companyName: companyDetails.companyName });
           if (companyExists) {
-            return res.status(400).json({ error: 'Company Name already exists' });
+            return res.status(400).json({ error: 'Company Name Exists' });
           }
 
           const gstinRegex = /^([0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1})$/;
@@ -38,7 +38,7 @@ export default async function handler(req, res) {
           }
 
           await companyDetails.save();
-          res.status(201).json({ success: 'Company Details Created Successfully' });
+          res.status(201).json({ success: 'Company Details Saved' });
         }
       }
       catch (error) {

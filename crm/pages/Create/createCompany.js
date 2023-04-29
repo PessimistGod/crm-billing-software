@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-
+import React, { useEffect, useState } from 'react'
+import jwt_decode from 'jwt-decode';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -13,100 +13,121 @@ const CreateCompany = () => {
   const [companyZipcode, setCompanyZipcode] = useState("")
   const [companyCountry, setCompanyCountry] = useState("")
   const [companyWebsite, setCompanyWebsite] = useState("")
-  
+  const [registration, setRegistration] = useState("")
 
-  const handleChange = (e)=>{
+  useEffect(() => {
+    try {
+      const token = localStorage.getItem('token');
+      if (token) {
+        const decodedToken = jwt_decode(token);
+        if (decodedToken) {
+          setRegistration(decodedToken.id);
+        } else {
+          setRegistration("");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      setRegistration("");
+    }
+
+  }, [])
+
+
+  const handleChange = (e) => {
     if (e.target.name == 'ownerName') {
       setOwnerName(e.target.value)
-  }
-  if (e.target.name == 'companyName') {
-    setCompanyName(e.target.value)
-}if (e.target.name == 'gstin') {
-  setGstin(e.target.value)
-}if (e.target.name == 'companyStreet') {
-  setCompanyStreet(e.target.value)
-}if (e.target.name == 'companyCity') {
-  setCompanyCity(e.target.value)
-}if (e.target.name == 'companyState') {
-  setCompanyState(e.target.value)
-}if (e.target.name == 'companyCountry') {
-  setCompanyCountry(e.target.value)
-}if (e.target.name == 'companyZipcode') {
-  setCompanyZipcode(e.target.value)
-}if (e.target.name == 'companyWebsite') {
-  setCompanyWebsite(e.target.value)
-}
+    }
+    if (e.target.name == 'companyName') {
+      setCompanyName(e.target.value)
+    } if (e.target.name == 'gstin') {
+      setGstin(e.target.value)
+    } if (e.target.name == 'companyStreet') {
+      setCompanyStreet(e.target.value)
+    } if (e.target.name == 'companyCity') {
+      setCompanyCity(e.target.value)
+    } if (e.target.name == 'companyState') {
+      setCompanyState(e.target.value)
+    } if (e.target.name == 'companyCountry') {
+      setCompanyCountry(e.target.value)
+    } if (e.target.name == 'companyZipcode') {
+      setCompanyZipcode(e.target.value)
+    } if (e.target.name == 'companyWebsite') {
+      setCompanyWebsite(e.target.value)
+    }
 
   }
 
-  const handleSubmit = async()=>{
+  const handleSubmit = async () => {
     try {
 
-      const data = { ownerName, companyName, gstin, companyStreet, companyCity, companyState, companyCountry, companyZipcode, companyWebsite};
+      const data = { ownerName, companyName, gstin, companyStreet, companyCity, companyState, companyCountry, companyZipcode, companyWebsite, author:registration };
 
       let CreateCompany = await fetch(`/api/Authenticate/companyRegister`, {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       })
       console.log(data)
       let response = await CreateCompany.json()
       console.log(response)
       if (response.error) {
-          toast.error(response.error, {
-              position: "top-center",
-              autoClose: 1100,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: false,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-          });
+        toast.error(response.error, {
+          position: "top-center",
+          autoClose: 1100,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       } else if (response.success) {
-          toast.success(response.success, {
-              position: "top-center",
-              autoClose: 200,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: false,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-          });
+        toast.success(response.success, {
+          position: "top-center",
+          autoClose: 200,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setOwnerName("")
+        setCompanyName("")
+        setGstin("")
+        setCompanyStreet("")
+        setCompanyCity("")
+        setCompanyState("")
+        setCompanyZipcode("")
+        setCompanyCountry("")
+        setCompanyWebsite("")
       }
-      setOwnerName("")
-      setCompanyName("")
-      setGstin("")
-      setCompanyStreet("")
-      setCompanyCity("")
-      setCompanyState("")
-      setCompanyZipcode("")
-      setCompanyCountry("")
-      setCompanyWebsite("")
 
-    }catch(error){
-        console.log(error)
-      }
+
+
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
     <section>
       <ToastContainer
-                position="top-center"
-                autoClose={1000}
-                limit={1}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss={false}
-                draggable
-                pauseOnHover={false}
-                theme="light"
-            />
+        position="top-center"
+        autoClose={1000}
+        limit={1}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover={false}
+        theme="light"
+      />
       <div className='container'>
         <h1 className=" mb-1 font-bold text-3xl flex gap-1 items-center justify-center my-12 font-mono">Form UI<span className="text-sm text-purple-700">form showcase</span></h1>
         <div className='bg-white mx-auto md:w-10/12 lg:w-9/12 my-5 rounded-md border-t-4 border-black py-16 px-12'>
@@ -159,7 +180,7 @@ const CreateCompany = () => {
 
 
           <div className='grid md:grid-cols-2'>
-         
+
             <div class="bg-white flex min-h-[60px] flex-col-reverse justify-center rounded-md border border-gray-300 p-1 mx-2 shadow-sm focus-within:shadow-inner my-2">
               <div class="relative">
                 <input onChange={handleChange} value={companyCountry} type="text" name="companyCountry" id="companyCountry" placeholder='Country' className="block w-full py-2 px-3 rounded-md border-2 border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent transition duration-200 ease-in-out" />
@@ -185,8 +206,8 @@ const CreateCompany = () => {
               </div>
             </div>
 
-            
-     
+
+
           </div>
 
 

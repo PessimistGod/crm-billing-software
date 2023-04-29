@@ -16,6 +16,7 @@
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
     "fs-extra": "^11.1.1",
+    "jwt-decode": "^3.1.2",
     "lz-string": "^1.5.0",
     "nexmo": "^2.9.1",
     "next": "^13.3.0",
