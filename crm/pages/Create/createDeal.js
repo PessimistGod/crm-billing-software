@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import jwt_decode from 'jwt-decode'; 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -16,6 +17,24 @@ const createDeal = () => {
     const [campaignSource, setCampaignSource] = useState("")
     const [contactName, setContactName] = useState("")
     const [description, setDescription] = useState("")
+    const [registration, setRegistration] = useState("")
+
+    useEffect(() => {
+        try {
+            const token = localStorage.getItem('token');
+            if (token) {
+                const decodedToken = jwt_decode(token);
+                if (decodedToken) {
+                    setRegistration(decodedToken.id);
+                } else {
+                    setRegistration("");
+                }
+            }
+        } catch (error) {
+            console.log(error);
+            setRegistration("");
+        }
+    }, [])
 
     
     const handleChange = (e) => {
@@ -60,16 +79,16 @@ const createDeal = () => {
     //     console.log("Uploading image...");
     // }
 
+
+
     // function handleImageLoad() {
     //     setIsImageLoaded(true);
     // }
 
-
-
     const DealCreate = async () => {
         try {
 
-            const data = { dealOwner, dealName, amount, closingDate, accountName, type, expectedRevenue, leadSource, campaignSource, contactName, description };
+            const data = { dealOwner, dealName, amount, closingDate, accountName, type, expectedRevenue, leadSource, campaignSource, contactName, description, author:registration };
 
             let CreateDeal = await fetch(`/api/Create/dealCreate`, {
                 method: "POST",
@@ -78,7 +97,6 @@ const createDeal = () => {
                 },
                 body: JSON.stringify(data),
             })
-            console.log(data)
             let response = await CreateDeal.json()
             console.log(response)
             if (response.error) {

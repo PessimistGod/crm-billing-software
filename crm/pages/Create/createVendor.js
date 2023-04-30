@@ -1,7 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
+import jwt_decode from 'jwt-decode';
 import 'react-toastify/dist/ReactToastify.css';
 
 const CreateVendor = () => {
@@ -19,6 +20,25 @@ const CreateVendor = () => {
     const [city, setCity] = useState("")
     const [zipcode, setZipcode] = useState("")
     const [description, setDescription] = useState("");
+    const [registration, setRegistration] = useState("")
+
+
+    useEffect(() => {
+        try {
+            const token = localStorage.getItem('token');
+            if (token) {
+                const decodedToken = jwt_decode(token);
+                if (decodedToken) {
+                    setRegistration(decodedToken.id);
+                } else {
+                    setRegistration("");
+                }
+            }
+        } catch (error) {
+            console.log(error);
+            setRegistration("");
+        }
+    }, [])
 
 
 
@@ -83,7 +103,7 @@ const CreateVendor = () => {
     const VendorCreate = async () => {
         try {
 
-            const data = { imageName, vendorOwner, vendorName, email, phone, website, account, category, country, street, state, city, zipcode, description };
+            const data = { imageName, vendorOwner, vendorName, email, phone, website, account, category, country, street, state, city, zipcode, description, author:registration };
 
             let CreateLead = await fetch(`/api/Create/vendorCreate`, {
                 method: "POST",

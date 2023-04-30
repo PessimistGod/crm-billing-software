@@ -139,6 +139,11 @@ subTotal:{
   grandTotal:{
     type: String,
     required: false,
+  },
+  author: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Signup',
+    required: true,
   }
 }, { timestamps: true });
 

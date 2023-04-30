@@ -42,7 +42,7 @@ const companySchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Signup',
     required: true,
-  },
+  }
 }, { timestamps: true });
 
 mongoose.models = {}

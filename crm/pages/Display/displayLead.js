@@ -1,9 +1,33 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Lead from '@/Models/createLead';
 import connectDB from '@/Middleware/db';
+import jwt_decode from 'jwt-decode';
+
+
+
+
 
 const DisplayLead = ({ leads }) => {
+
+
+  const [registration, setRegistration] = useState('');
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    try {
+      if (token) {
+        const decodedToken = jwt_decode(token);
+        setRegistration(decodedToken.id);
+      } else {
+        router.push('/Authenticate/Login');
+      }
+    } catch (error) {
+      console.error(error);
+      router.push('/Authenticate/Login');
+    }
+  }, []);
+
     const myLoader=({src, item})=>{
         return `/${leads[item].imageName}`;
       }
@@ -23,7 +47,7 @@ const DisplayLead = ({ leads }) => {
             </thead>
             <tbody className="bg-white">
               {leads &&
-                Object.keys(leads).map((item) => (
+                Object.keys(leads).filter((lead) => (leads[lead].author === registration)).map((item) => (
                   <tr key={leads[item]._id} className="text-gray-700">
                     <td className="px-4 py-3 border">
                       <div className="flex items-center text-sm">
@@ -76,6 +100,7 @@ export async function getServerSideProps(context) {
       props: {
         leads: leads.map((lead) => ({
           ...lead,
+          author: (lead.author) ? ((JSON.stringify(lead.author)).slice(1,-1)) : '',
           createdAt: lead.createdAt.toISOString(),
         })),
     },

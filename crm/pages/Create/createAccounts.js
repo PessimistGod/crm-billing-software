@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import jwt_decode from 'jwt-decode';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -24,9 +25,27 @@ const createAccount = () => {
     const [city, setCity] = useState("")
     const [zipcode, setZipcode] = useState("")
     const [isImageLoaded, setIsImageLoaded] = useState(false);
+    const [registration, setRegistration] = useState("")
 
 
-
+    useEffect(() => {
+        try {
+          const token = localStorage.getItem('token');
+          if (token) {
+            const decodedToken = jwt_decode(token);
+            if (decodedToken) {
+              setRegistration(decodedToken.id);
+            } else {
+              setRegistration("");
+            }
+          }
+        } catch (error) {
+          console.log(error);
+          setRegistration("");
+        }
+    
+      }, [])
+    
     const handleChange = (e) => {
         if (e.target.name == 'imageName') {
             setImageName(e.target.value)
@@ -94,7 +113,7 @@ const createAccount = () => {
     const AccountCreate = async () => {
         try {
 
-            const data = { imageName, accountOwner, accountName, accountSite, parentAccount, accountNumber, revenue, ownership, employee, phone, website, country, street, state, city, zipcode };
+            const data = { imageName, accountOwner, accountName, accountSite, parentAccount, accountNumber, revenue, ownership, employee, phone, website, country, street, state, city, zipcode, author:registration };
 
             let CreateAccount = await fetch(`/api/Create/accountCreate`, {
                 method: "POST",

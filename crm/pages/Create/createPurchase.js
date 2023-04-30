@@ -1,7 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
+import jwt_decode from 'jwt-decode';
 import 'react-toastify/dist/ReactToastify.css';
 
 const createPurchase = () => {
@@ -43,6 +44,25 @@ const createPurchase = () => {
     const [totalDiscount, setTotalDiscount] = useState("")
     const [totalTax, setTotalTax] = useState("")
     const [grandTotal, setGrandTotal] = useState("")
+    const [registration, setRegistration] = useState("")
+
+
+    useEffect(() => {
+        try {
+            const token = localStorage.getItem('token');
+            if (token) {
+                const decodedToken = jwt_decode(token);
+                if (decodedToken) {
+                    setRegistration(decodedToken.id);
+                } else {
+                    setRegistration("");
+                }
+            }
+        } catch (error) {
+            console.log(error);
+            setRegistration("");
+        }
+    }, [])
 
 
 
@@ -146,7 +166,7 @@ const createPurchase = () => {
     const PurchaseCreate = async () => {
         try {
 
-            const data = { purchaseOwner, vendorName, subject, purchaseOrder, customerNumber, dueDate, carrier, contactName, salesCommission, status, accName, billingStreet, shippingStreet, billingCity, billingState, billingCode, billingCountry, shippingCity, shippingState, shippingCode, shippingCountry, subTotal, totalDiscount, totalTax, grandTotal, rows };
+            const data = { purchaseOwner, vendorName, subject, purchaseOrder, customerNumber, dueDate, carrier, contactName, salesCommission, status, accName, billingStreet, shippingStreet, billingCity, billingState, billingCode, billingCountry, shippingCity, shippingState, shippingCode, shippingCountry, subTotal, totalDiscount, totalTax, grandTotal, rows, author:registration };
 
             let CreateContact = await fetch(`/api/Create/purchaseCreate`, {
                 method: "POST",

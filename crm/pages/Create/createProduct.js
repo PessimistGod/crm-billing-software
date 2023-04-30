@@ -1,7 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
+import jwt_decode from 'jwt-decode';
 import 'react-toastify/dist/ReactToastify.css';
 
 const createProduct = () => {
@@ -24,6 +25,25 @@ const createProduct = () => {
     const [qty, setQty] = useState("")
     const [unit, setUnit] = useState("")
     const [description, setDescription] = useState("")
+    const [registration, setRegistration] = useState("")
+
+
+    useEffect(() => {
+        try {
+            const token = localStorage.getItem('token');
+            if (token) {
+                const decodedToken = jwt_decode(token);
+                if (decodedToken) {
+                    setRegistration(decodedToken.id);
+                } else {
+                    setRegistration("");
+                }
+            }
+        } catch (error) {
+            console.log(error);
+            setRegistration("");
+        }
+    }, [])
 
 
 
@@ -91,7 +111,7 @@ const createProduct = () => {
     const ProductCreate = async () => {
         try {
 
-            const data = { imageName, productInfo, productOwner, productCode, productName, vendorName, productActive, manufacturer, category, salesStartDate, salesEndDate, supportStartDate, supportEndDate, unitPrice, tax, taxable, qty, unit, description };
+            const data = { imageName, productInfo, productOwner, productCode, productName, vendorName, productActive, manufacturer, category, salesStartDate, salesEndDate, supportStartDate, supportEndDate, unitPrice, tax, taxable, qty, unit, description, author:registration };
 
             let CreateContact = await fetch(`/api/Create/productListCreate`, {
                 method: "POST",

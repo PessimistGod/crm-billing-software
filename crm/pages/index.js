@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import Company from '@/Models/createCompany';
 import connectDB from '@/Middleware/db';
 import jwt_decode from 'jwt-decode';
-import Signup from '@/Models/signup';
 
 const Home = ({ company }) => {
   const router = useRouter();
@@ -25,7 +24,7 @@ const Home = ({ company }) => {
       router.push('/Authenticate/Login');
     }
   }, []);
-
+console.log((company.map((display)=>(display._id))).length)
   return (
     <>
       <Head>
@@ -39,16 +38,20 @@ const Home = ({ company }) => {
         <div className="font-extrabold text-4xl text-purple-600">
           Welcome to Our Customer Relation Management System!
         </div>
-        <Link href="/Create/createCompany">
-          <button className="px-8 mt-5 py-3 bg-blue-600">Add Company</button>
-        </Link>
 
+        {company && ((company.map((display)=>(display._id))).length)===0 &&
+  <Link href="/Create/createCompany">
+    <button className="px-8 mt-5 py-3 bg-blue-600">Add Company</button>
+  </Link>
+}
         {company &&
           company
             .filter((author) => (author.author === registration))
             .map((item) => (
               <div key={item._id}>{item._id}</div>
             ))}
+
+
       </section>
     </>
   );
@@ -71,7 +74,7 @@ export async function getServerSideProps(context) {
       companyState: item.companyState,
       companyZipcode: item.companyZipcode,
       companyCountry: item.companyCountry,
-      author: (item.author)?(JSON.stringify(item.author).slice(1, -1)):"",
+      author: (item.author) ? (JSON.stringify(item.author).slice(1, -1)) : "",
     }));
     console.log(companyDetails)
     return {
