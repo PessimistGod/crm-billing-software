@@ -1,9 +1,31 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Account from '@/Models/createAccount';
 import connectDB from '@/Middleware/db';
+import { useRouter } from 'next/router';
+import jwt_decode from 'jwt-decode';
+
 
 const DisplayAccount = ({ accounts }) => {
+  console.log(accounts)
+
+  const router = useRouter()
+  const [registration, setRegistration] = useState('');
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    try {
+      if (token) {
+        const decodedToken = jwt_decode(token);
+        setRegistration(decodedToken.id);
+      } else {
+        router.push('/Authenticate/Login');
+      }
+    } catch (error) {
+      console.error(error);
+      router.push('/Authenticate/Login');
+    }
+  }, []);
     const myLoader=({src, item})=>{
         return `/${accounts[item].imageName}`;
       }
@@ -24,7 +46,7 @@ const DisplayAccount = ({ accounts }) => {
             </thead>
             <tbody className="bg-white">
               {accounts &&
-                Object.keys(accounts).map((item) => (
+                Object.keys(accounts).filter((account) => (accounts[account].author === registration)).map((item) => (
                   <tr key={accounts[item]._id} className="text-gray-700">
                     <td className="px-4 py-3 border">
                       <div className="flex items-center text-sm">
@@ -73,17 +95,20 @@ export async function getServerSideProps(context) {
   try {
     await connectDB();
 
-    const accounts = await Account.find({}, { _id: 0, updatedAt: 0 }).lean();
+    const accounts = await Account.find({}, { updatedAt: 0 }).lean();
 
     return {
       props: {
         accounts: accounts.map((account) => ({
           ...account,
+          _id: (account._id) ? ((JSON.stringify(account._id)).slice(1,-1)) : '',
+          author: (account.author) ? ((JSON.stringify(account.author)).slice(1,-1)) : '',
           createdAt: account.createdAt.toISOString(),
         })),
-    },
+      },
     };
-  } catch (error) {
+  } 
+  catch (error) {
     console.log(error);
     return {
       props: { accounts: [] },

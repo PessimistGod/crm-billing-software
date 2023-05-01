@@ -1,13 +1,39 @@
 import Image from 'next/image'
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import jwt_decode from 'jwt-decode';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Company from "@/Models/createCompany";
+import connectDB from '@/Middleware/db';
+import { useRouter } from 'next/router';
 
 
 
-const createAccount = () => {
+const createAccount = ({ companies }) => {
+    const [registration, setRegistration] = useState("")
+
+    const router = useRouter()
+    useEffect(() => {
+        try {
+            const token = localStorage.getItem('token');
+            if (token) {
+                const decodedToken = jwt_decode(token);
+                if (decodedToken) {
+                    setRegistration(decodedToken.id);
+                } else {
+                    setRegistration("");
+                }
+            }
+        } catch (error) {
+            console.log(error);
+            setRegistration("");
+        }
+
+    }, [])
+ console.log(companies.find(author => author.author === registration))
+ let companyDetails = companies.find(author => author.author === registration)
+ console.log(companyDetails && companyDetails.companyName)
     const [imageName, setImageName] = useState('');
     const [accountOwner, setAccountOwner] = useState("")
     const [accountName, setAccountName] = useState("")
@@ -25,27 +51,8 @@ const createAccount = () => {
     const [city, setCity] = useState("")
     const [zipcode, setZipcode] = useState("")
     const [isImageLoaded, setIsImageLoaded] = useState(false);
-    const [registration, setRegistration] = useState("")
 
 
-    useEffect(() => {
-        try {
-          const token = localStorage.getItem('token');
-          if (token) {
-            const decodedToken = jwt_decode(token);
-            if (decodedToken) {
-              setRegistration(decodedToken.id);
-            } else {
-              setRegistration("");
-            }
-          }
-        } catch (error) {
-          console.log(error);
-          setRegistration("");
-        }
-    
-      }, [])
-    
     const handleChange = (e) => {
         if (e.target.name == 'imageName') {
             setImageName(e.target.value)
@@ -107,13 +114,22 @@ const createAccount = () => {
     function handleImageLoad() {
         setIsImageLoaded(true);
     }
+  
+
+    useEffect(() => {
+        if (companyDetails) {
+          setAccountOwner(companyDetails.companyName)
+        }
+      }, [companyDetails])
+      
+
 
 
 
     const AccountCreate = async () => {
         try {
 
-            const data = { imageName, accountOwner, accountName, accountSite, parentAccount, accountNumber, revenue, ownership, employee, phone, website, country, street, state, city, zipcode, author:registration };
+            const data = { imageName, accountOwner, accountName, accountSite, parentAccount, accountNumber, revenue, ownership, employee, phone, website, country, street, state, city, zipcode, author: registration };
 
             let CreateAccount = await fetch(`/api/Create/accountCreate`, {
                 method: "POST",
@@ -160,6 +176,7 @@ const createAccount = () => {
 
     return (
         <section>
+            
             <ToastContainer
                 position="top-center"
                 autoClose={1000}
@@ -221,12 +238,14 @@ const createAccount = () => {
 
                                 </div> */}
                             </div>
+                            
+                              
                             <div className="flex flex-wrap -mx-3 mb-6">
                                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="accountOwner">
                                         Account Owner
                                     </label>
-                                    <input onChange={handleChange} name='accountOwner' value={accountOwner} className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="accountOwner" type="text" placeholder="Account Owner" />
+                                     <input onChange={handleChange} name='accountOwner' value={accountOwner}  className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="accountOwner" type="text" placeholder="Account Owner" />
                                 </div>
                                 <div className="w-full md:w-1/2 px-3">
                                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="accountName">
@@ -328,8 +347,6 @@ const createAccount = () => {
                             </div>
 
 
-
-
                             <div className="flex flex-wrap -mx-3 mb-6">
                                 <div className="w-full md:w-1/2 px-3">
                                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="phone">
@@ -346,8 +363,6 @@ const createAccount = () => {
                                 </div>
 
                             </div>
-
-
 
                         </form>
                     </div>
@@ -404,3 +419,35 @@ const createAccount = () => {
 }
 
 export default createAccount
+
+
+
+export async function getServerSideProps(context) {
+    try {
+      await connectDB();
+
+
+      
+      const companies = await Company.find({},{updatedAt:0}).lean();
+  
+      return {
+        props: {
+          companies: companies.map((company) => ({
+            ...company,
+            _id: company._id ? JSON.stringify(company._id).slice(1, -1) : "",
+            author: company.author ? JSON.stringify(company.author).slice(1, -1) : "",
+            createdAt: company.createdAt.toISOString(),
+          })),
+        },
+      };
+    } catch (err) {
+      console.log(err);
+      return {
+        props: {
+          companies: [],
+          authId: "",
+        },
+      };
+    }
+  }
+  

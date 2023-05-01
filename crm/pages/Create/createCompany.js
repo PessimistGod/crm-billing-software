@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import jwt_decode from 'jwt-decode';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/router';
 
 const CreateCompany = () => {
   const [ownerName, setOwnerName] = useState("")
@@ -14,6 +15,8 @@ const CreateCompany = () => {
   const [companyCountry, setCompanyCountry] = useState("")
   const [companyWebsite, setCompanyWebsite] = useState("")
   const [registration, setRegistration] = useState("")
+
+  const router = useRouter()
 
   useEffect(() => {
     try {

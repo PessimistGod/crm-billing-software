@@ -4,6 +4,10 @@ import React, { useEffect, useState } from 'react'
 import jwt_decode from 'jwt-decode';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Company from "@/Models/createCompany";
+import connectDB from '@/Middleware/db';
+import { useRouter } from 'next/router';
+
 
 const createContact = () => {
     const [imageName, setImageName] = useState(null);
@@ -24,6 +28,8 @@ const createContact = () => {
     const [state, setState] = useState("")
     const [city, setCity] = useState("")
     const [zipcode, setZipcode] = useState("")
+
+    const router = useRouter()
 
     const [registration, setRegistration] = useState("")
 
@@ -389,3 +395,27 @@ const createContact = () => {
 }
 
 export default createContact
+
+
+export async function getServerSideProps(context) {
+    try {
+      await connectDB();
+  
+      const companies = await Company.find({}, { _id: 0, updatedAt: 0 }).lean();
+  
+      return {
+        props: {
+            companies: companies.map((company) => ({
+            ...company,
+            author: (company.author) ? ((JSON.stringify(company.author)).slice(1,-1)) : '',
+            createdAt: company.createdAt.toISOString(),
+          })),
+      },
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        props: { companies: [] },
+      };
+    }
+  }

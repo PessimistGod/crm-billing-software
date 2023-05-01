@@ -1,9 +1,30 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Contact from '@/Models/createContact';
 import connectDB from '@/Middleware/db';
+import jwt_decode from 'jwt-decode';
+import { useRouter } from 'next/router';
+
 
 const DisplayContact = ({ contacts }) => {
+  const router = useRouter()
+
+  const [registration, setRegistration] = useState('');
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    try {
+      if (token) {
+        const decodedToken = jwt_decode(token);
+        setRegistration(decodedToken.id);
+      } else {
+        router.push('/Authenticate/Login');
+      }
+    } catch (error) {
+      console.error(error);
+      router.push('/Authenticate/Login');
+    }
+  }, []);
     const myLoader=({src, item})=>{
         return `/${contacts[item].imageName}`;
       }
@@ -24,7 +45,7 @@ const DisplayContact = ({ contacts }) => {
             </thead>
             <tbody className="bg-white">
               {contacts &&
-                Object.keys(contacts).map((item) => (
+                Object.keys(contacts).filter((contact) => (contacts[contact].author === registration)).map((item) => (
                   <tr key={contacts[item]._id} className="text-gray-700">
                     <td className="px-4 py-3 border">
                       <div className="flex items-center text-sm">
@@ -79,6 +100,7 @@ export async function getServerSideProps(context) {
       props: {
         contacts: contacts.map((contact) => ({
           ...contact,
+          author: (contact.author) ? ((JSON.stringify(contact.author)).slice(1,-1)) : '',
           createdAt: contact.createdAt.toISOString(),
         })),
     },

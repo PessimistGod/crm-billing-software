@@ -1,9 +1,29 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Deal from '@/Models/createDeal';
 import connectDB from '@/Middleware/db';
+import jwt_decode from 'jwt-decode';
+import { useRouter } from 'next/router';
 
 const DisplayDeal = ({ deals }) => {
+  const [registration, setRegistration] = useState('');
+  const router = useRouter()
+
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    try {
+      if (token) {
+        const decodedToken = jwt_decode(token);
+        setRegistration(decodedToken.id);
+      } else {
+        router.push('/Authenticate/Login');
+      }
+    } catch (error) {
+      console.error(error);
+      router.push('/Authenticate/Login');
+    }
+  }, []);
   return (
     <section className="container mx-auto p-6 font-mono">
       <div className="w-full mb-8 overflow-hidden rounded-lg shadow-lg">
@@ -21,7 +41,7 @@ const DisplayDeal = ({ deals }) => {
             </thead>
             <tbody className="bg-white">
               {deals &&
-                Object.keys(deals).map((item) => (
+                Object.keys(deals).filter((deal) => (deals[deal].author === registration)).map((item) => (
                   <tr key={deals[item]._id} className="text-gray-700">
                     <td className="px-4 py-3 border">
                       <div className="flex items-center text-sm">
@@ -66,6 +86,7 @@ export async function getServerSideProps(context) {
       props: {
         deals: deals.map((deal) => ({
           ...deal,
+          author: (deal.author) ? ((JSON.stringify(deal.author)).slice(1,-1)) : '',
           createdAt: deal.createdAt.toISOString(),
         })),
     },

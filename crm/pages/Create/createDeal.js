@@ -4,6 +4,10 @@ import React, { useEffect, useState } from 'react'
 import jwt_decode from 'jwt-decode'; 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Company from "@/Models/createCompany";
+import connectDB from '@/Middleware/db';
+import { useRouter } from 'next/router';
+
 
 const createDeal = () => {
     const [dealOwner, setDealOwner] = useState("")
@@ -18,6 +22,8 @@ const createDeal = () => {
     const [contactName, setContactName] = useState("")
     const [description, setDescription] = useState("")
     const [registration, setRegistration] = useState("")
+    const router = useRouter()
+
 
     useEffect(() => {
         try {
@@ -315,3 +321,27 @@ const createDeal = () => {
 }
 
 export default createDeal
+
+
+export async function getServerSideProps(context) {
+    try {
+      await connectDB();
+  
+      const companies = await Company.find({}, { _id: 0, updatedAt: 0 }).lean();
+  
+      return {
+        props: {
+            companies: companies.map((company) => ({
+            ...company,
+            author: (company.author) ? ((JSON.stringify(company.author)).slice(1,-1)) : '',
+            createdAt: company.createdAt.toISOString(),
+          })),
+      },
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        props: { companies: [] },
+      };
+    }
+  }

@@ -6,7 +6,7 @@ export default async function accountCreate(req, res) {
         if (req.method === 'POST') {
             const account = new Account(req.body);
 
-            // Check for required fields
+
             const requiredFields = [{ key: 'imageName', message: 'Image URL field is required' }, { key: 'accountOwner', message: 'Account Owner field is required' }, { key: 'accountName', message: 'Account Name field is required' }, { key: 'ownership', message: 'Ownership field is required' }];
             for (const field of requiredFields) {
                 if (!account[field.key]) {

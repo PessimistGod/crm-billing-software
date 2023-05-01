@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Lead from '@/Models/createLead';
 import connectDB from '@/Middleware/db';
 import jwt_decode from 'jwt-decode';
+import { useRouter } from 'next/router';
 
 
 
@@ -12,6 +13,8 @@ const DisplayLead = ({ leads }) => {
 
 
   const [registration, setRegistration] = useState('');
+  const router = useRouter()
+
 
   useEffect(() => {
     const token = localStorage.getItem('token');
