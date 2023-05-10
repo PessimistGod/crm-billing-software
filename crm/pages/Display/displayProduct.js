@@ -1,13 +1,13 @@
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import Account from '@/Models/createAccount';
+import ProductList from '@/Models/createProduct';
 import connectDB from '@/Middleware/db';
 import { useRouter } from 'next/router';
 import jwt_decode from 'jwt-decode';
 
 
-const DisplayAccount = ({ accounts }) => {
-  console.log(accounts)
+const DisplayAccount = ({ products }) => {
+  console.log(products)
 
   const router = useRouter()
   const [registration, setRegistration] = useState('');
@@ -27,7 +27,7 @@ const DisplayAccount = ({ accounts }) => {
     }
   }, []);
     const myLoader=({src, item})=>{
-        return `/${accounts[item].imageName}`;
+        return `/${products[item].imageName}`;
       }
   return (
     <section className="container mx-auto p-6 font-mono">
@@ -36,21 +36,21 @@ const DisplayAccount = ({ accounts }) => {
           <table className="w-full">
             <thead>
               <tr className="text-md font-semibold tracking-wide text-left text-gray-900 bg-gray-100 uppercase border-b border-gray-600">
+                <th className="px-4 py-3">Account Owner</th>
                 <th className="px-4 py-3">Account Name</th>
-                <th className="px-4 py-3">Phone</th>
-                <th className="px-4 py-3">Website</th>
-                <th className="px-4 -py-3">Account Owner</th>
-                {/* <th className="px-4 py-3">Parent Account</th>
-                <th className="px-4 py-3">View</th> */}
+                <th className="px-4 py-3">Ownership</th>
+                <th className="px-4 -py-3">Annual Revenue</th>
+                <th className="px-4 py-3">Parent Account</th>
+                <th className="px-4 py-3">View</th>
               </tr>
             </thead>
             <tbody className="bg-white">
-              {accounts &&
-                Object.keys(accounts).filter((account) => (accounts[account].author === registration)).map((item) => (
-                  <tr key={accounts[item]._id} className="text-gray-700">
+              {products &&
+                Object.keys(products).filter((product) => (products[product].author === registration)).map((item) => (
+                  <tr key={products[item]._id} className="text-gray-700">
                     <td className="px-4 py-3 border">
                       <div className="flex items-center text-sm">
-                        {/* <div className="relative w-8 h-8 mr-3 rounded-full md:block">
+                        <div className="relative w-8 h-8 mr-3 rounded-full md:block">
 
                              <Image
                              width={300}
@@ -58,25 +58,25 @@ const DisplayAccount = ({ accounts }) => {
                              className="object-cover w-full h-full rounded-full"
                              src={myLoader({ item })}
                              alt="Logo"
-                             /> */}
+                             />
                             
                           <div className="absolute inset-0 rounded-full shadow-inner" aria-hidden="true"></div>
-                        {/* </div> */}
+                        </div>
                         <div>
-                          <p className="font-semibold text-black">{accounts[item].accountOwner}</p>
+                          <p className="font-semibold text-black">{products[item].accountOwner}</p>
                           <p className="text-xs text-gray-600"></p>
                         </div>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-ms font-semibold border">{accounts[item].ownership}</td>
+                    <td className="px-4 py-3 text-ms font-semibold border">{products[item].ownership}</td>
                     <td className="px-4 py-3 text-md border">
                       <span className="px-2 py-1 font-semibold accounting-tight text-green-700 rounded-sm">
                         {' '}
-                        {accounts[item].ownership}{' '}
+                        {products[item].ownership}{' '}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-sm border">{accounts[item].revenue}</td>
-                    <td className="px-4 py-3 text-sm border">{accounts[item].parentAccount}</td> 
+                    <td className="px-4 py-3 text-sm border">{products[item].revenue}</td>
+                    <td className="px-4 py-3 text-sm border">{products[item].parentAccount}</td> 
 
                     <td className=" py-2 text-ms font-semibold border"><button className='bg-blue-500 mx-auto px-5 py-3 border rounded-3xl'>View</button></td>
                   </tr>
@@ -95,15 +95,15 @@ export async function getServerSideProps(context) {
   try {
     await connectDB();
 
-    const accounts = await Account.find({}, { updatedAt: 0 }).lean();
+    const products = await ProductList.find({}, { updatedAt: 0 }).lean();
 
     return {
       props: {
-        accounts: accounts.map((account) => ({
-          ...account,
-          _id: (account._id) ? ((JSON.stringify(account._id)).slice(1,-1)) : '',
-          author: (account.author) ? ((JSON.stringify(account.author)).slice(1,-1)) : '',
-          createdAt: account.createdAt.toISOString(),
+        products: products.map((product) => ({
+          ...product,
+          _id: (product._id) ? ((JSON.stringify(product._id)).slice(1,-1)) : '',
+          author: (product.author) ? ((JSON.stringify(product.author)).slice(1,-1)) : '',
+          createdAt: product.createdAt.toISOString(),
         })),
       },
     };
@@ -111,7 +111,7 @@ export async function getServerSideProps(context) {
   catch (error) {
     console.log(error);
     return {
-      props: { accounts: [] },
+      props: { products: [] },
     };
   }
 }

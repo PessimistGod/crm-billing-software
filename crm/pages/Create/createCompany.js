@@ -3,8 +3,10 @@ import jwt_decode from 'jwt-decode';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/router';
+import Company from '@/Models/createCompany'
+import connectDB from '@/Middleware/db';
 
-const CreateCompany = () => {
+const CreateCompany = ({ company }) => {
   const [ownerName, setOwnerName] = useState("")
   const [companyName, setCompanyName] = useState("")
   const [gstin, setGstin] = useState("")
@@ -33,8 +35,14 @@ const CreateCompany = () => {
       console.log(error);
       setRegistration("");
     }
+    
+ 
 
   }, [])
+  if(company.some(item => item.author === registration)){
+    router.push('/')
+
+  }
 
 
   const handleChange = (e) => {
@@ -107,6 +115,8 @@ const CreateCompany = () => {
         setCompanyZipcode("")
         setCompanyCountry("")
         setCompanyWebsite("")
+        router.push('/')
+        
       }
 
 
@@ -132,7 +142,7 @@ const CreateCompany = () => {
         theme="light"
       />
       <div className='container'>
-        <h1 className=" mb-1 font-bold text-3xl flex gap-1 items-center justify-center my-12 font-mono">Form UI<span className="text-sm text-purple-700">form showcase</span></h1>
+        <h1 className=" mb-1 font-bold text-3xl flex gap-1 items-center justify-center my-12 font-mono">Company Details</h1>
         <div className='bg-white mx-auto md:w-10/12 lg:w-9/12 my-5 rounded-md border-t-4 border-black py-16 px-12'>
 
           <div className='grid md:grid-cols-2'>
@@ -228,3 +238,32 @@ const CreateCompany = () => {
 export default CreateCompany
 
 
+export async function getServerSideProps(context) {
+  try {
+    await connectDB();
+
+    const company = await Company.find({})
+
+    const companyDetails = company.map((item) => ({
+      _id: item.id,
+      ownerName: item.ownerName,
+      companyName: item.companyName,
+      companyStreet: item.companyStreet,
+      companyCity: item.companyCity,
+      companyState: item.companyState,
+      companyZipcode: item.companyZipcode,
+      companyCountry: item.companyCountry,
+      author: (item.author) ? (JSON.stringify(item.author).slice(1, -1)) : "",
+    }));
+    return {
+      props: {
+        company: companyDetails,
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      props: { company: [] },
+    };
+  }
+}

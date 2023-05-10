@@ -35,12 +35,13 @@ const DisplayContact = ({ contacts }) => {
           <table className="w-full">
             <thead>
               <tr className="text-md font-semibold tracking-wide text-left text-gray-900 bg-gray-100 uppercase border-b border-gray-600">
+                <th className="px-4 py-3">Contact Name</th>
+                <th className="px-4 py-3">Account Name</th>
+                
+                <th className="px-4 py-3">Email</th>
+                <th className="px-4 py-3">Phone</th>
                 <th className="px-4 py-3">Contact Owner</th>
-                <th className="px-4 py-3">Company Name</th>
-                <th className="px-4 py-3">Job Title</th>
-                <th className="px-4 py-3">email</th>
-                <th className="px-4 py-3">phone</th>
-                <th className="px-4 py-3">View</th>
+
               </tr>
             </thead>
             <tbody className="bg-white">
@@ -49,7 +50,7 @@ const DisplayContact = ({ contacts }) => {
                   <tr key={contacts[item]._id} className="text-gray-700">
                     <td className="px-4 py-3 border">
                       <div className="flex items-center text-sm">
-                        <div className="relative w-8 h-8 mr-3 rounded-full md:block">
+                        {/* <div className="relative w-8 h-8 mr-3 rounded-full md:block">
 
                              <Image
                              width={300}
@@ -58,26 +59,28 @@ const DisplayContact = ({ contacts }) => {
                              src={myLoader({ item })}
                              alt="Logo"
                              />
-                            
+                             */}
                           <div className="absolute inset-0 rounded-full shadow-inner" aria-hidden="true"></div>
                         </div>
                         <div>
                           <p className="font-semibold text-black">{contacts[item].contactOwner}</p>
-                          {contacts[item].name && <p className="text-xs text-gray-600">{contacts[item].salutation}. {contacts[item].name}</p>}
-                        </div>
+                          {/* {contacts[item].name && <p className="text-xs text-gray-600">{contacts[item].salutation}. {contacts[item].name}</p>} */}
+                        {/* </div> */}
                       </div>
                     </td>
                     <td className="px-4 py-3 text-ms font-semibold border">{contacts[item].companyName}</td>
-                    <td className="px-4 py-3 text-md border">
+                    {/* <td className="px-4 py-3 text-md border">
                       <span className="px-2 py-1 font-semibold contacting-tight text-green-700 rounded-sm">
                         {' '}
                         {contacts[item].jobTitle}{' '}
                       </span>
-                    </td>
+                    </td> */}
                     <td className="px-4 py-3 text-sm border">{contacts[item].email}</td>
                     <td className="px-4 py-3 text-sm border">{contacts[item].phone}</td> 
+                    <td className="px-4 py-3 text-sm border">{contacts[item].contactOwner}</td> 
 
-                    <td className=" py-2 text-ms font-semibold border"><button className='bg-blue-500 mx-auto px-5 py-3 border rounded-3xl'>View</button></td>
+
+                    {/* <td className=" py-2 text-ms font-semibold border"><button className='bg-blue-500 mx-auto px-5 py-3 border rounded-3xl'>View</button></td> */}
                   </tr>
                 ))}
             </tbody>

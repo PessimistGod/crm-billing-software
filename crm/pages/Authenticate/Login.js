@@ -33,11 +33,11 @@ const Login = () => {
                     <form onSubmit={handleSubmit}>
                         <div className="mb-3">
                             <label htmlFor="email" className="text-sm text-navy-700 dark:text-white font-bold">Email:</label>
-                            <input value={email} onChange={(e) => setEmail (e.target.value)} type="text" id="email" placeholder="John@mail.com" className="mt-2 flex h-12 w-full items-center justify-center rounded-xl border bg-white/0 p-3 text-sm outline-none border-gray-200" />
+                            <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" id="email" placeholder="John@mail.com" className="mt-2 flex h-12 w-full items-center justify-center rounded-xl border bg-white/0 p-3 text-sm outline-none border-gray-200" />
                         </div>
                         <div className="mb-3">
                             <label htmlFor="password" className="text-sm text-navy-700 dark:text-white font-bold">Password</label>
-                            <input value={password} onChange={(e) => setPassword(e.target.value)} type="text" id="email" placeholder="*********" className="mt-2 flex h-12 w-full items-center justify-center rounded-xl border bg-white/0 p-3 text-sm outline-none border-gray-200" />
+                            <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" id="password" placeholder="*********" className="mt-2 flex h-12 w-full items-center justify-center rounded-xl border bg-white/0 p-3 text-sm outline-none border-gray-200" />
                         </div>
 
                         <button className="mb-3 w-full bg-gray-900 text-white text-center py-3 border rounded-full hover:bg-black" type='submit'>Register</button>

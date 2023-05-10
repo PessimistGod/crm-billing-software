@@ -9,21 +9,9 @@ import connectDB from '@/Middleware/db';
 import { useRouter } from 'next/router';
 
 
-const createDeal = () => {
-    const [dealOwner, setDealOwner] = useState("")
-    const [dealName, setDealName] = useState("")
-    const [amount, setAmount] = useState("")
-    const [closingDate, setClosingDate] = useState("")
-    const [accountName, setAccountName] = useState("")
-    const [type, setType] = useState("")
-    const [expectedRevenue, setExpectedRevenue] = useState("")
-    const [leadSource, setLeadSource] = useState("")
-    const [campaignSource, setCampaignSource] = useState("")
-    const [contactName, setContactName] = useState("")
-    const [description, setDescription] = useState("")
+const createDeal = ({companies}) => {
     const [registration, setRegistration] = useState("")
     const router = useRouter()
-
 
     useEffect(() => {
         try {
@@ -40,7 +28,28 @@ const createDeal = () => {
             console.log(error);
             setRegistration("");
         }
+
     }, [])
+//  console.log(companies.find(author => author.author === registration))
+
+
+    let companyDetails = companies.find(author => author.author === registration)
+
+    const [dealOwner, setDealOwner] = useState("")
+    const [dealName, setDealName] = useState("")
+    const [amount, setAmount] = useState("")
+    const [closingDate, setClosingDate] = useState("")
+    const [accountName, setAccountName] = useState("")
+    const [type, setType] = useState("")
+    const [expectedRevenue, setExpectedRevenue] = useState("")
+    const [leadSource, setLeadSource] = useState("")
+    const [campaignSource, setCampaignSource] = useState("")
+    const [contactName, setContactName] = useState("")
+    const [description, setDescription] = useState("")
+   
+
+
+
 
     
     const handleChange = (e) => {
@@ -79,6 +88,9 @@ const createDeal = () => {
         }
     }
 
+
+
+
     // function handleImageChange(event) {
     //     setImageName(event.target.value);
     //     setIsImageLoaded(true);
@@ -90,6 +102,9 @@ const createDeal = () => {
     // function handleImageLoad() {
     //     setIsImageLoaded(true);
     // }
+
+
+
 
     const DealCreate = async () => {
         try {

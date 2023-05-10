@@ -6,8 +6,33 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Company from "@/Models/createCompany";
 import connectDB from '@/Middleware/db';
+import { useRouter } from 'next/router';
 
-const CreateLead = () => {
+const CreateLead = ({ companies }) => {
+
+
+    const router = useRouter()
+    const [registration, setRegistration] = useState("")
+    useEffect(() => {
+        try {
+            const token = localStorage.getItem('token');
+            if (token) {
+                const decodedToken = jwt_decode(token);
+                if (decodedToken) {
+                    setRegistration(decodedToken.id);
+                } else {
+                    setRegistration("");
+                }
+            }
+        } catch (error) {
+            console.log(error);
+            setRegistration("");
+        }
+    }, [])
+
+
+    let companyDetails = companies.find(author => author.author === registration)
+
     const [imageName, setImageName] = useState('');
     const [leadOwner, setLeadOwner] = useState("")
     const [company, setCompany] = useState("")
@@ -26,25 +51,9 @@ const CreateLead = () => {
     const [city, setCity] = useState("")
     const [zipcode, setZipcode] = useState("")
     const [isImageLoaded, setIsImageLoaded] = useState(false);
-    const [registration, setRegistration] = useState("")
 
 
-    useEffect(() => {
-        try {
-            const token = localStorage.getItem('token');
-            if (token) {
-                const decodedToken = jwt_decode(token);
-                if (decodedToken) {
-                    setRegistration(decodedToken.id);
-                } else {
-                    setRegistration("");
-                }
-            }
-        } catch (error) {
-            console.log(error);
-            setRegistration("");
-        }
-    }, [])
+
 
     const handleChange = (e) => {
         if (e.target.name == 'imageName') {
@@ -296,37 +305,33 @@ const CreateLead = () => {
                                     <input onChange={handleChange} name='website' value={website} className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="Website" type="email" placeholder="www.domain.com" />
                                 </div>
                                 <div className="w-full md:w-1/2 px-3">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="Industry">
-                                        Industry
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="leadSource">
+                                        Lead Source
                                     </label>
                                     <div className="relative">
-                                        <select onChange={handleChange} name='industry'
-                                            className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                            id='Industry'
-                                            value={industry}
-                                        >
-                                            <option value={""}></option>
-                                            <option value={"Small"}>Small</option>
-                                            <option value={"Medium"}>Medium</option>
-                                            <option value={"Large"}>Large</option>
+                                        <select onChange={handleChange} name='leadSource' value={leadSource} className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="status">
+                                            <option value=""></option>
+                                            <option value="Advertisement">Advertisement</option>
+                                            <option value="Employee Referral">Employee Referral</option>
+                                            <option value="Partner">Partner</option>
+                                            <option value="Trade Show">Trade Show</option>
+                                            <option value="Web Research">Web Research</option>
+                                            <option value="Twitter">Twitter</option>
+                                            <option value="Facebook">Facebook</option>
+
                                         </select>
                                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                            <svg className="fill-current h-4 w-4" viewBox="0 0 20 20"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z" /><path fillRule="evenodd" d="M3.832 8.116a.5.5 0 01.707 0L10 13.293l5.46-5.461a.5.5 0 01.707.707l-5.748 5.748a1.5 1.5 0 01-2.121 0L3.125 8.823a.5.5 0 010-.707z" clipRule="evenodd" /></svg>
+                                            <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
 
-                            <div className="flex flex-wrap -mx-3 mb-2">
-                                <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="source">
-                                        Lead Source
-                                    </label>
-                                    <input onChange={handleChange} name='leadSource' value={leadSource} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="source" type="text" placeholder="Lead Source" />
-                                </div>
-                                <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="status">
+                            <div className="flex flex-wrap -mx-3 mb-6">
+                              
+                                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="leadStatus">
                                         Lead Status
                                     </label>
                                     <div className="relative">
@@ -343,7 +348,7 @@ const CreateLead = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="revenue">
                                         Annual Revenue
                                     </label>

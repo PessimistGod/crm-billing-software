@@ -6,9 +6,34 @@ import jwt_decode from 'jwt-decode';
 import 'react-toastify/dist/ReactToastify.css';
 import Company from "@/Models/createCompany";
 import connectDB from '@/Middleware/db';
+import { useRouter } from 'next/router';
 
 
-const createProduct = () => {
+const createProduct = ({ companies }) => {
+
+
+
+    const router = useRouter()
+    const [registration, setRegistration] = useState("")
+    useEffect(() => {
+        try {
+            const token = localStorage.getItem('token');
+            if (token) {
+                const decodedToken = jwt_decode(token);
+                if (decodedToken) {
+                    setRegistration(decodedToken.id);
+                } else {
+                    setRegistration("");
+                }
+            }
+        } catch (error) {
+            console.log(error);
+            setRegistration("");
+        }
+
+    }, [])
+
+    let companyDetails = companies.find(author => author.author === registration)
     const [imageName, setImageName] = useState(null);
     const [productInfo, setProductInfo] = useState("")
     const [productOwner, setProductOwner] = useState("")
@@ -28,25 +53,8 @@ const createProduct = () => {
     const [qty, setQty] = useState("")
     const [unit, setUnit] = useState("")
     const [description, setDescription] = useState("")
-    const [registration, setRegistration] = useState("")
 
 
-    useEffect(() => {
-        try {
-            const token = localStorage.getItem('token');
-            if (token) {
-                const decodedToken = jwt_decode(token);
-                if (decodedToken) {
-                    setRegistration(decodedToken.id);
-                } else {
-                    setRegistration("");
-                }
-            }
-        } catch (error) {
-            console.log(error);
-            setRegistration("");
-        }
-    }, [])
 
 
 
@@ -109,12 +117,19 @@ const createProduct = () => {
             setDescription(e.target.value)
         }
 
+        // useEffect(() => {
+        //     if (companyDetails) {
+
+
+
+        //     }
+        // }, [companyDetails])
     }
 
     const ProductCreate = async () => {
         try {
 
-            const data = { imageName, productInfo, productOwner, productCode, productName, vendorName, productActive, manufacturer, category, salesStartDate, salesEndDate, supportStartDate, supportEndDate, unitPrice, tax, taxable, qty, unit, description, author:registration };
+            const data = { imageName, productInfo, productOwner, productCode, productName, vendorName, productActive, manufacturer, category, salesStartDate, salesEndDate, supportStartDate, supportEndDate, unitPrice, tax, taxable, qty, unit, description, author: registration };
 
             let CreateContact = await fetch(`/api/Create/productListCreate`, {
                 method: "POST",
@@ -148,26 +163,27 @@ const createProduct = () => {
                     progress: undefined,
                     theme: "light",
                 });
+                setImageName("")
+                setProductInfo("")
+                setProductOwner("")
+                setProductCode("")
+                setProductName("")
+                setVendorName("")
+                setProductActive("")
+                setManufacturer("")
+                setCategory("")
+                setSalesStartDate("")
+                setSalesEndDate("")
+                setSupportStartDate("")
+                setSupportEndDate("")
+                setUnitPrice("")
+                setTax("")
+                setTaxable("")
+                setQty("")
+                setUnit("")
+                setDescription("")
             }
-            setImageName("")
-            setProductInfo("")
-            setProductOwner("")
-            setProductCode("")
-            setProductName("")
-            setVendorName("")
-            setProductActive("")
-            setManufacturer("")
-            setCategory("")
-            setSalesStartDate("")
-            setSalesEndDate("")
-            setSupportStartDate("")
-            setSupportEndDate("")
-            setUnitPrice("")
-            setTax("")
-            setTaxable("")
-            setQty("")
-            setUnit("")
-            setDescription("")
+
 
 
 
@@ -210,7 +226,7 @@ const createProduct = () => {
                     <div>
                         <form className="w-full max-w-lg mx-auto mt-8">
                             <div className="mb-4">
-                                
+
                                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="imageName">
                                     Image URL :
                                 </label>
@@ -266,13 +282,13 @@ const createProduct = () => {
                             </div>
 
                             <div className="flex flex-wrap -mx-3 mb-6">
-                            <div className="w-full md:w-1/2 px-3">
+                                <div className="w-full md:w-1/2 px-3">
                                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="vendorName">
                                         Vendor Name
                                     </label>
                                     <input onChange={handleChange} name='vendorName' value={vendorName} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500" id="productName" type="text" placeholder="Vendor Name" />
                                 </div>
-                                
+
 
                                 <div className="w-full md:w-1/2 px-3">
                                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="productActive">
@@ -286,7 +302,7 @@ const createProduct = () => {
                             <div className="flex flex-wrap -mx-3 mb-6">
                                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="manufacturer">
-                                    Manufacturer
+                                        Manufacturer
                                     </label>
                                     <input onChange={handleChange} name='manufacturer' value={manufacturer} className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 contacting-tight focus:outline-none focus:bg-white" id="manufacturer" type="text" placeholder="Manufacturer" />
                                     {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
@@ -309,12 +325,12 @@ const createProduct = () => {
                                 </div>
                                 <div className="w-full md:w-1/2 px-3">
                                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="salesEndDate">
-                                    Sales End Date
+                                        Sales End Date
                                     </label>
                                     <input onChange={handleChange} name='salesEndDate' value={salesEndDate} className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 contacting-tight focus:outline-none focus:bg-white" id="salesEndDate" type="date" placeholder="Sales End Date" />
-                                   
-                                    </div>
+
                                 </div>
+                            </div>
 
 
 
@@ -353,27 +369,30 @@ const createProduct = () => {
                                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="tax">
                                         Tax
                                     </label>
-                                    <input onChange={handleChange} name='tax' value={tax} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500" id="tax" type="text" placeholder="Tax" />
-                                </div>
-                            </div>
-                            <div className="flex flex-wrap -mx-3 mb-2">
-                                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="taxable">
-                                        Taxable
-                                    </label>
-                                    <input onChange={handleChange} name='taxable' value={taxable} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500" id="taxable" type="text" placeholder="Taxable" />
-                                </div>
-                                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="qty">
-                                    Quantity
-                                    </label>
-                                    <input onChange={handleChange} name='qty' value={qty} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500" id="qty" type="text" placeholder="Quantity" />
-                                </div>
-                               
-                            </div>
 
+
+                                    <div className="relative">
+                                        <select onChange={handleChange} name='tax'
+                                            className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded contacting-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                            value={tax}
+                                            id='tax'
+                                        >
+
+                                            <option value={'0'}>0%</option>
+                                            <option value={'5'}>5%</option>
+                                            <option value={'12'}>12%</option>
+                                            <option value={'18'}>18%</option>
+                                            <option value={'28'}>28%</option>
+
+                                        </select>
+                                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                            <svg className="fill-current h-4 w-4" viewBox="0 0 20 20"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z" /><path fillRule="evenodd" d="M3.832 8.116a.5.5 0 01.707 0L10 13.293l5.46-5.461a.5.5 0 01.707.707l-5.748 5.748a1.5 1.5 0 01-2.121 0L3.125 8.823a.5.5 0 010-.707z" clipRule="evenodd" /></svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div className="flex flex-wrap -mx-3 mb-2">
-                            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="unit">
                                         Usage Unit
                                     </label>
@@ -398,8 +417,17 @@ const createProduct = () => {
                                         </div>
                                     </div>
                                 </div>
+                                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="qty">
+                                        Quantity
+                                    </label>
+                                    <input onChange={handleChange} name='qty' value={qty} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500" id="qty" type="text" placeholder="Quantity" />
                                 </div>
-                                <div className="flex flex-wrap -mx-3 mb-6">
+
+                            </div>
+
+
+                            <div className="flex flex-wrap -mx-3 mb-6">
                                 <div className="w-full px-3 mb-6 md:mb-0">
                                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="description">
                                         Description
@@ -409,7 +437,7 @@ const createProduct = () => {
                                     </textarea>
                                 </div>
                             </div>
-                               
+
 
 
                         </form>
@@ -427,23 +455,24 @@ export default createProduct
 
 export async function getServerSideProps(context) {
     try {
-      await connectDB();
-  
-      const companies = await Company.find({}, { _id: 0, updatedAt: 0 }).lean();
-  
-      return {
-        props: {
-            companies: companies.map((company) => ({
-            ...company,
-            author: (company.author) ? ((JSON.stringify(company.author)).slice(1,-1)) : '',
-            createdAt: company.createdAt.toISOString(),
-          })),
-      },
-      };
+        await connectDB();
+
+        const companies = await Company.find({}, { _id: 0, updatedAt: 0 }).lean();
+
+        return {
+            props: {
+                companies: companies.map((company) => ({
+                    ...company,
+                    author: (company.author) ? ((JSON.stringify(company.author)).slice(1, -1)) : '',
+                    createdAt: company.createdAt.toISOString(),
+                })),
+            },
+        };
     } catch (error) {
-      console.log(error);
-      return {
-        props: { companies: [] },
-      };
+        console.log(error);
+        return {
+            props: { companies: [] },
+        };
     }
-  }
+}
+

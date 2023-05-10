@@ -31,12 +31,14 @@ const DisplayDeal = ({ deals }) => {
           <table className="w-full">
             <thead>
               <tr className="text-md font-semibold tracking-wide text-left text-gray-900 bg-gray-100 uppercase border-b border-gray-600">
-                <th className="px-4 py-3">Deal Owner</th>
                 <th className="px-4 py-3">Deal Name</th>
                 <th className="px-4 py-3">Amount</th>
-                <th className="px-4 py-3">Business Type</th>
                 <th className="px-4 py-3">Closing Date</th>
-                <th className="px-4 py-3">View</th>
+                <th className="px-4 py-3">Account Name</th>
+                <th className="px-4 py-3">Contact Name</th>
+                <th className="px-4 py-3">Deal Owner</th>
+
+
               </tr>
             </thead>
             <tbody className="bg-white">

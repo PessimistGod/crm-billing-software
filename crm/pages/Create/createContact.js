@@ -9,7 +9,31 @@ import connectDB from '@/Middleware/db';
 import { useRouter } from 'next/router';
 
 
-const createContact = () => {
+const createContact = ({ companies }) => {
+    
+    
+    const router = useRouter()
+    const [registration, setRegistration] = useState("")
+    useEffect(() => {
+        try {
+            const token = localStorage.getItem('token');
+            if (token) {
+                const decodedToken = jwt_decode(token);
+                if (decodedToken) {
+                    setRegistration(decodedToken.id);
+                } else {
+                    setRegistration("");
+                }
+            }
+        } catch (error) {
+            console.log(error);
+            setRegistration("");
+        }
+
+    }, [])
+
+ let companyDetails = companies.find(author => author.author === registration)
+
     const [imageName, setImageName] = useState(null);
     const [imagePreview, setImagePreview] = useState(null)
     const [contactOwner, setContactOwner] = useState("")
@@ -29,28 +53,10 @@ const createContact = () => {
     const [city, setCity] = useState("")
     const [zipcode, setZipcode] = useState("")
 
-    const router = useRouter()
-
-    const [registration, setRegistration] = useState("")
 
 
-    useEffect(() => {
-        try {
-            const token = localStorage.getItem('token');
-            if (token) {
-                const decodedToken = jwt_decode(token);
-                if (decodedToken) {
-                    setRegistration(decodedToken.id);
-                } else {
-                    setRegistration("");
-                }
-            }
-        } catch (error) {
-            console.log(error);
-            setRegistration("");
-        }
 
-    }, [])
+
 
 
     const handleChange = (e) => {
@@ -105,10 +111,21 @@ const createContact = () => {
         if (e.target.name == 'zipcode') {
             setZipcode(e.target.value)
         }
-
-
-
     }
+
+
+    useEffect(() => {
+        if (companyDetails) {
+          setWebsite(companyDetails.companyWebsite)
+          setCountry(companyDetails.companyCountry)
+          setZipcode(companyDetails.companyZipcode)
+          setState(companyDetails.companyState)
+          setCity(companyDetails.companyCity)
+          setStreet(companyDetails.companyStreet)
+
+          
+        }
+      }, [companyDetails])
 
 
 

@@ -31,9 +31,11 @@ const createAccount = ({ companies }) => {
         }
 
     }, [])
- console.log(companies.find(author => author.author === registration))
- let companyDetails = companies.find(author => author.author === registration)
- console.log(companyDetails && companyDetails.companyName)
+//  console.log(companies.find(author => author.author === registration))
+
+
+    let companyDetails = companies.find(author => author.author === registration)
+//  console.log(companyDetails && companyDetails.companyName)
     const [imageName, setImageName] = useState('');
     const [accountOwner, setAccountOwner] = useState("")
     const [accountName, setAccountName] = useState("")
@@ -119,6 +121,14 @@ const createAccount = ({ companies }) => {
     useEffect(() => {
         if (companyDetails) {
           setAccountOwner(companyDetails.companyName)
+          setWebsite(companyDetails.companyWebsite)
+          setCountry(companyDetails.companyCountry)
+          setZipcode(companyDetails.companyZipcode)
+          setState(companyDetails.companyState)
+          setCity(companyDetails.companyCity)
+          setStreet(companyDetails.companyStreet)
+
+          
         }
       }, [companyDetails])
       

@@ -7,6 +7,7 @@ export default async function accountCreate(req, res) {
             const account = new Account(req.body);
 
 
+            
             const requiredFields = [{ key: 'imageName', message: 'Image URL field is required' }, { key: 'accountOwner', message: 'Account Owner field is required' }, { key: 'accountName', message: 'Account Name field is required' }, { key: 'ownership', message: 'Ownership field is required' }];
             for (const field of requiredFields) {
                 if (!account[field.key]) {

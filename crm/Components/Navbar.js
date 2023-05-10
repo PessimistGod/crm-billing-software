@@ -155,8 +155,8 @@ const Navbar = () => {
                         </div>
                         <div onMouseLeave={LeftDisplayDrop} className="absolute hidden right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" id='additionalMenuID' role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex="-1">
                           <div className="py-1" role="none">
-                            <Link href={'#'} className="text-gray-700 hover:text-blue-600 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-0">Products</Link>
-                            <Link href={'#'} className="text-gray-700 hover:text-blue-600 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-1">Sales Order</Link>
+                            <Link href={'/Display/displayProduct'} className="text-gray-700 hover:text-blue-600 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-0">Products</Link>
+                            <Link href={'/Display/displaySales'} className="text-gray-700 hover:text-blue-600 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-1">Sales Order</Link>
                           </div>
                           <div className="py-1" role="none">
                             <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-2">Purchase Order</Link>
