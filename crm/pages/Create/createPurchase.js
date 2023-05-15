@@ -5,10 +5,12 @@ import { ToastContainer, toast } from 'react-toastify';
 import jwt_decode from 'jwt-decode';
 import 'react-toastify/dist/ReactToastify.css';
 import Company from "@/Models/createCompany";
+import ProductList from '@/Models/createProduct'
 import connectDB from '@/Middleware/db';
 
 
-const createPurchase = () => {
+
+const createPurchase = ({products}) => {
     const [purchaseOwner, setPurchaseOwner] = useState("");
     const [vendorName, setVendorName] = useState("")
     const [subject, setSubject] = useState("")
@@ -82,15 +84,16 @@ const createPurchase = () => {
             total: '',
         };
         setRows([...rows, newRow]);
+        
     };
-
+    
     // Remove Row
     const handleRemoveRow = (index) => {
         const updatedRows = [...rows];
         updatedRows.splice(index, 1);
         setRows(updatedRows);
     };
-
+    
     const handleChange = (e) => {
         if (e.target.name == 'purchaseOwner') {
             setPurchaseOwner(e.target.value)
@@ -168,9 +171,9 @@ const createPurchase = () => {
 
     const PurchaseCreate = async () => {
         try {
-
+            
             const data = { purchaseOwner, vendorName, subject, purchaseOrder, customerNumber, dueDate, carrier, contactName, salesCommission, status, accName, billingStreet, shippingStreet, billingCity, billingState, billingCode, billingCountry, shippingCity, shippingState, shippingCode, shippingCountry, subTotal, totalDiscount, totalTax, grandTotal, rows, author:registration };
-
+            
             let CreateContact = await fetch(`/api/Create/purchaseCreate`, {
                 method: "POST",
                 headers: {
@@ -203,48 +206,112 @@ const createPurchase = () => {
                     progress: undefined,
                     theme: "light",
                 });
-            }
-            setPurchaseOwner("")
-            setVendorName("")
-            setSubject("")
-            setPurchaseOrder("")
-            setCustomerNumber("")
-            setDueDate("")
-            setCarrier("")
-            setContactName("")
-            setSalesCommission("")
-            setStatus("")
-            setAccName("")
-            setBillingStreet("")
-            setShippingStreet("")
-            setBillingCity("")
-            setBillingState("")
-            setBillingCode("")
-            setBillingCountry("")
-            setShippingCity("")
-            setShippingState("")
-            setShippingCode("")
-            setShippingCountry("")
-            setRows("")
-            setSubTotal("")
-            setTotalDiscount("")
-            setTotalTax("")
-            setGrandTotal("")
 
-
-
-
-
-
-
+                setPurchaseOwner("")
+                setVendorName("")
+                setSubject("")
+                setPurchaseOrder("")
+                setCustomerNumber("")
+                setDueDate("")
+                setCarrier("")
+                setContactName("")
+                setSalesCommission("")
+                setStatus("")
+                setAccName("")
+                setBillingStreet("")
+                setShippingStreet("")
+                setBillingCity("")
+                setBillingState("")
+                setBillingCode("")
+                setBillingCountry("")
+                setShippingCity("")
+                setShippingState("")
+                setShippingCode("")
+                setShippingCountry("")
+                setRows("")
+                setSubTotal("")
+                setTotalDiscount("")
+                setTotalTax("")
+                setGrandTotal("")
+                
+            }            
 
         } catch (err) {
             console.error(err)
         }
 
-
+        
     }
 
+    const [selectedProducts, setSelectedProducts] = useState([]);
+
+    function fetchData(prodName, index) {
+        const product = products.find((item) => item.productName === prodName);
+        if (product) {
+            const updatedProducts = [...selectedProducts];
+            if (updatedProducts.length > index) {
+                updatedProducts[index] = product;
+            } else {
+                updatedProducts.push(product);
+            }
+            setSelectedProducts(updatedProducts);
+        }
+    }
+
+
+    const calculateSubTotal = () => {
+        const subTotal = rows && Array.isArray(rows) ? rows.reduce((acc, row) => acc + (row.amount || 0), 0) : 0;
+        setSubTotal(subTotal);
+    };
+
+    const calculateTotal = () => {
+        const grandTotal = rows && Array.isArray(rows) ? rows.reduce((acc, row) => acc + (row.total || 0), 0) : 0;
+        setGrandTotal(grandTotal);
+    };
+
+    const calculateDiscount = () => {
+        try {
+
+            const totalDiscount = rows && Array.isArray(rows) ? rows.reduce((acc, row) => acc + (parseInt(row.discount) || 0), 0) : 0;
+            setTotalDiscount(totalDiscount);
+        } catch (e) {
+            console.log(e)
+        }
+    };
+
+    const calculateTax = () => {
+        const totalTax = rows && Array.isArray(rows) ? rows.reduce((acc, row) => acc + (parseInt(row.tax) || 0), 0) : 0;
+        setTotalTax(totalTax);
+    };
+
+
+    function checkQuantity(prodName, requestedQuantity) {
+        try {
+
+            const product = products.find((item) => item.productName === prodName);
+            if (product) {
+                if (requestedQuantity > parseInt(product.qty)) {
+                    return toast.error(`You Only Have ${product.qty} ${product.productName}`, {
+                        position: "top-center",
+                        autoClose: 2000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: false,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                } else {
+                    return ("Quantity available: " + product.qty);
+                }
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+    console.log(rows)
+
+    
     return (
         <section>
             <ToastContainer
@@ -330,7 +397,6 @@ const createPurchase = () => {
                                         Carrier
                                     </label>
                                     <input onChange={handleChange} name='carrier' value={carrier} className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 contacting-tight focus:outline-none focus:bg-white" id="carrier" type="text" placeholder="Carrier" />
-                                    {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
                                 </div>
                                 <div className="w-full md:w-1/2 px-3">
                                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="contactName">
@@ -368,10 +434,6 @@ const createPurchase = () => {
                                     </div>
                                 </div>
                             </div>
-
-
-
-
 
                             <div className="flex flex-wrap -mx-3 mb-6">
                                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
@@ -429,10 +491,6 @@ const createPurchase = () => {
                                 </div>
                             </div>
 
-
-
-
-
                             <div className="flex flex-wrap -mx-3 mt-6">
 
                                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
@@ -477,177 +535,192 @@ const createPurchase = () => {
                 </div>
             </div>
 
-            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-white uppercase bg-gray-900 dark:bg-gray-700 dark:text-gray-400">
+            <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead className="text-xs text-white uppercase bg-gray-900 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
-                            <th scope="col" class="px-2 py-3">
+                            <th scope="col" className="px-2 py-3">
                                 S.No
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" className="px-6 py-3">
                                 Product Name
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" className="px-6 py-3">
                                 Quantity
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" className="px-6 py-3">
                                 Price
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" className="px-6 py-3">
                                 Amount
                             </th>
-                            <th scope="col" class="px-6 py-3">
-                                Discount
-                            </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" className="px-6 py-3">
                                 Tax
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" className="px-6 py-3">
+                                Discount
+                            </th>
+
+                            <th scope="col" className="px-6 py-3">
                                 Total
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" className="px-6 py-3">
                                 Operation
                             </th>
                         </tr>
                     </thead>
                     {Array.isArray(rows) && rows.map((row, index) => (<tbody key={index}>
-
-                        <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-                            <th scope="row" class="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white ">
+                        <tr className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                            <th scope="row" className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white ">
                                 {index + 1}
                             </th>
-                            <td class="px-6 py-4">
-                                <input
+
+
+                            <td className="px-6 py-4 relative">
+                                <select
                                     type="text"
                                     value={row.prodName}
-                                    className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-2 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                    className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-2 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500 w-40"
                                     onChange={(e) => {
                                         const updatedRows = [...rows];
                                         updatedRows[index].prodName = e.target.value;
                                         setRows(updatedRows);
+                                        fetchData(updatedRows[index].prodName, index)
+
                                     }}
-                                />
+
+                                    id='type'
+                                >
+                                    <option value={''}></option>
+                                    {products.filter((product) => product.author == registration).map((item) => (
+                                        <option key={item._id} value={item.productName} defaultValue={row.prodName === item.productName}>{item.productName}</option>))}
+
+                                </select>
+                                <div className="pointer-events-none absolute inset-y-0 right-16 flex items-center px-2 text-gray-700">
+                                    <svg className="fill-current h-4 w-4" viewBox="0 0 20 20"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z" /><path fillRule="evenodd" d="M3.832 8.116a.5.5 0 01.707 0L10 13.293l5.46-5.461a.5.5 0 01.707.707l-5.748 5.748a1.5 1.5 0 01-2.121 0L3.125 8.823a.5.5 0 010-.707z" clipRule="evenodd" /></svg>
+                                </div>
+
+
                             </td>
-                            <td class="px-6 py-4">
+                            <td className="px-6 py-4">
                                 <input
                                     type="text"
                                     value={row.qty}
-                                    className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-2 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                    className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-2 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500 w-24"
+
                                     onChange={(e) => {
                                         const updatedRows = [...rows];
                                         updatedRows[index].qty = e.target.value;
                                         setRows(updatedRows);
-                                    }}
-                                />
-                            </td>
-                            <td class="px-6 py-4">
-                                <input
-                                    type="text"
-                                    value={row.price}
-                                    className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-2 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                    onChange={(e) => {
-                                        const updatedRows = [...rows];
-                                        updatedRows[index].price = e.target.value;
-                                        setRows(updatedRows);
+                                        checkQuantity(updatedRows[index].prodName, updatedRows[index].qty)
+                                        updatedRows[index].price = (selectedProducts[index]?.unitPrice ?? '');
+                                        updatedRows[index].amount = (selectedProducts[index]?.unitPrice ?? '') * row.qty;
+                                        updatedRows[index].tax = (selectedProducts[index]?.tax);
+                                        updatedRows[index].total = ((selectedProducts[index]?.unitPrice ?? 0) * row.qty) + (((selectedProducts[index]?.unitPrice ?? 0) * row.qty) * ((selectedProducts[index]?.tax ?? 0) / 100));
+                                        calculateSubTotal()
+                                        calculateTotal()
+                                        calculateTax()
+
                                     }}
                                 />
                             </td>
 
-                            <td class="px-6 py-4">
+
+
+                            <td className="px-6 py-4">
                                 <input
                                     type="text"
-                                    value={row.amount}
-                                    className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-2 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                    onChange={(e) => {
-                                        const updatedRows = [...rows];
-                                        updatedRows[index].amount = e.target.value;
-                                        setRows(updatedRows);
-                                    }}
+                                    value={selectedProducts[index]?.unitPrice ?? ''}
+                                    className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-2 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500 w-24"
+                                    readOnly
                                 />
                             </td>
-                            <td class="px-6 py-4">
+
+                            <td className="px-6 py-4">
+                                <input
+                                    type="text"
+                                    value={(selectedProducts[index]?.unitPrice ?? '') * row.qty}
+                                    className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-2 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500 w-24"
+                                   readOnly
+                                />
+                            </td>
+                            <td className="px-6 py-4">
+                                <input
+                                    type="text"
+                                    value={selectedProducts[index]?.tax}
+                                    className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-2 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500 w-24"
+                                   readOnly
+                                />
+                            </td>
+                            <td className="px-6 py-4">
                                 <input
                                     type="text"
                                     value={row.discount}
-                                    className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-2 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                    className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-2 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500 w-24"
                                     onChange={(e) => {
                                         const updatedRows = [...rows];
-                                        updatedRows[index].discount = e.target.value;
+                                        updatedRows[index].discount = e.target.value; 
+                                        updatedRows[index].total = (((selectedProducts[index]?.unitPrice ?? 0) * row.qty) + (((selectedProducts[index]?.unitPrice ?? 0) * row.qty) * ((selectedProducts[index]?.tax ?? 0) / 100)))- (((((selectedProducts[index]?.unitPrice ?? 0) * row.qty) + (((selectedProducts[index]?.unitPrice ?? 0) * row.qty) * ((selectedProducts[index]?.tax ?? 0) / 100))) * ((row.discount ?? 0)))/100);
                                         setRows(updatedRows);
+                                        calculateDiscount()
+                                        calculateTotal()
                                     }}
+                                    maxLength={2}
                                 />
                             </td>
-                            <td class="px-6 py-4">
+
+                            <td className="px-6 py-4">
                                 <input
                                     type="text"
-                                    value={row.tax}
-                                    className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-2 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                    onChange={(e) => {
-                                        const updatedRows = [...rows];
-                                        updatedRows[index].tax = e.target.value;
-                                        setRows(updatedRows);
-                                    }}
+                                    value={(((selectedProducts[index]?.unitPrice ?? 0) * row.qty) + (((selectedProducts[index]?.unitPrice ?? 0) * row.qty) * ((selectedProducts[index]?.tax ?? 0) / 100)))- (((((selectedProducts[index]?.unitPrice ?? 0) * row.qty) + (((selectedProducts[index]?.unitPrice ?? 0) * row.qty) * ((selectedProducts[index]?.tax ?? 0) / 100))) * ((row.discount ?? 0)))/100)}
+                                    className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-2 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500 w-28"
+                                   readOnly
                                 />
                             </td>
-                            <td class="px-6 py-4">
-                                <input
-                                    type="text"
-                                    value={row.total}
-                                    className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-2 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                    onChange={(e) => {
-                                        const updatedRows = [...rows];
-                                        updatedRows[index].total = e.target.value;
-                                        setRows(updatedRows);
-                                    }}
-                                />
-                            </td>
-                            <td class="px-6 py-4" onClick={() => handleRemoveRow(index)}>
-                                <a href="#" class="font-medium text-red-600 dark:text-blue-500 hover:underline">Delete</a>
+                            <td className="px-6 py-4" onClick={() => handleRemoveRow(index)}>
+                                <a href="#" className="font-medium text-red-600 dark:text-blue-500 hover:underline">Delete</a>
                             </td>
                         </tr>
-
                     </tbody>))}
-             
                 </table>
-
-             
                 
             </div>
             <button onClick={handleAddRow} className='flex items-center justify-center bg-blue-600 px-5 py-2 border rounded-xl ml-4 mt-2'>Add Row</button>
 
             <div>
-                        <form className="w-full max-w-md ml-auto mt-10">
-                            <div className="flex flex-col -mx-3 mb-6">
+                <form className="w-full max-w-md ml-auto mt-10">
+                    <div className="flex flex-col -mx-3 mb-6">
 
-                                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="subTotal">
-                                        Sub Total
-                                    </label>
-                                    <input onChange={handleChange} name='subTotal' value={subTotal} className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 contacting-tight focus:outline-none focus:bg-white" id="subTotal" type="text" placeholder="Sub Total" />
-                                </div>
-                                <div className="w-full md:w-1/2 px-3">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="totalDiscount">
-                                        Total Discount
-                                    </label>
-                                    <input onChange={handleChange} name='totalDiscount' value={totalDiscount} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500" id="totalDiscount" type="text" placeholder="Total Discount" />
-                                </div>
-                                <div className="w-full md:w-1/2 px-3">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="totalTax">
-                                        Total Tax
-                                    </label>
-                                    <input onChange={handleChange} name='totalTax' value={totalTax} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500" id="totalTax" type="text" placeholder="Total Tax" />
-                                    
-                                </div>
-                                <div className="w-full md:w-1/2 px-3">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grandTotal">
-                                        Grand Total
-                                    </label>
-                                    <input onChange={handleChange} name='grandTotal' value={grandTotal} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grandTotal" type="text" placeholder="Grand Total" />
-                                    
-                                </div>
-                            </div>
-                            </form>
-                            </div>
+                        <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="subTotal">
+                                Sub Total
+                            </label>
+                            <input onChange={handleChange} name='subTotal' value={subTotal} className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 contacting-tight focus:outline-none focus:bg-white" id="subTotal" type="text" placeholder="Sub Total" />
+                        </div>
+                        <div className="w-full md:w-1/2 px-3">
+                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="totalDiscount">
+                                Total Discount
+                            </label>
+                            <input onChange={handleChange} name='totalDiscount' value={totalDiscount} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500" id="totalDiscount" type="text" placeholder="Total Discount" />
+                        </div>
+                        <div className="w-full md:w-1/2 px-3">
+                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="totalTax">
+                                Total Tax
+                            </label>
+                            <input onChange={handleChange} name='totalTax' value={totalTax} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500" id="totalTax" type="text" placeholder="Total Tax" />
+
+                        </div>
+                        <div className="w-full md:w-1/2 px-3">
+                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grandTotal">
+                                Grand Total
+                            </label>
+                            <input onChange={handleChange} name='grandTotal' value={grandTotal} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grandTotal" type="text" placeholder="Grand Total" />
+
+
+                        </div>
+                    </div>
+                </form>
+            </div>
 
         </section>
     )
@@ -659,23 +732,32 @@ export default createPurchase
 
 export async function getServerSideProps(context) {
     try {
-      await connectDB();
-  
-      const companies = await Company.find({}, { _id: 0, updatedAt: 0 }).lean();
-  
-      return {
-        props: {
-            companies: companies.map((company) => ({
-            ...company,
-            author: (company.author) ? ((JSON.stringify(company.author)).slice(1,-1)) : '',
-            createdAt: company.createdAt.toISOString(),
-          })),
-      },
-      };
+        await connectDB();
+
+        const companies = await Company.find({}, { _id: 0, updatedAt: 0 }).lean();
+        const products = await ProductList.find({}, { updatedAt: 0 }).lean();
+
+
+        return {
+            props: {
+                companies: companies.map((company) => ({
+                    ...company,
+                    author: (company.author) ? ((JSON.stringify(company.author)).slice(1, -1)) : '',
+                    createdAt: company.createdAt.toISOString(),
+                })),
+                products: products.map((item) => ({
+                    ...item,
+                    _id: (item._id) ? ((JSON.stringify(item._id)).slice(1, -1)) : '',
+                    author: (item.author) ? ((JSON.stringify(item.author)).slice(1, -1)) : '',
+                    createdAt: item.createdAt.toISOString(),
+
+                })),
+            },
+        };
     } catch (error) {
-      console.log(error);
-      return {
-        props: { companies: [] },
-      };
+        console.log(error);
+        return {
+            props: { companies: [], products: [] },
+        };
     }
-  }
+}

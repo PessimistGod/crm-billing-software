@@ -39,7 +39,7 @@ const Home = ({ company }) => {
   ? null
   : (
     <Link href="/Create/createCompany">
-      <div><Image src={'/greet.jpg'} width={500} height={650}></Image></div>
+      <div><Image src={'/greet.jpg'} width={500} height={650} /></div>
       <div className='flex justify-center items-center'>
         <button className="px-8 mt-5 py-3 bg-blue-600">Add Company</button>
 

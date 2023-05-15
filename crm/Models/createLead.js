@@ -3,7 +3,15 @@ import mongoose from 'mongoose';
 const leadSchema = new mongoose.Schema({
   imageName: {
     type: String,
-    required: true,
+    required: false,
+  },
+  file_path: {
+    type: String,
+    required: false,
+  },
+  file_mimetype: {
+    type: String,
+    required: false,
   },
   leadOwner: {
     type: String,

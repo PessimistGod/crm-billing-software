@@ -172,6 +172,20 @@ const createSales = ({ products }) => {
 
             const data = { salesOwner, dealName, subject, purchaseOrder, customerNumber, dueDate, carrier, contactName, salesCommission, status, accName, billingStreet, shippingStreet, billingCity, billingState, billingCode, billingCountry, shippingCity, shippingState, shippingCode, shippingCountry, subTotal, totalDiscount, totalTax, grandTotal, rows, author: registration };
 
+            
+            const totalQty = rows && Array.isArray(rows) ? (rows.reduce((acc, row) => acc + row.qty, 0), 0) : 0;
+
+
+
+            await fetch(`/api/Update/updateProduct/${productId}`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ qty: totalQty }),
+              });
+              
+
             let CreateContact = await fetch(`/api/Create/salesCreate`, {
                 method: "POST",
                 headers: {
@@ -204,34 +218,36 @@ const createSales = ({ products }) => {
                     progress: undefined,
                     theme: "light",
                 });
-            }
-            setSalesOwner("")
-            setDealName("")
-            setSubject("")
-            setPurchaseOrder("")
-            setCustomerNumber("")
-            setDueDate("")
-            setCarrier("")
-            setContactName("")
-            setSalesCommission("")
-            setStatus("")
-            setAccName("")
-            setBillingStreet("")
-            setShippingStreet("")
-            setBillingCity("")
-            setBillingState("")
-            setBillingCode("")
-            setBillingCountry("")
-            setShippingCity("")
-            setShippingState("")
-            setShippingCode("")
-            setShippingCountry("")
-            setRows("")
-            setSubTotal("")
-            setTotalDiscount("")
-            setTotalTax("")
-            setGrandTotal("")
 
+                setSalesOwner("")
+                setDealName("")
+                setSubject("")
+                setPurchaseOrder("")
+                setCustomerNumber("")
+                setDueDate("")
+                setCarrier("")
+                setContactName("")
+                setSalesCommission("")
+                setStatus("")
+                setAccName("")
+                setBillingStreet("")
+                setShippingStreet("")
+                setBillingCity("")
+                setBillingState("")
+                setBillingCode("")
+                setBillingCountry("")
+                setShippingCity("")
+                setShippingState("")
+                setShippingCode("")
+                setShippingCountry("")
+                setRows("")
+                setSubTotal("")
+                setTotalDiscount("")
+                setTotalTax("")
+                setGrandTotal("")
+
+
+            }
 
 
 
@@ -251,59 +267,72 @@ const createSales = ({ products }) => {
 
     const [selectedProducts, setSelectedProducts] = useState([]);
 
-    function fetchData(prodName,index) {
+    function fetchData(prodName, index) {
         const product = products.find((item) => item.productName === prodName);
         if (product) {
-          const updatedProducts = [...selectedProducts];
-          if (updatedProducts.length > index) {
-            updatedProducts[index] = product;
-          } else {
-            updatedProducts.push(product);
-          }
-          setSelectedProducts(updatedProducts);
+            const updatedProducts = [...selectedProducts];
+            if (updatedProducts.length > index) {
+                updatedProducts[index] = product;
+            } else {
+                updatedProducts.push(product);
+            }
+            setSelectedProducts(updatedProducts);
         }
-      }
-      
-    //   const subTotals = rows.reduce((total, row) => {
-    //     const itemTotal = Number(row.unitPrice) * Number(row.qty);
-    //     return total + itemTotal;
-    //   }, 0);
+    }
 
 
-    // const grandTotals = rows.reduce((total, row) => {
-    //     const itemTotal = ((selectedProducts.unitPrice??'') * row.qty) + (((selectedProducts.unitPrice ??'') * row.qty) * ((selectedProducts.tax ?? 0) / 100)) - row.discount;
-    //     return total + itemTotal;
-    // }, 0);
+    const calculateSubTotal = () => {
+        const subTotal = rows && Array.isArray(rows) ? rows.reduce((acc, row) => acc + (row.amount || 0), 0) : 0;
+        setSubTotal(subTotal);
+    };
 
-    // const grandDiscount = rows.reduce((total, row) => {
-    //     const itemTotal = Number.parseInt(row.discount);
-    //     if(itemTotal === 'NaN'){
-    //         return 0
-    //     }
-    //     return total + itemTotal;
-    // }, 0);
+    const calculateTotal = () => {
+        const grandTotal = rows && Array.isArray(rows) ? rows.reduce((acc, row) => acc + (row.total || 0), 0) : 0;
+        setGrandTotal(grandTotal);
+    };
 
-//     function fetchData(prodName){
-//         const getValue = products.filter((product) => product.productName === prodName).find((item) => {
-//           return (item.productName === prodName);
-//         }); 
-// return (getValue.unitPrice)
-//       }
-      
-      function checkQuantity(prodName, requestedQuantity){
-        const product = products.find((item) => item.productName === prodName);
-        if (product) {
-          if (requestedQuantity > parseInt(product.qty)) {
-            return("It exceeds Inventory");
-          } else {
-            return("Quantity available: " + product.qty);
-          }
-        } else {
-            return("Product not found");
+    const calculateDiscount = () => {
+        try {
+
+            const totalDiscount = rows && Array.isArray(rows) ? rows.reduce((acc, row) => acc + (parseInt(row.discount) || 0), 0) : 0;
+            setTotalDiscount(totalDiscount);
+        } catch (e) {
+            console.log(e)
         }
-      }
-      
-      
+    };
+
+    const calculateTax = () => {
+        const totalTax = rows && Array.isArray(rows) ? rows.reduce((acc, row) => acc + (parseInt(row.tax) || 0), 0) : 0;
+        setTotalTax(totalTax);
+    };
+
+
+    function checkQuantity(prodName, requestedQuantity) {
+        try {
+
+            const product = products.find((item) => item.productName === prodName);
+            if (product) {
+                if (requestedQuantity > parseInt(product.qty)) {
+                    return toast.error(`You Only Have ${product.qty} ${product.productName}`, {
+                        position: "top-center",
+                        autoClose: 2000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: false,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                } else {
+                    return ("Quantity available: " + product.qty);
+                }
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+    console.log(rows)
+
 
 
     return (
@@ -491,9 +520,6 @@ const createSales = ({ products }) => {
                             </div>
 
 
-
-
-
                             <div className="flex flex-wrap -mx-3 mt-6">
 
                                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
@@ -542,49 +568,49 @@ const createSales = ({ products }) => {
 
 
 
-            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-white uppercase bg-gray-900 dark:bg-gray-700 dark:text-gray-400">
+            <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead className="text-xs text-white uppercase bg-gray-900 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
-                            <th scope="col" class="px-2 py-3">
+                            <th scope="col" className="px-2 py-3">
                                 S.No
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" className="px-6 py-3">
                                 Product Name
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" className="px-6 py-3">
                                 Quantity
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" className="px-6 py-3">
                                 Price
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" className="px-6 py-3">
                                 Amount
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" className="px-6 py-3">
                                 Tax
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" className="px-6 py-3">
                                 Discount
                             </th>
-                           
-                            <th scope="col" class="px-6 py-3">
+
+                            <th scope="col" className="px-6 py-3">
                                 Total
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" className="px-6 py-3">
                                 Operation
                             </th>
                         </tr>
                     </thead>
                     {Array.isArray(rows) && rows.map((row, index) => (<tbody key={index}>
-                        <tr  class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-                            <th scope="row" class="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white ">
+                        <tr className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                            <th scope="row" className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white ">
                                 {index + 1}
                             </th>
 
 
-                            <td class="px-6 py-4 relative">
-                                <select 
+                            <td className="px-6 py-4 relative">
+                                <select
                                     type="text"
                                     value={row.prodName}
                                     className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-2 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500 w-40"
@@ -593,6 +619,7 @@ const createSales = ({ products }) => {
                                         updatedRows[index].prodName = e.target.value;
                                         setRows(updatedRows);
                                         fetchData(updatedRows[index].prodName, index)
+
                                     }}
 
                                     id='type'
@@ -600,7 +627,7 @@ const createSales = ({ products }) => {
                                     <option value={''}></option>
                                     {products.filter((product) => product.author == registration).map((item) => (
                                         <option key={item._id} value={item.productName} defaultValue={row.prodName === item.productName}>{item.productName}</option>))}
-                                 
+
                                 </select>
                                 <div className="pointer-events-none absolute inset-y-0 right-16 flex items-center px-2 text-gray-700">
                                     <svg className="fill-current h-4 w-4" viewBox="0 0 20 20"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z" /><path fillRule="evenodd" d="M3.832 8.116a.5.5 0 01.707 0L10 13.293l5.46-5.461a.5.5 0 01.707.707l-5.748 5.748a1.5 1.5 0 01-2.121 0L3.125 8.823a.5.5 0 010-.707z" clipRule="evenodd" /></svg>
@@ -608,91 +635,87 @@ const createSales = ({ products }) => {
 
 
                             </td>
-                            <td class="px-6 py-4">
+                            <td className="px-6 py-4">
                                 <input
                                     type="text"
                                     value={row.qty}
                                     className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-2 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500 w-24"
-                                    
+
                                     onChange={(e) => {
                                         const updatedRows = [...rows];
-                                        updatedRows[index].qty =e.target.value;
+                                        updatedRows[index].qty = e.target.value;
                                         setRows(updatedRows);
-                                        checkQuantity(updatedRows[index].prodName,updatedRows[index].qty)
-                                        
+                                        checkQuantity(updatedRows[index].prodName, updatedRows[index].qty)
+                                        updatedRows[index].price = (selectedProducts[index]?.unitPrice ?? '');
+                                        updatedRows[index].amount = (selectedProducts[index]?.unitPrice ?? '') * row.qty;
+                                        updatedRows[index].tax = (selectedProducts[index]?.tax);
+                                        updatedRows[index].total = ((selectedProducts[index]?.unitPrice ?? 0) * row.qty) + (((selectedProducts[index]?.unitPrice ?? 0) * row.qty) * ((selectedProducts[index]?.tax ?? 0) / 100));
+                                        calculateSubTotal()
+                                        calculateTotal()
+                                        calculateTax()
+
                                     }}
                                 />
                             </td>
 
-                            
-                            <td class="px-6 py-4">
+
+
+                            <td className="px-6 py-4">
                                 <input
                                     type="text"
                                     value={selectedProducts[index]?.unitPrice ?? ''}
                                     className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-2 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500 w-24"
-                                    onChange={(e) => {
-                                        const updatedRows = [...rows];
-                                        updatedRows[index].price = e.target.value;
-                                        setRows(updatedRows);
-                                    }}
+                                    readOnly
                                 />
                             </td>
 
-                            <td class="px-6 py-4">
+                            <td className="px-6 py-4">
                                 <input
                                     type="text"
-                                    value={(selectedProducts[index]?.unitPrice ??'') * row.qty}
+                                    value={(selectedProducts[index]?.unitPrice ?? '') * row.qty}
                                     className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-2 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500 w-24"
-                                    onChange={(e) => {
-                                        const updatedRows = [...rows];
-                                        updatedRows[index].amount = e.target.value;
-                                        setRows(updatedRows);
-                                    }}
+                                   readOnly
                                 />
                             </td>
-                            <td class="px-6 py-4">
+                            <td className="px-6 py-4">
                                 <input
                                     type="text"
                                     value={selectedProducts[index]?.tax}
                                     className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-2 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500 w-24"
-                                    onChange={(e) => {
-                                        const updatedRows = [...rows];
-                                        updatedRows[index].tax = e.target.value;
-                                        setRows(updatedRows);
-                                    }}
+                                   readOnly
                                 />
                             </td>
-                            <td class="px-6 py-4">
+                            <td className="px-6 py-4">
                                 <input
                                     type="text"
                                     value={row.discount}
                                     className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-2 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500 w-24"
                                     onChange={(e) => {
                                         const updatedRows = [...rows];
-                                        updatedRows[index].discount = e.target.value;
+                                        updatedRows[index].discount = e.target.value; 
+                                        updatedRows[index].total = (((selectedProducts[index]?.unitPrice ?? 0) * row.qty) + (((selectedProducts[index]?.unitPrice ?? 0) * row.qty) * ((selectedProducts[index]?.tax ?? 0) / 100)))- (((((selectedProducts[index]?.unitPrice ?? 0) * row.qty) + (((selectedProducts[index]?.unitPrice ?? 0) * row.qty) * ((selectedProducts[index]?.tax ?? 0) / 100))) * ((row.discount ?? 0)))/100);
                                         setRows(updatedRows);
+                                        calculateDiscount()
+                                        calculateTotal()
+                                        
                                     }}
+                                    maxLength={2}
                                 />
                             </td>
-                    
-                            <td class="px-6 py-4">
+
+                            <td className="px-6 py-4">
                                 <input
                                     type="text"
-                                    // value={(((selectedProducts[index]?.unitPrice ?? '')*row.qty)+(((selectedProducts[index]?.unitPrice ?? '')*row.qty)*(row.tax/100))-(row.discount))}
-                                    value={((selectedProducts[index]?.unitPrice ?? 0) * row.qty) - (row.discount ?? 0) + (((selectedProducts[index]?.unitPrice ?? 0) * row.qty) * ((selectedProducts[index]?.tax ?? 0) / 100))}
+                                    value={(((selectedProducts[index]?.unitPrice ?? 0) * row.qty) + (((selectedProducts[index]?.unitPrice ?? 0) * row.qty) * ((selectedProducts[index]?.tax ?? 0) / 100)))- (((((selectedProducts[index]?.unitPrice ?? 0) * row.qty) + (((selectedProducts[index]?.unitPrice ?? 0) * row.qty) * ((selectedProducts[index]?.tax ?? 0) / 100))) * ((row.discount ?? 0)))/100)}
 
 
                                     className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-2 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500 w-28"
-                                    onChange={(e) => {
-                                        const updatedRows = [...rows];
-                                        updatedRows[index].total = e.target.value;
-                                        setRows(updatedRows);
-                                    }}
+                                   readOnly
                                 />
                             </td>
-                            <td class="px-6 py-4" onClick={() => handleRemoveRow(index)}>
-                                <a href="#" class="font-medium text-red-600 dark:text-blue-500 hover:underline">Delete</a>
-                            </td>   
+                            <td className="px-6 py-4" onClick={() => handleRemoveRow(index)}>
+                                <a href="#" className="font-medium text-red-600 dark:text-blue-500 hover:underline">Delete</a>
+                            </td>
                         </tr>
 
                     </tbody>))}
@@ -704,7 +727,7 @@ const createSales = ({ products }) => {
             </div>
             <button onClick={handleAddRow} className='flex items-center justify-center bg-blue-600 px-5 py-2 border rounded-xl ml-4 mt-2'>Add Row</button>
 
-            {/* <div>
+            <div>
                 <form className="w-full max-w-md ml-auto mt-10">
                     <div className="flex flex-col -mx-3 mb-6">
 
@@ -712,7 +735,7 @@ const createSales = ({ products }) => {
                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="subTotal">
                                 Sub Total
                             </label>
-                            <input onChange={handleChange} name='subTotal' value={subTotals} className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 contacting-tight focus:outline-none focus:bg-white" id="subTotal" type="text" placeholder="Sub Total" />
+                            <input onChange={handleChange} name='subTotal' value={subTotal} className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 contacting-tight focus:outline-none focus:bg-white" id="subTotal" type="text" placeholder="Sub Total" />
                         </div>
                         <div className="w-full md:w-1/2 px-3">
                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="totalDiscount">
@@ -733,10 +756,11 @@ const createSales = ({ products }) => {
                             </label>
                             <input onChange={handleChange} name='grandTotal' value={grandTotal} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grandTotal" type="text" placeholder="Grand Total" />
 
+
                         </div>
                     </div>
                 </form>
-            </div> */}
+            </div>
 
         </section>
     )
@@ -745,23 +769,22 @@ const createSales = ({ products }) => {
 export default createSales
 
 
+
+
+
 export async function getServerSideProps(context) {
     try {
         await connectDB();
 
-        const companies = await Company.find({}, {  updatedAt: 0 }).lean();
+        const companies = await Company.find({}, { updatedAt: 0 }).lean();
         const products = await ProductList.find({}, { updatedAt: 0 }).lean();
-
-
-
-
 
         return {
             props: {
                 companies: companies.map((company) => ({
                     ...company,
                     _id: (company._id) ? ((JSON.stringify(company._id)).slice(1, -1)) : '',
-                    
+
                     author: (company.author) ? ((JSON.stringify(company.author)).slice(1, -1)) : '',
                     createdAt: company.createdAt.toISOString(),
                 })),

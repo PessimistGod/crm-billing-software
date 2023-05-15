@@ -163,7 +163,7 @@ const Navbar = () => {
                             <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-3">Vendors</Link>
                           </div>
                           <div className="py-1" role="none">
-                            <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-4">Invoices</Link>
+                            <Link href={'/Display/displayInvoice'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-4">Invoices</Link>
 
                           </div>
                           <div className="py-1" role="none">
