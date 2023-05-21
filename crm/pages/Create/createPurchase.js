@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Company from "@/Models/createCompany";
 import ProductList from '@/Models/createProduct'
 import connectDB from '@/Middleware/db';
+import { useRouter } from 'next/router';
 
 
 
@@ -51,7 +52,7 @@ const createPurchase = ({products}) => {
     const [grandTotal, setGrandTotal] = useState("")
     const [registration, setRegistration] = useState("")
 
-
+const router = useRouter()
     useEffect(() => {
         try {
             const token = localStorage.getItem('token');
@@ -206,6 +207,17 @@ const createPurchase = ({products}) => {
                     progress: undefined,
                     theme: "light",
                 });
+                router.push(
+                    {
+                      pathname: '/Create/Invoice/selectTemplate', // not router.asPath
+                      query: { 
+                        ...data,
+                        rowSn: data.rows.sn,
+                        rowProdName: data.rows.prodName,
+                        rowQty: data.rows.qty,
+                    },
+                    }
+                )
 
                 setPurchaseOwner("")
                 setVendorName("")
@@ -750,7 +762,6 @@ export async function getServerSideProps(context) {
                     _id: (item._id) ? ((JSON.stringify(item._id)).slice(1, -1)) : '',
                     author: (item.author) ? ((JSON.stringify(item.author)).slice(1, -1)) : '',
                     createdAt: item.createdAt.toISOString(),
-
                 })),
             },
         };

@@ -6,8 +6,10 @@ import Company from '@/Models/createCompany';
 import connectDB from '@/Middleware/db';
 import jwt_decode from 'jwt-decode';
 import Image from 'next/image';
+import Images from '@/Models/Image'
 
-const Home = ({ company }) => {
+
+const Home = ({ company, images }) => {
   const router = useRouter();
   const [registration, setRegistration] = useState('');
   useEffect(() => {
@@ -24,36 +26,32 @@ const Home = ({ company }) => {
       router.push('/Authenticate/Login');
     }
   }, []);
-  // console.log(company.map((item)=>(item.author)))
-
-  // for(let i in company){
-  //   if(company[i].author === registration){
-  //     <Link href="/Create/createCompany">
-  //     <button className="px-8 mt-5 py-3 bg-blue-600">Add Company</button>
-  //   </Link>
-  //   }
-  // }
 
 
-  const addButton = company.some(item => item.author === registration)
-  ? null
-  : (
-    <Link href="/Create/createCompany">
-      <div><Image src={'/greet.jpg'} width={500} height={650} /></div>
-      <div className='flex justify-center items-center'>
-        <button className="px-8 mt-5 py-3 bg-blue-600">Add Company</button>
 
-      </div>
-      
-    </Link>
+  console.log(
+    images
+      .filter((item) => item.author === registration)
+      .concat(company.filter((item) => item.author === registration))
+  );
+  
+
+  const addButton = (company.some(item => item.author === registration) && images.some(item => item.author === registration))
+    ? null
+    : (
+      <Link href="/Create/createCompany">
+        <div><Image src={'/greet.jpg'} width={500} height={650} /></div>
+        <div className='flex justify-center items-center'>
+          <button className="px-8 mt-5 py-3 bg-blue-600">Add Company</button>
+
+        </div>
+
+      </Link>
     );
 
 
 
 
-  // console.log((company.map((display)=>(display.author === [registration]))))
-
-  // console.log((company.map((display)=>(display.author === [registration]))).length)
 
   return (
     <>
@@ -64,91 +62,83 @@ const Home = ({ company }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <section className="container bg-white flex items-center justify-center h-screen flex-col">
-      
+      <section className="container bg- flex items-center justify-center h-screen flex-col">
 
-        {/* {company && ((company.map((display)=>((display.author ===registration) !== display.author)))) &&
-  <Link href="/Create/createCompany">
-    <button className="px-8 mt-5 py-3 bg-blue-600">Add Company</button>
-  </Link>
-} */}
 
-{addButton}
+
+
+        {addButton}
         {company &&
-          company
-            .filter((author) => (author.author === registration))
+         (company.some(item => item.author === registration) && images.some(item => item.author === registration)) &&
+          
+              company.filter((item) => item.author === registration)
             .map((item) => (
-<div key={item._id}>
+              <div key={item._id}>
 
-<div className='w-'>
-        <div >
+                <div className='w-100'>
+                  <div >
 
-            <div className="bg-white relative px-24 shadow rounded-lg  mx-auto py-10">
-         
-                
-                <div className="mt-8">
-                    <h1 className="font-bold text-center text-3xl text-gray-900">{item.companyName}</h1>
-                    <p className="text-center text-sm text-gray-400 font-medium">{item.gstin}</p>
-                    <p>
-                        <span>
-                            
-                        </span>
-                    </p>
-                    <div className="my-5 px-6">
-                        <a target='_blank' href={`http://${item.companyWebsite}`} className="text-gray-200 block rounded-lg text-center font-medium leading-6 px-6 py-3 bg-gray-900 hover:bg-black hover:text-white">Website: <span className="font-bold">{item.companyWebsite}</span></a>
-                    </div>
-                    {/* <div className="flex justify-between items-center my-5 px-6">
-                        <a href="" className="text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-150 ease-in font-medium text-sm text-center w-full py-3">Facebook</a>
-                        <a href="" className="text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-150 ease-in font-medium text-sm text-center w-full py-3">Twitter</a>
-                        <a href="" className="text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-150 ease-in font-medium text-sm text-center w-full py-3">Instagram</a>
-                        <a href="" className="text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-150 ease-in font-medium text-sm text-center w-full py-3">Email</a>
-                    </div> */}
+                    <div className="bg-white relative px-24 shadow rounded-lg  mx-auto py-10">
 
-                    <div className="w-full">
-                        <h3 className="font-medium text-gray-900 text-left px-6">Details</h3>
-                        <div className="mt-5 w-full flex flex-col items-center overflow-hidden text-sm">
+
+                      <div className="mt-8">
+                        <h1 className="font-bold text-center text-3xl text-gray-900">{item.companyName}</h1>
+                        <p className="text-center text-sm text-gray-400 font-medium">{item.gstin}</p>
+                        <p>
+                          <span>
+
+                          </span>
+                        </p>
+                        <div className="my-5 px-6">
+                          <a target='_blank' href={`http://${item.companyWebsite}`} className="text-gray-200 block rounded-lg text-center font-medium leading-6 px-6 py-3 bg-gray-900 hover:bg-black hover:text-white">Website: <span className="font-bold">{item.companyWebsite}</span></a>
+                        </div>
+
+
+                        <div className="w-full">
+                          <h3 className="font-medium text-gray-900 text-left px-6">Details</h3>
+                          <div className="mt-5 w-full flex flex-col items-center overflow-hidden text-sm">
                             <a className="border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150">
-                             
-                                    Your Name:
-                                    <span className="text-gray-500 text-xs px-2">{item.ownerName}</span>
+
+                              Your Name:
+                              <span className="text-gray-500 text-xs px-2">{item.ownerName}</span>
                             </a>
 
                             <a href="#" className="border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150">
-                               
-                                    Added new profile picture
-                                    <span className="text-gray-500 text-xs">42 min ago</span>
+
+                              Added new profile picture
+                              <span className="text-gray-500 text-xs">42 min ago</span>
                             </a>
 
                             <a href="#" className=" border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150">
-                            
-                                Posted new article in <span className="font-bold">#Web Dev</span>
-                                <span className="text-gray-500 text-xs">49 min ago</span>
+
+                              Posted new article in <span className="font-bold">#Web Dev</span>
+                              <span className="text-gray-500 text-xs">49 min ago</span>
                             </a>
 
                             <a href="#" className=" border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150">
-                           
-                                Edited website settings
-                                <span className="text-gray-500 text-xs">1 day ago</span>
+
+                              Edited website settings
+                              <span className="text-gray-500 text-xs">1 day ago</span>
                             </a>
 
                             <a href="#" className="border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150 overflow-hidden">
-                          
-                                Added new rank
-                                <span className="text-gray-500 text-xs">5 days ago</span>
+
+                              Added new rank
+                              <span className="text-gray-500 text-xs">5 days ago</span>
                             </a>
-                            
+
+                          </div>
                         </div>
-                        </div>
+                      </div>
                     </div>
+                  </div>
                 </div>
-            </div>
-            </div>
-            </div>
-            
+              </div>
 
-))}
 
-           
+            ))}
+
+
 
 
       </section>
@@ -163,11 +153,12 @@ export async function getServerSideProps(context) {
     await connectDB();
 
     const company = await Company.find({})
+    const images = await Images.find({})
 
     const companyDetails = company.map((item) => ({
       _id: item.id,
-      gstin: item.gstin? item.gstin : "",
-      companyWebsite: item.companyWebsite? item.companyWebsite : "",
+      gstin: item.gstin ? item.gstin : "",
+      companyWebsite: item.companyWebsite ? item.companyWebsite : "",
       ownerName: item.ownerName ? item.ownerName : "",
       companyName: item.companyName ? item.companyName : "",
       companyStreet: item.companyStreet ? item.companyStreet : "",
@@ -177,16 +168,22 @@ export async function getServerSideProps(context) {
       companyCountry: item.companyCountry ? item.companyCountry : "",
       author: (item.author) ? (JSON.stringify(item.author).slice(1, -1)) : "",
     }));
-    console.log(companyDetails)
+    const imageDetails = images.map((item) => ({
+      _id: item.id,
+      url: item.url,
+      author: (item.author) ? (JSON.stringify(item.author).slice(1, -1)) : "",
+    }));
+
     return {
       props: {
         company: companyDetails,
+        images: imageDetails,
       },
     };
   } catch (error) {
     console.log(error);
     return {
-      props: { company: [] },
+      props: { company: [], images: [] },
     };
   }
 }

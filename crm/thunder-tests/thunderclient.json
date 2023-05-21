@@ -8,12 +8,22 @@
     "method": "POST",
     "sortNum": 20000,
     "created": "2023-04-09T20:29:42.635Z",
-    "modified": "2023-04-10T05:19:30.937Z",
-    "headers": [],
+    "modified": "2023-05-16T15:06:37.703Z",
+    "headers": [
+      {
+        "name": "Content-Type",
+        "value": "application/json"
+      },
+      {
+        "name": "User-Agent",
+        "value": "Thunder Client (https://www.thunderclient.com)",
+        "isDisabled": true
+      }
+    ],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\r\n  \"leadOwner\": \"John Doe\",\r\n  \"company\": \"ABC Company\",\r\n  \"salutation\": \"Mr\",\r\n  \"name\": \"John Doe\",\r\n  \"email\": \"johndoe@example.com\",\r\n  \"phone\": \"1234567890\",\r\n  \"website\": \"www.example.com\",\r\n  \"industry\": \"Technology\",\r\n  \"leadSource\": \"Advertisement\",\r\n  \"leadStatus\": \"New\",\r\n  \"revenue\": \"100000\",\r\n  \"address\": {\r\n    \"country\": \"United States\",\r\n    \"street\": \"123 Main St\",\r\n    \"state\": \"California\",\r\n    \"city\": \"San Francisco\",\r\n    \"zipcode\": \"94101\"\r\n  }\r\n}\r\n",
+      "raw": "{\r\n  \"leadOwner\": \"John Doe\",\r\n  \"company\": \"ABC Company\",\r\n  \"leadStatus\": \"New\",\r\n  \"author\": { \"_id\": \"643fa44a94f67aa1b5c92a6a\" }\r\n}\r\n",
       "form": []
     },
     "tests": []

@@ -6,7 +6,6 @@ export default async function leadCreate(req, res) {
     if (req.method === 'POST') {
       const lead = new Lead(req.body);
 
-      // Check for required fields
       const requiredFields = [{ key: 'leadOwner', message: 'Lead Owner field is required' } , { key: 'company', message: 'Company Name field is required' } , { key: 'leadStatus', message: 'Lead Status field is required' }];
       for (const field of requiredFields) {
         if (!lead[field.key]) {

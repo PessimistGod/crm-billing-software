@@ -86,4 +86,4 @@ const leadSchema = new mongoose.Schema({
 
 mongoose.models = {}
 const Lead = mongoose.model('Lead', leadSchema);
-export default Lead;
+export default Lead; 

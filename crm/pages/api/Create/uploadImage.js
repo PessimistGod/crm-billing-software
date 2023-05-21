@@ -1,53 +1,66 @@
-import Image from '../../../Models/Image';
-import multer from 'multer';
-import { CloudinaryStorage } from 'multer-storage-cloudinary';
+const path = require("path");
+const multer = require("multer");
+import Images from '@/Models/Image'
+import connectDB from "@/Middleware/db";
 
-const cloudinary = require('cloudinary').v2;
-import connectDB from '../../../Middleware/db';
-
-connectDB();
+const upload = multer({
+  dest: "public/uploads/",
+  storage: multer.diskStorage({
+    destination(req, file, cb) {
+      cb(null, "./public/uploads");
+    },
+    filename(req, file, cb) {
+      cb(null, `${new Date().getTime()}_${file.originalname}`);
+    },
+  }),
+  limits: {
+    fileSize: 100000000, //1gb
+  },
+  fileFilter(req, file, cb) {
+    if (!file.originalname.match(/\.(jpeg|jpg|png)$/)) {
+      return cb(
+        new Error(
+          "only upload files with jpg, jpeg, png format."
+        )
+      );
+    }
+    cb(undefined, true);
+  },
+});
 
 export const config = {
   api: {
-    bodyParser: false,
+    bodyParser: false, 
   },
 };
 
-cloudinary.config({
-  cloud_name: 'diwkqz1st',
-  api_key: '529378961737694',
-  api_secret: '9YlyC5rrcktnNtrE2Z6SXqUUa9A',
-});
-
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: 'FinalYearProject',
-    allowedFormats: ['jpg', 'jpeg', 'png'],
-    transformation: [{ width: 500, height: 500, crop: 'limit' }],
-  },
-});
-
-const upload = multer({ storage: storage });
-
-export default async (req, res) => {
-  try {
-    upload.single('image')(req, res, async (error) => {
-      if (error) {
-        console.error(error);
-        return res.status(500).json({ message: 'Error uploading image' });
-      }
-
-      if (!req.file) {
-        return res.status(400).json({ message: 'No file provided' });
-      }
-
-      const result = await Image.create({ url: req.file.path });
-      res.status(201).json({ message: 'Image uploaded successfully', result });
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
+export default async function handler(req, res) {
+  if (req.method === "POST") {
+    try {
+      connectDB();
+      await new Promise((resolve, reject) => {
+        upload.single("image")(req, res, (error) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve();
+          }
+        });
+      });
+      const { author } = req.body;
+      const { path } = req.file;
+      const file = new Images({
+        author,
+        url: path,
+      });
+      console.log(file);
+      await file.save();
+      res.send("Image uploaded successfully.");
+    } catch (error) {
+      res.status(400).send("Error while uploading Image. Try again later.");
+      console.log(error);
+    }
+  } else {
+    res.status(405).send("Method not allowed.");
   }
-};
- 
+}

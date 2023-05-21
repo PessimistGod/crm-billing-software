@@ -173,17 +173,17 @@ const createSales = ({ products }) => {
             const data = { salesOwner, dealName, subject, purchaseOrder, customerNumber, dueDate, carrier, contactName, salesCommission, status, accName, billingStreet, shippingStreet, billingCity, billingState, billingCode, billingCountry, shippingCity, shippingState, shippingCode, shippingCountry, subTotal, totalDiscount, totalTax, grandTotal, rows, author: registration };
 
             
-            const totalQty = rows && Array.isArray(rows) ? (rows.reduce((acc, row) => acc + row.qty, 0), 0) : 0;
+            // const totalQty = rows && Array.isArray(rows) ? (rows.reduce((acc, row) => acc + row.qty, 0), 0) : 0;
 
 
 
-            await fetch(`/api/Update/updateProduct/${productId}`, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ qty: totalQty }),
-              });
+            // await fetch(`/api/Update/updateProduct/${productId}`, {
+            //     method: "POST",
+            //     headers: {
+            //       "Content-Type": "application/json",
+            //     },
+            //     body: JSON.stringify({ qty: totalQty }),
+            //   });
               
 
             let CreateContact = await fetch(`/api/Create/salesCreate`, {
