@@ -3,11 +3,11 @@ import mongoose from 'mongoose';
 const purchaseSchema = new mongoose.Schema({
   purchaseOwner: {
     type: String,
-    required: true,
+    required: false,
   },
   vendorName: {
     type: String,
-    required: true,
+    required: false,
   },
   subject: {
     type: String,

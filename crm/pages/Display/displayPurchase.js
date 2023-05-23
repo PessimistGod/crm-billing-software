@@ -1,15 +1,15 @@
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import Sales from '@/Models/createSales';
+import Purchases from '@/Models/createPurchase';
 import connectDB from '@/Middleware/db';
 import { useRouter } from 'next/router';
 import jwt_decode from 'jwt-decode';
 import SaveAsPDFButton from '@/Components/saveAsPdf';
 import moment from 'moment'
-import { HiMinus } from 'react-icons/hi';
+import { HiMinus } from 'react-icons/hi'
 
-const DisplayAccount = ({ sales }) => {
-  console.log(sales);
+const DisplayPurchase = ({ purchases }) => {
+  console.log(purchases);
 
 
   const router = useRouter()
@@ -19,11 +19,11 @@ const DisplayAccount = ({ sales }) => {
   const [selectValue, setSelectValue] = useState('');
 
 
-  const filteredSalesWithSelect = sales .filter((sale) => {
+  const filteredSalesWithSelect = purchases.filter((purchase) => {
     if (selectValue === '') {
-      return true; // No select value, include all sales
+      return true; // No select value, include all purchases
     } else {
-      return sale.dealName.startsWith(selectValue); // Filter based on the select value
+      return purchase.dealName.startsWith(selectValue); // Filter based on the select value
     }
   });
 
@@ -47,10 +47,10 @@ const DisplayAccount = ({ sales }) => {
     }
   }, []);
   const myLoader = ({ src, item }) => {
-    return `/${sales[item].imageName}`;
+    return `/${purchases[item].imageName}`;
   }
 
-console.log(sales.map(item=>item.createdAt))
+console.log(purchases.map(item=>item.createdAt))
 
 
 // function handleDateFilter(startDate, endDate) {
@@ -61,15 +61,15 @@ console.log(sales.map(item=>item.createdAt))
 //     console.log("Parsed start date:", parsedStartDate.toISOString());
 //     console.log("Parsed end date:", parsedEndDate.toISOString());
 
-//     const myDateFilter = sales.filter((filtSale) => {
+//     const myDateFilter = purchases.filter((filtSale) => {
 //       const saleDate = new Date(filtSale.createdAt);
-//       console.log("Parsed sale date:", saleDate.toISOString());
+//       console.log("Parsed purchase date:", saleDate.toISOString());
 //       return !isNaN(saleDate) && saleDate >= parsedStartDate && saleDate <= parsedEndDate;
-//     }).map((sale) => sale);
+//     }).map((purchase) => purchase);
 
-//     console.log("Filtered sales:", myDateFilter);
+//     console.log("Filtered purchases:", myDateFilter);
 
-//     return myDateFilter; // Return the filtered sales array if needed
+//     return myDateFilter; // Return the filtered purchases array if needed
 //   }
 // }
 
@@ -178,40 +178,33 @@ function handleResetFilter(e){
                   </th>
                   <th className="px-4 py-3">Status</th>
                   <th className="px-4 -py-3">Grand Total</th>
-                  <th className="px-4 py-3">Deal Name</th>
+                  <th className="px-4 py-3">Vendor Name</th>
                   <th className="px-4 py-3">Contact Name</th>
-                  <th className="px-4 py-3">Account Name</th>
-                  <th className="px-4 py-3">Sales Order Owner</th>
+                  <th className="px-4 py-3">Purchase Order Owner</th>
 
 
                 </tr>
               </thead>
               <tbody className="bg-white">
-                {sales &&
-                Object.keys(sales)
+                {purchases &&
+                Object.keys(purchases)
                 .filter(
-                  (sale) =>
-                    sales[sale].author === registration  && (startDate === '' || sales[sale].createdAt >= startDate) && (endDate === '' || sales[sale].createdAt <= endDate)
-                ).filter((sale) => {
+                  (purchase) =>
+                    purchases[purchase].author === registration  && (startDate === '' || purchases[purchase].createdAt >= startDate) && (endDate === '' || purchases[purchase].createdAt <= endDate)
+                ).filter((purchase) => {
                   if (selectValue === '') {
                     return true; 
                   } else {
-                    return sales[sale].dealName.startsWith(selectValue); 
+                    return purchases[purchase].dealName.startsWith(selectValue); 
                   }
                 }).map((item) => (
-                      <tr key={sales[item]._id} className="text-gray-700">
-                        <td className="px-4 py-3 text-sm border">{sales[item].subject?sales[item].subject:<HiMinus size={16}/>}</td>
-
-                        <td className="px-4 py-3 text-sm border">{sales[item].status?sales[item].status:<HiMinus size={16}/>}</td>
-                        <td className="px-4 py-3 text-sm border">{sales[item].grandTotal?sales[item].grandTotal:<HiMinus size={16}/>}</td>
-                        <td className="px-4 py-3 text-sm border">{sales[item].dealName?sales[item].dealName:<HiMinus size={16}/>}</td>
-                        <td className="px-4 py-3 text-sm border">{sales[item].contactName?sales[item].contactName:<HiMinus size={16}/>}</td>
-                        <td className="px-4 py-3 text-sm border">{sales[item].accName?sales[item].accName:<HiMinus size={16}/>}</td>
-
-                
-
-                        <td className="px-4 py-3 text-sm border">{sales[item].salesOwner}</td>
-
+                      <tr key={purchases[item]._id} className="text-gray-700">
+                        <td className="px-4 py-3 text-sm border">{purchases[item].subject?purchases[item].subject:<HiMinus size={16}/>}</td>
+                        <td className="px-4 py-3 text-sm border">{purchases[item].status?purchases[item].status:<HiMinus size={16}/>}</td>
+                        <td className="px-4 py-3 text-sm border">{purchases[item].grandTotal?purchases[item].grandTotal:<HiMinus size={16}/>}</td>
+                        <td className="px-4 py-3 text-sm border">{purchases[item].vendorName?purchases[item].vendorName:<HiMinus size={16}/>}</td>
+                        <td className="px-4 py-3 text-sm border">{purchases[item].contactName?purchases[item].contactName:<HiMinus size={16}/>}</td>
+                        <td className="px-4 py-3 text-sm border">{purchases[item].purchaseOwner?purchases[item].purchaseOwner:<HiMinus size={16}/>}</td>
                        </tr>
                     ))}
               </tbody>
@@ -223,7 +216,7 @@ function handleResetFilter(e){
   );
 };
 
-export default DisplayAccount;
+export default DisplayPurchase;
 
 export async function getServerSideProps(context) {
   try {
@@ -231,36 +224,36 @@ export async function getServerSideProps(context) {
 
     const { startDate, endDate } = context.query;
 
-    let sales;
+    let purchases;
     if (startDate && endDate) {
-      sales = await Sales.find({
+      purchases = await Purchases.find({
         createdAt: {
           $gte: new Date(startDate),
           $lte: new Date(endDate),
         },
       }, { updatedAt: 0 }).lean();
     } else {
-      sales = await Sales.find({}, { updatedAt: 0 }).lean();
+      purchases = await Purchases.find({}, { updatedAt: 0 }).lean();
     }
 
     return {
       props: {
-        sales: sales.map((sale) => ({
-          ...sale,
-          rows: sale.rows.map((item) => ({
+        purchases: purchases.map((purchase) => ({
+          ...purchase,
+          rows: purchase.rows.map((item) => ({
             ...item,
             _id: String(item._id),
           })),
-          _id: sale._id ? String(sale._id) : '',
-          author: sale.author ? String(sale.author) : '',
-          createdAt: sale.createdAt.toISOString(),
+          _id: purchase._id ? String(purchase._id) : '',
+          author: purchase.author ? String(purchase.author) : '',
+          createdAt: purchase.createdAt.toISOString(),
         })),
       },
     };
   } catch (error) {
     console.log(error);
     return {
-      props: { sales: [] },
+      props: { purchases: [] },
     };
   }
 }

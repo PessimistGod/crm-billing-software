@@ -4,6 +4,7 @@ import ProductList from '@/Models/createProduct';
 import connectDB from '@/Middleware/db';
 import { useRouter } from 'next/router';
 import jwt_decode from 'jwt-decode';
+import { HiMinus } from 'react-icons/hi'
 
 
 const DisplayAccount = ({ products }) => {
@@ -36,49 +37,31 @@ const DisplayAccount = ({ products }) => {
           <table className="w-full">
             <thead>
               <tr className="text-md font-semibold tracking-wide text-left text-gray-900 bg-gray-100 uppercase border-b border-gray-600">
-                <th className="px-4 py-3">Account Owner</th>
-                <th className="px-4 py-3">Account Name</th>
-                <th className="px-4 py-3">Ownership</th>
-                <th className="px-4 -py-3">Annual Revenue</th>
-                <th className="px-4 py-3">Parent Account</th>
-                <th className="px-4 py-3">View</th>
+                <th className="px-4 py-3">Product Name</th>
+                <th className="px-4 py-3">Product Code</th>
+                <th className="px-4 -py-3">Unit Price </th>
+                <th className="px-4 py-3">Quantity In Stock</th>
+                <th className="px-4 py-3">Vendor Name</th>
+                <th className="px-4 py-3">Product Owner</th>
+
               </tr>
             </thead>
             <tbody className="bg-white">
               {products &&
                 Object.keys(products).filter((product) => (products[product].author === registration)).map((item) => (
                   <tr key={products[item]._id} className="text-gray-700">
-                    <td className="px-4 py-3 border">
-                      <div className="flex items-center text-sm">
-                        <div className="relative w-8 h-8 mr-3 rounded-full md:block">
+                    <td className="px-4 py-3 text-sm border">{products[item].productName?products[item].productName:<HiMinus size={16}/>}</td>
+                    <td className="px-4 py-3 text-sm border">{products[item].productCode?products[item].productCode:<HiMinus size={16}/>}</td>
 
-                             <Image
-                             width={300}
-                             height={300}
-                             className="object-cover w-full h-full rounded-full"
-                             src={myLoader({ item })}
-                             alt="Logo"
-                             />
-                            
-                          <div className="absolute inset-0 rounded-full shadow-inner" aria-hidden="true"></div>
-                        </div>
-                        <div>
-                          <p className="font-semibold text-black">{products[item].accountOwner}</p>
-                          <p className="text-xs text-gray-600"></p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-4 py-3 text-ms font-semibold border">{products[item].ownership}</td>
-                    <td className="px-4 py-3 text-md border">
-                      <span className="px-2 py-1 font-semibold accounting-tight text-green-700 rounded-sm">
-                        {' '}
-                        {products[item].ownership}{' '}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-sm border">{products[item].revenue}</td>
-                    <td className="px-4 py-3 text-sm border">{products[item].parentAccount}</td> 
+                    <td className="px-4 py-3 text-sm border">{products[item].unitPrice?products[item].unitPrice:<HiMinus size={16}/>}</td>
+                    <td className="px-4 py-3 text-sm border">{products[item].qty?products[item].qty:<HiMinus size={16}/>}</td>
 
-                    <td className=" py-2 text-ms font-semibold border"><button className='bg-blue-500 mx-auto px-5 py-3 border rounded-3xl'>View</button></td>
+
+              
+                    <td className="px-4 py-3 text-sm border">{products[item].vendorName?products[item].vendorName:<HiMinus size={16}/>}</td>
+                    <td className="px-4 py-3 text-sm border">{products[item].productOwner?products[item].productOwner:<HiMinus size={16}/>}</td> 
+
+
                   </tr>
                 ))}
             </tbody>

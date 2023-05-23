@@ -4,11 +4,13 @@ import Contact from '@/Models/createContact';
 import connectDB from '@/Middleware/db';
 import jwt_decode from 'jwt-decode';
 import { useRouter } from 'next/router';
+import { HiMinus } from 'react-icons/hi';
 
 
 const DisplayContact = ({ contacts }) => {
   const router = useRouter()
-
+  const [perPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(1);
   const [registration, setRegistration] = useState('');
 
   useEffect(() => {
@@ -24,7 +26,21 @@ const DisplayContact = ({ contacts }) => {
       console.error(error);
       router.push('/Authenticate/Login');
     }
-  }, []);
+  }, [currentPage, perPage]);
+
+  const totalPages = Math.ceil(contacts.length / perPage);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    router.push({
+      pathname: router.pathname,
+      query: { page: page },
+    });
+  };
+  const startIndex = (currentPage - 1) * perPage;
+  const endIndex = startIndex + perPage;
+  const slicedContacts = contacts.slice(startIndex, endIndex);
+
     const myLoader=({src, item})=>{
         return `/${contacts[item].imageName}`;
       }
@@ -45,46 +61,31 @@ const DisplayContact = ({ contacts }) => {
               </tr>
             </thead>
             <tbody className="bg-white">
-              {contacts &&
-                Object.keys(contacts).filter((contact) => (contacts[contact].author === registration)).map((item) => (
-                  <tr key={contacts[item]._id} className="text-gray-700">
-                    <td className="px-4 py-3 border">
-                      <div className="flex items-center text-sm">
-                        {/* <div className="relative w-8 h-8 mr-3 rounded-full md:block">
-
-                             <Image
-                             width={300}
-                             height={300}
-                             className="object-cover w-full h-full rounded-full"
-                             src={myLoader({ item })}
-                             alt="Logo"
-                             />
-                             */}
-                          <div className="absolute inset-0 rounded-full shadow-inner" aria-hidden="true"></div>
-                        </div>
-                        <div>
-                          <p className="font-semibold text-black">{contacts[item].contactOwner}</p>
-                          {/* {contacts[item].name && <p className="text-xs text-gray-600">{contacts[item].salutation}. {contacts[item].name}</p>} */}
-                        {/* </div> */}
-                      </div>
-                    </td>
-                    <td className="px-4 py-3 text-ms font-semibold border">{contacts[item].companyName}</td>
-                    {/* <td className="px-4 py-3 text-md border">
-                      <span className="px-2 py-1 font-semibold contacting-tight text-green-700 rounded-sm">
-                        {' '}
-                        {contacts[item].jobTitle}{' '}
-                      </span>
-                    </td> */}
-                    <td className="px-4 py-3 text-sm border">{contacts[item].email}</td>
-                    <td className="px-4 py-3 text-sm border">{contacts[item].phone}</td> 
-                    <td className="px-4 py-3 text-sm border">{contacts[item].contactOwner}</td> 
-
-
-                    {/* <td className=" py-2 text-ms font-semibold border"><button className='bg-blue-500 mx-auto px-5 py-3 border rounded-3xl'>View</button></td> */}
+               {slicedContacts.map((item) => ( 
+                  <tr key={item._id} className="text-gray-700">
+              
+                    <td className="px-4 py-3 text-ms font-semibold border">{item.companyName?item.companyName:<HiMinus size={16}/>}</td>
+                    <td className="px-4 py-3 text-sm border">{item.companyName?item.accountName:<HiMinus size={16}/>}</td>
+                    <td className="px-4 py-3 text-sm border">{item.email?item.email:<HiMinus size={16}/>}</td>
+                    <td className="px-4 py-3 text-sm border">{item.phone?item.phone:<HiMinus size={16}/>}</td> 
+                    <td className="px-4 py-3 text-sm border">{item.contactOwner?item.contactOwner:<HiMinus size={16}/>}</td> 
                   </tr>
                 ))}
             </tbody>
           </table>
+          <div className="flex justify-center mt-4">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                className={`px-2 py-1 mx-1 rounded-lg ${
+                  page === currentPage ? 'bg-gray-300' : 'bg-gray-200'
+                }`}
+                onClick={() => handlePageChange(page)}
+              >
+                {page}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -93,25 +94,32 @@ const DisplayContact = ({ contacts }) => {
 
 export default DisplayContact;
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps({query}) {
+  const { page = 1 } = query; 
+  const perPage = 5;
   try {
     await connectDB();
 
-    const contacts = await Contact.find({}, { _id: 0, updatedAt: 0 }).lean();
+
+    const totalDeals = await Contact.countDocuments(); 
+    const totalPages = Math.ceil(totalDeals / perPage); 
+    const contacts = await Contact.find({}, { updatedAt: 0 }).lean().sort({ createdAt: -1 });;
 
     return {
       props: {
         contacts: contacts.map((contact) => ({
           ...contact,
+          _id: contact._id? String(contact._id):'',
           author: (contact.author) ? ((JSON.stringify(contact.author)).slice(1,-1)) : '',
           createdAt: contact.createdAt.toISOString(),
         })),
+        totalPages,
     },
     };
   } catch (error) {
     console.log(error);
     return {
-      props: { contacts: [] },
+      props: { contacts: [] ,totalPages: 0},
     };
   }
 }

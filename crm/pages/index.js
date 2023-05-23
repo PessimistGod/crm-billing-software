@@ -29,17 +29,15 @@ const Home = ({ company, images }) => {
 
 
 
-  console.log(
-    images
-      .filter((item) => item.author === registration)
-      .concat(company.filter((item) => item.author === registration))
-  );
+  const filteredImages = images.filter((item) => item.author === registration);
+
   
 
   const addButton = (company.some(item => item.author === registration) && images.some(item => item.author === registration))
     ? null
     : (
       <Link href="/Create/createCompany">
+        
         <div><Image src={'/greet.jpg'} width={500} height={650} /></div>
         <div className='flex justify-center items-center'>
           <button className="px-8 mt-5 py-3 bg-blue-600">Add Company</button>
@@ -79,8 +77,10 @@ const Home = ({ company, images }) => {
                   <div >
 
                     <div className="bg-white relative px-24 shadow rounded-lg  mx-auto py-10">
+                    {filteredImages.map((item) => (
+                      <Image className='object-contain' src={`/uploads/${item.url.slice(15)}`} width={300} height={350} alt='image'/>
 
-
+                    ))}
                       <div className="mt-8">
                         <h1 className="font-bold text-center text-3xl text-gray-900">{item.companyName}</h1>
                         <p className="text-center text-sm text-gray-400 font-medium">{item.gstin}</p>

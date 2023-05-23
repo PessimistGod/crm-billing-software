@@ -6,7 +6,7 @@ export default async function productListCreate(req, res) {
     if (req.method === 'POST') {
       const productList = new ProductList(req.body);
 
-      const requiredFields = [{ key: 'productOwner', message: 'Product Owner field is required' } , { key: 'productCode', message: 'Product Code field is required' } , { key: 'productName', message: 'Product Name field is required' }];
+      const requiredFields = [{ key: 'productOwner', message: 'Product Owner field is required' } , { key: 'productName', message: 'Product Name field is required' }];
       for (const field of requiredFields) {
         if (!productList[field.key]) {
           return res.status(400).json({ error: field.message });

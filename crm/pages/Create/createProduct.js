@@ -117,32 +117,56 @@ const createProduct = ({ companies }) => {
             setDescription(e.target.value)
         }
 
-        // useEffect(() => {
-        //     if (companyDetails) {
 
-
-
-        //     }
-        // }, [companyDetails])
     }
+
+
+    const [products, setProducts] = useState([]);
+
+ 
+  
+
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('/api/fetchProduct');
+        const data = await response.json();
+        setProducts(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
     const ProductCreate = async () => {
         try {
 
             const data = { imageName, productInfo, productOwner, productCode, productName, vendorName, productActive, manufacturer, category, salesStartDate, salesEndDate, supportStartDate, supportEndDate, unitPrice, tax, taxable, qty, unit, description, author: registration };
 
-            let CreateContact = await fetch(`/api/Create/productListCreate`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
-            })
-            console.log(data)
-            let response = await CreateContact.json()
-            console.log(response)
-            if (response.error) {
-                toast.error(response.error, {
+            if(products.filter(item => item.author === registration).map(item => item.productName).includes(data.productName)){
+                toast.error("Product Name Exist", {
+                    position: "top-center",
+                    autoClose: 1100,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }else{
+
+                
+                let CreateContact = await fetch(`/api/Create/productListCreate`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data),
+                })
+                console.log(data)
+                let response = await CreateContact.json()
+                console.log(response)
+                if (response.error) {
+                    toast.error(response.error, {
                     position: "top-center",
                     autoClose: 1100,
                     hideProgressBar: false,
@@ -183,16 +207,17 @@ const createProduct = ({ companies }) => {
                 setUnit("")
                 setDescription("")
             }
+            
+            
+            
 
-
-
-
+        }
 
         } catch (err) {
             console.error(err)
         }
-
-
+        
+        
     }
 
     return (
@@ -277,7 +302,7 @@ const createProduct = ({ companies }) => {
                                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="productName">
                                         Product Name
                                     </label>
-                                    <input onChange={handleChange} name='productName' value={productName} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500" id="productName" type="text" placeholder="Product Name" />
+                                    <input onFocus={fetchProducts} onChange={handleChange} name='productName' value={productName} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500" id="productName" type="text" placeholder="Product Name" />
                                 </div>
                             </div>
 

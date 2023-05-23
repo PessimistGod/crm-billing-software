@@ -8,7 +8,7 @@ const imageSchema = new mongoose.Schema({
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Signup',
-    required: false,
+    required: true,
   }
 });
 

@@ -15,11 +15,11 @@ const leadSchema = new mongoose.Schema({
   },
   leadOwner: {
     type: String,
-    required: true,
+    required: false,
   },
   company: {
     type: String,
-    required: true,
+    required: false,
   },
   salutation: {
     type: String,
@@ -51,7 +51,7 @@ const leadSchema = new mongoose.Schema({
   },
   leadStatus: {
     type: String,
-    required: true,
+    required: false,
   },
   revenue: {
     type: String,

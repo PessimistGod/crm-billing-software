@@ -26,7 +26,7 @@ const Sidebar = () => {
             </h1>
             <div className=" my-4 border-b border-gray-100 pb-4">
               <div className="flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-                <MdOutlineSpaceDashboard className="text-2xl text-gray-600 group-hover:text-white " />
+
                 <Link href={'/'}>
                 <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
                 Home
@@ -34,7 +34,7 @@ const Sidebar = () => {
                 </Link>
               </div>
               <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-                <CgProfile className="text-2xl text-gray-600 group-hover:text-white " />
+         
                 <Link href={'/Display/displayLead'}>
                 <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
                 Leads
@@ -42,7 +42,7 @@ const Sidebar = () => {
                 </Link>
               </div>
               <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-                <FaRegComments className="text-2xl text-gray-600 group-hover:text-white " />
+               
                 <Link href={'/Display/displayDeal'}>
                 <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
                 Deals
@@ -50,7 +50,7 @@ const Sidebar = () => {
                 </Link>
               </div>
               <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-                <MdOutlineAnalytics className="text-2xl text-gray-600 group-hover:text-white " />
+               
                 <Link href={'/Display/displayAccount'}>
                 <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
                 Accounts
@@ -58,7 +58,7 @@ const Sidebar = () => {
                 </Link>
               </div>
               <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-                <BiMessageSquareDots className="text-2xl text-gray-600 group-hover:text-white " />
+                
                 <Link href={'/Display/displayContact'}>
                 <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
                 Contacts
@@ -70,14 +70,26 @@ const Sidebar = () => {
             </div>
             {/* setting  */}
             <div className=" my-4 border-b border-gray-100 pb-4">
-              {/* <div className="flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-                <MdOutlineSettings className="text-2xl text-gray-600 group-hover:text-white " />
+              
+              <div  className="flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
                 <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
-                  Settings
+                  More
                 </h3>
-              </div> */}
-              <div className="flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-                <MdOutlineMoreHoriz className="text-2xl text-gray-600 group-hover:text-white " />
+              </div>
+
+              <div  className="flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+                <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
+                  More
+                </h3>
+              </div>
+
+              <div  className="flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+                <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
+                  More
+                </h3>
+              </div>
+
+              <div  className="flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
                 <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
                   More
                 </h3>

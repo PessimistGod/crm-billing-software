@@ -52,6 +52,7 @@ const createContact = ({ companies }) => {
     const [state, setState] = useState("")
     const [city, setCity] = useState("")
     const [zipcode, setZipcode] = useState("")
+    const [accountName, setAccountName] = useState('')
 
 
 
@@ -111,6 +112,9 @@ const createContact = ({ companies }) => {
         if (e.target.name == 'zipcode') {
             setZipcode(e.target.value)
         }
+        if (e.target.name == 'accountName') {
+            setAccountName(e.target.value)
+        }
     }
 
 
@@ -133,7 +137,7 @@ const createContact = ({ companies }) => {
     const ContactCreate = async () => {
         try {
 
-            const data = { imageName, contactOwner, companyName, vendorName, jobTitle, salutation, name, email, phone, website, leadSource, DOB, country, street, state, city, zipcode, author:registration };
+            const data = { imageName, contactOwner,accountName, companyName, vendorName, jobTitle, salutation, name, email, phone, website, leadSource, DOB, country, street, state, city, zipcode, author:registration };
 
             let CreateContact = await fetch(`/api/Create/contactCreate`, {
                 method: "POST",
@@ -254,11 +258,12 @@ const createContact = ({ companies }) => {
                                     <input onChange={handleChange} name='vendorName' value={vendorName} className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 contacting-tight focus:outline-none focus:bg-white" id="vendorName" type="text" placeholder="Vendor Name" />
                                 </div>
                                 <div className="w-full md:w-1/2 px-3">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="jobTitle">
-                                        Job Title
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="accountName">
+                                        Account Name
                                     </label>
-                                    <input onChange={handleChange} name='jobTitle' value={jobTitle} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500" id="jobTitle" type="text" placeholder="Job Title" />
+                                    <input onChange={handleChange} name='accountName' value={accountName} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500" id="accountName" type="text" placeholder="Account Name" />
                                 </div>
+                                
                             </div>
 
                             <div className="flex flex-wrap -mx-3 mb-6">
@@ -354,6 +359,13 @@ const createContact = ({ companies }) => {
                                     </label>
                                     <input onChange={handleChange} name='DOB' value={DOB} className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 contacting-tight focus:outline-none focus:bg-white" id="contactSource" type="date" placeholder="Lead Source" />
                                     {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
+                                </div>
+
+                                <div className="w-full md:w-1/2 px-3">
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="jobTitle">
+                                        Job Title
+                                    </label>
+                                    <input onChange={handleChange} name='jobTitle' value={jobTitle} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500" id="jobTitle" type="text" placeholder="Job Title" />
                                 </div>
 
                             </div>

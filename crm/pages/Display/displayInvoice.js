@@ -5,6 +5,7 @@ import invoice from '@/Models/createInvoice';
 import connectDB from '@/Middleware/db';
 import { useRouter } from 'next/router';
 import jwt_decode from 'jwt-decode';
+import { HiMinus } from 'react-icons/hi';
 
 
 const Invoice = ({ invoices }) => {

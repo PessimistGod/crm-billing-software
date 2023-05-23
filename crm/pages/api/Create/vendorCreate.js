@@ -6,7 +6,7 @@ export default async function leadCreate(req, res) {
     if (req.method === 'POST') {
       const vendor = new Vendor(req.body);
 
-      const requiredFields = [{ key: 'imageName', message: 'Image URL field is required' } , { key: 'vendorOwner', message: 'Vendor Owner field is required' } , { key: 'vendorName', message: 'Vendor Name field is required' }];
+      const requiredFields = [{ key: 'vendorOwner', message: 'Vendor Owner field is required' } , { key: 'vendorName', message: 'Vendor Name field is required' }];
       for (const field of requiredFields) {
         if (!vendor[field.key]) {
           return res.status(400).json({ error: field.message });

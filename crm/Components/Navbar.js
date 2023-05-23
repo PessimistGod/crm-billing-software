@@ -159,8 +159,8 @@ const Navbar = () => {
                             <Link href={'/Display/displaySales'} className="text-gray-700 hover:text-blue-600 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-1">Sales Order</Link>
                           </div>
                           <div className="py-1" role="none">
-                            <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-2">Purchase Order</Link>
-                            <Link href={'#'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-3">Vendors</Link>
+                            <Link href={'/Display/displayPurchase'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-2">Purchase Order</Link>
+                            <Link href={'/Display/displayVendor'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-3">Vendors</Link>
                           </div>
                           <div className="py-1" role="none">
                             <Link href={'/Display/displayInvoice'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-4">Invoices</Link>

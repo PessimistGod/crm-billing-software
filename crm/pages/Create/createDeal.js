@@ -179,40 +179,7 @@ const createDeal = ({companies}) => {
 
                     <div>
                         <form className="w-full max-w-lg mx-auto mt-8">
-                            {/*<div className="mb-4">
-                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="imageName">
-                                    Image URL :
-                                </label>
-                                <input
-                                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                    id="image-container"
-                                    type="text"
-                                    name='imageName'
-                                    onChange={handleChange}
-                                    value={imageName}
-                                /> */}
-
-                            {/* <div className="mt-2">
-                                    {imageName && (
-                                        <div className="flex items-center">
-                                            <p className="text-gray-600 text-xs italic mr-2">{imageName}</p>
-                                            {isImageLoaded?(
-
-                                                <Image
-                                                width={300}
-                                                height={350}
-                                                src={`${imageName}`}
-                                                className="h-10 w-10 object-cover rounded-full"
-                                                alt="dfdf"
-                                                onBlur={handleImageLoad}
-                                                />
-                                            ):null }
-                                            
-                                        </div>
-                                    )}
-
-                                </div> */}
-                            {/* </div> */}
+                
                             <div className="flex flex-wrap -mx-3 mb-6">
                                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="dealOwner">

@@ -3,15 +3,15 @@ import mongoose from 'mongoose';
 const vendorSchema = new mongoose.Schema({
   imageName: {
     type: String,
-    required: true,
+    required: false,
   },
   vendorOwner: {
     type: String,
-    required: true,
+    required: false,
   },
   vendorName: {
     type: String,
-    required: true,
+    required: false,
   },
   phone: {
     type: String,

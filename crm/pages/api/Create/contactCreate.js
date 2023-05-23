@@ -7,7 +7,7 @@ export default async function contactCreate(req, res) {
             const contact = new Contact(req.body);
 
             // Check for required fields
-            const requiredFields = [{ key: 'imageName', message: 'Image URL field is required' }, { key: 'contactOwner', message: 'Contact Owner field is required' }, { key: 'companyName', message: 'Company Name field is required' }];
+            const requiredFields = [{ key: 'contactOwner', message: 'Contact Owner field is required' }, { key: 'companyName', message: 'Company Name field is required' }];
             for (const field of requiredFields) {
                 if (!contact[field.key]) {
                     return res.status(400).json({ error: field.message });

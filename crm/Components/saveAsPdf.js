@@ -17,7 +17,10 @@ const SaveAsPDFButton = () => {
   };
 
   return (
-    <button className='border bg-blue-500' onClick={saveAsPDF}>Save as PDF</button>
+    <button onClick={saveAsPDF} className="transition duration-300 ease-in-out bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md">
+  Save As Pdf
+</button>
+
   );
 };
 

@@ -4,8 +4,8 @@ import Sidebar from '@/Components/Sidebar'
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-
+import { useEffect, useState } from 'react';
+import jwt_decode from 'jwt-decode'
 export default function App({ Component, pageProps }) {
   const router = useRouter();
 
@@ -29,9 +29,30 @@ export default function App({ Component, pageProps }) {
     };
   }, [router]);
 
-  return <>
-    <Sidebar />
-    <Navbar />
+  const [registration, setRegistration] = useState('');
+
+useEffect(() => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    setRegistration(token);
+    
+
+  } else {
+    setRegistration('');
+  }
+}, [router]);
+
+
+
+return (
+  <>
+    {registration ? (
+      <>
+        <Sidebar />
+        <Navbar />
+      </>
+    ) : null}
     <Component {...pageProps} />
   </>
-}
+)
+    }

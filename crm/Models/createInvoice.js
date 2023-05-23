@@ -3,11 +3,11 @@ import mongoose from 'mongoose';
 const invoiceSchema = new mongoose.Schema({
   invoiceOwner: {
     type: String,
-    required: true,
+    required: false,
   },
   salesOrder: {
     type: String,
-    required: true,
+    required: false,
   },
   subject: {
     type: String,

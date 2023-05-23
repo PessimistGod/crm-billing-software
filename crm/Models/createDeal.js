@@ -3,11 +3,11 @@ import mongoose from 'mongoose';
 const dealSchema = new mongoose.Schema({
   dealOwner: {
     type: String,
-    required: true,
+    required: false,
   },
   dealName: {
     type: String,
-    required: true,
+    required: false,
   },
   amount: {
     type: String,

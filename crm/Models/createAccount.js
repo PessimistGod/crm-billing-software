@@ -3,15 +3,15 @@ import mongoose from 'mongoose';
 const accountSchema = new mongoose.Schema({
     imageName: {
         type: String,
-        required: true,
+        required: false,
     },
     accountOwner: {
         type: String,
-        required: true,
+        required: false,
     },
     accountName: {
         type: String,
-        required: true,
+        required: false,
     },
     accountSite: {
         type: String,
@@ -31,7 +31,7 @@ const accountSchema = new mongoose.Schema({
     },
     ownership: {
         type: String,
-        required: true,
+        required: false,
     },
     employee: {
         type: String,

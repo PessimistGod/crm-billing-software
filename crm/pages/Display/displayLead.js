@@ -13,6 +13,8 @@ const DisplayLead = ({ leads }) => {
 
   const [registration, setRegistration] = useState('');
   const router = useRouter()
+  const [perPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(1);
 
 
   useEffect(() => {
@@ -28,10 +30,24 @@ const DisplayLead = ({ leads }) => {
       console.error(error);
       router.push('/Authenticate/Login');
     }
-  }, []);
+  }, [currentPage, perPage]);
+
+
+  const totalPages = Math.ceil(leads.length / perPage);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    router.push({
+      pathname: router.pathname,
+      query: { page: page },
+    });
+  };
+  const startIndex = (currentPage - 1) * perPage;
+  const endIndex = startIndex + perPage;
+  const slicedLeads = leads.slice(startIndex, endIndex);
 
     const myLoader=({src, item})=>{
-        return `/${leads[item].imageName}`;
+        return `/${item.imageName}`;
       }
   return (
     <section className="container mx-auto p-6 font-mono">
@@ -50,35 +66,44 @@ const DisplayLead = ({ leads }) => {
               </tr>
             </thead>
             <tbody className="bg-white">
-              {leads &&
-                Object.keys(leads).filter((lead) => (leads[lead].author === registration)).map((item) => (
-                  <tr key={leads[item]._id} className="text-gray-700">
+              {slicedLeads.map((item) => (
+                  <tr key={item._id} className="text-gray-700">
                     <td className="px-4 py-3 border">
                       <div className="flex items-center text-sm">
-
-                            
-                          <div className="absolute inset-0 rounded-full shadow-inner" aria-hidden="true"></div>
                         </div>
                         <div>
-                          <p className="font-semibold text-black">{leads[item].name ? leads[item].name : <HiMinus size={16}/>}</p>
+                          <p className="font-semibold text-black">{item.name ? item.name : <HiMinus size={16}/>}</p>
  
                         </div>
 
                     </td>
-                    <td className="px-4 py-3 text-ms font-semibold border">{leads[item].company?leads[item].company : <HiMinus size={16}/>}</td>
+                    <td className="px-4 py-3 text-ms font-semibold border">{item.company?item.company : <HiMinus size={16}/>}</td>
                     <td className="px-4 py-3 text-xs border">
 
-                      {leads[item].email?leads[item].email:<HiMinus size={16}/>}
+                      {item.email?item.email:<HiMinus size={16}/>}
                     </td>
 
-                    <td className="px-4 py-3 text-sm border">{leads[item].phone?leads[item].phone : <HiMinus size={16}/>}</td>
-                    <td className="px-4 py-3 text-sm border">{leads[item].leadSource? leads[item].leadSource: <HiMinus size={16}/>}</td>
-                    <td className="px-4 py-3 text-sm border">{leads[item].leadOwner? leads[item].leadOwner: <HiMinus size={16}/>}</td>
+                    <td className="px-4 py-3 text-sm border">{item.phone?item.phone : <HiMinus size={16}/>}</td>
+                    <td className="px-4 py-3 text-sm border">{item.leadSource? item.leadSource: <HiMinus size={16}/>}</td>
+                    <td className="px-4 py-3 text-sm border">{item.leadOwner? item.leadOwner: <HiMinus size={16}/>}</td>
 
                   </tr>
                 ))}
             </tbody>
           </table>
+          <div className="flex justify-center mt-4">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                className={`px-2 py-1 mx-1 rounded-lg ${
+                  page === currentPage ? 'bg-gray-300' : 'bg-gray-200'
+                }`}
+                onClick={() => handlePageChange(page)}
+              >
+                {page}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -87,25 +112,32 @@ const DisplayLead = ({ leads }) => {
 
 export default DisplayLead;
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps({query}) {
+  const { page = 1 } = query; 
+  const perPage = 5;
   try {
     await connectDB();
+    const totalDeals = await Lead.countDocuments(); 
+    const totalPages = Math.ceil(totalDeals / perPage); 
+    const leads = await Lead.find({}, { updatedAt: 0 }).lean().sort({ createdAt: -1 });
 
-    const leads = await Lead.find({}, { _id: 0, updatedAt: 0 }).lean();
+
 
     return {
       props: {
         leads: leads.map((lead) => ({
           ...lead,
+          _id:lead._id?String(lead._id):'',
           author: (lead.author) ? ((JSON.stringify(lead.author)).slice(1,-1)) : '',
           createdAt: lead.createdAt.toISOString(),
         })),
+        totalPages,
     },
     };
   } catch (error) {
     console.log(error);
     return {
-      props: { leads: [] },
+      props: { leads: [], totalPages: 0 },
     };
   }
 }

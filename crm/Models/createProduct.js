@@ -3,15 +3,15 @@ import mongoose from 'mongoose';
 const productSchema = new mongoose.Schema({
   imageName: {
     type: String,
-    required: true,
+    required: false,
   },
   productInfo: {
     type: String,
-    required: true,
+    required: false,
   },
   productOwner: {
     type: String,
-    required: true,
+    required: false,
   },
   productCode: {
     type: String,

@@ -3,19 +3,23 @@ import mongoose from 'mongoose';
 const contactSchema = new mongoose.Schema({
     imageName: {
         type: String,
-        required: true,
+        required: false,
     },
     contactOwner: {
         type: String,
-        required: true,
+        required: false,
     },
     companyName: {
         type: String,
-        required: true,
+        required: false,
     },
     vendorName: {
         type: String,
         required: false,
+    },
+    accountName:{
+        type:String,
+        required:false,
     },
     jobTitle: {
         type: String,
