@@ -147,6 +147,14 @@ subTotal:{
   createDate: {
     type: String,
     required: false,
+  },
+  converted:{
+    type:Boolean,
+    default: false,
+  },
+  template:{
+    type:String,
+    required:false,
   }
 }, { timestamps: true });
 

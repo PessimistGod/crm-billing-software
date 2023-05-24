@@ -23,6 +23,10 @@ const CreateCompany = ({ company, images }) => {
   const [companyZipcode, setCompanyZipcode] = useState("")
   const [companyCountry, setCompanyCountry] = useState("")
   const [companyWebsite, setCompanyWebsite] = useState("")
+  const [companyPhone, setCompanyPhone] = useState("")
+  const [companyEmail, setCompanyEmail] = useState("")
+
+
   const [registration, setRegistration] = useState("")
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedImagePreview, setSelectedImagePreview] = useState(null);
@@ -124,7 +128,7 @@ const CreateCompany = ({ company, images }) => {
         });
       }
     } catch (error) {
-      console.error(error);
+      console.error(error); 
       toast.error('Error Occurred While Uploading', {
         position: "top-center",
         autoClose: 1100,
@@ -159,12 +163,18 @@ const CreateCompany = ({ company, images }) => {
     } if (e.target.name == 'companyWebsite') {
       setCompanyWebsite(e.target.value)
     }
+    if (e.target.name == 'companyPhone') {
+      setCompanyPhone(e.target.value)
+    }
+    if (e.target.name == 'companyEmail') {
+      setCompanyEmail(e.target.value)
+    }
 
   }
 
   const handleSubmit = async () => {
     try {
-      const data = { ownerName, companyName, gstin, companyStreet, companyCity, companyState, companyCountry, companyZipcode, companyWebsite, author: registration };
+      const data = { ownerName, companyName, gstin, companyStreet, companyCity, companyState,companyEmail, companyCountry, companyZipcode,companyPhone, companyWebsite, author: registration };
 
       let CreateCompany = await fetch(`/api/Authenticate/companyRegister`, {
         method: "POST",
@@ -207,11 +217,12 @@ const CreateCompany = ({ company, images }) => {
         setCompanyZipcode("")
         setCompanyCountry("")
         setCompanyWebsite("")
+        setCompanyPhone("")
+        setCompanyEmail("")
+
         router.push('/Create/createCompany')
 
       }
-
-
 
     } catch (error) {
       console.log(error)
@@ -317,13 +328,35 @@ const CreateCompany = ({ company, images }) => {
                 </div>
               </div>
               <div className='grid md:grid-cols-2'>
+              <div className="bg-white flex min-h-[60px] flex-col-reverse justify-center rounded-md border border-gray-300 p-1 mx-2 shadow-sm focus-within:shadow-inner my-2">
+                  <div className="relative">
+                    <input onChange={handleChange} value={companyPhone} type="text" name="companyPhone" id="companyPhone" placeholder='+91 992121XXXX' className="block w-full py-2 px-3 rounded-md border-2 border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent transition duration-200 ease-in-out" />
+                    <label htmlFor="companyPhone" className="absolute -top-2 left-1 -mt-px text-xs font-medium text-gray-400 bg-white px-1 peer-placeholder-shown:transform peer-placeholder-shown:text-xs peer-placeholder-shown:font-bold peer-placeholder-shown:uppercase peer-placeholder-shown:transition-opacity peer-placeholder-shown:duration-200 peer-placeholder-shown:-translate-y-full peer-placeholder-shown:opacity-0">Phone</label>
+                  </div>
+                </div>
+
                 <div className="bg-white flex min-h-[60px] flex-col-reverse justify-center rounded-md border border-gray-300 p-1 mx-2 shadow-sm focus-within:shadow-inner my-2">
+                  <div className="relative">
+                    <input onChange={handleChange} value={companyEmail} type="text" name="companyEmail" id="companyEmail" placeholder='john@mail.com' className="block w-full py-2 px-3 rounded-md border-2 border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent transition duration-200 ease-in-out" />
+                    <label htmlFor="companyEmail" className="absolute -top-2 left-1 -mt-px text-xs font-medium text-gray-400 bg-white px-1 peer-placeholder-shown:transform peer-placeholder-shown:text-xs peer-placeholder-shown:font-bold peer-placeholder-shown:uppercase peer-placeholder-shown:transition-opacity peer-placeholder-shown:duration-200 peer-placeholder-shown:-translate-y-full peer-placeholder-shown:opacity-0">Email</label>
+                  </div>
+                </div>
+             
+              </div>
+
+
+              <div className='grid md:grid-cols-2'>
+
+
+              <div className="bg-white flex min-h-[60px] flex-col-reverse justify-center rounded-md border border-gray-300 p-1 mx-2 shadow-sm focus-within:shadow-inner my-2">
                   <div className="relative">
                     <input onChange={handleChange} value={companyWebsite} type="text" name="companyWebsite" id="companyWebsite" placeholder='www.domain.com' className="block w-full py-2 px-3 rounded-md border-2 border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent transition duration-200 ease-in-out" />
                     <label htmlFor="companyWebsite" className="absolute -top-2 left-1 -mt-px text-xs font-medium text-gray-400 bg-white px-1 peer-placeholder-shown:transform peer-placeholder-shown:text-xs peer-placeholder-shown:font-bold peer-placeholder-shown:uppercase peer-placeholder-shown:transition-opacity peer-placeholder-shown:duration-200 peer-placeholder-shown:-translate-y-full peer-placeholder-shown:opacity-0">Website</label>
                   </div>
                 </div>
-              </div>
+                </div>
+
+
               <div className='flex items-center justify-end'>
                 <button onClick={handleSubmit} className='px-10 py-4 bg-blue-500 text-black rounded-lg hover:bg-blue-600 hover:text-white'>Create Company</button>
               </div>

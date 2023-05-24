@@ -32,8 +32,9 @@ const DisplayLead = ({ leads }) => {
     }
   }, [currentPage, perPage]);
 
-
-  const totalPages = Math.ceil(leads.length / perPage);
+  const filteredLeads = leads.filter((deal) => deal.author === registration);
+  const totalFilteredLeads = filteredLeads.length;
+  const totalPages = Math.ceil(totalFilteredLeads / perPage);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -44,7 +45,7 @@ const DisplayLead = ({ leads }) => {
   };
   const startIndex = (currentPage - 1) * perPage;
   const endIndex = startIndex + perPage;
-  const slicedLeads = leads.slice(startIndex, endIndex);
+  const slicedLeads = filteredLeads.slice(startIndex, endIndex);
 
     const myLoader=({src, item})=>{
         return `/${item.imageName}`;
@@ -91,19 +92,27 @@ const DisplayLead = ({ leads }) => {
                 ))}
             </tbody>
           </table>
-          <div className="flex justify-center mt-4">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-              <button
-                key={page}
-                className={`px-2 py-1 mx-1 rounded-lg ${
-                  page === currentPage ? 'bg-gray-300' : 'bg-gray-200'
-                }`}
-                onClick={() => handlePageChange(page)}
-              >
-                {page}
-              </button>
-            ))}
-          </div>
+          {totalFilteredLeads > perPage && (
+  <div className="flex justify-center mt-4 py-2">
+    <ul className="flex space-x-1">
+      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+        <li key={page} aria-current={page === currentPage ? 'page' : undefined}>
+          <a
+            className={`px-2 py-1 mx-1 rounded-lg ${
+              page === currentPage ? 'bg-gray-300' : 'bg-gray-200'
+            }`}
+            href="#!"
+            onClick={() => handlePageChange(page)}
+          >
+            <span className="sr-only">{page}</span>
+            {page}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+
         </div>
       </div>
     </section>

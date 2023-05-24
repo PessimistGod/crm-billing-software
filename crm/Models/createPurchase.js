@@ -143,7 +143,15 @@ subTotal:{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Signup',
     required: true,
-  }
+  },
+  converted:{
+    type:Boolean,
+    default: false,
+  },
+  template:{
+    type:String,
+    required:false,
+  },
 }, { timestamps: true });
 
 mongoose.models = {}

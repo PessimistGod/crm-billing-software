@@ -29,8 +29,9 @@ const DisplayAccount = ({ accounts }) => {
     }
   }, [currentPage, perPage]);
 
-
-  const totalPages = Math.ceil(accounts.length / perPage);
+  const filteredAccounts = accounts.filter((deal) => deal.author === registration);
+  const totalFilteredAccounts = filteredAccounts.length;
+  const totalPages = Math.ceil(totalFilteredAccounts / perPage);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -41,7 +42,7 @@ const DisplayAccount = ({ accounts }) => {
   };
   const startIndex = (currentPage - 1) * perPage;
   const endIndex = startIndex + perPage;
-  const slicedAccounts = accounts.slice(startIndex, endIndex);
+  const slicedAccounts = filteredAccounts.slice(startIndex, endIndex);
 
   
   const myLoader = ({ src, item }) => {
@@ -74,19 +75,26 @@ const DisplayAccount = ({ accounts }) => {
                 ))}
             </tbody>
           </table>
-          <div className="flex justify-center mt-4">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-              <button
-                key={page}
+          {totalFilteredAccounts  > perPage && (
+        <div className="flex justify-center mt-4 py-2">
+        <ul className="flex space-x-1">
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <li key={page} aria-current={page === currentPage ? 'page' : undefined}>
+              <a
                 className={`px-2 py-1 mx-1 rounded-lg ${
                   page === currentPage ? 'bg-gray-300' : 'bg-gray-200'
                 }`}
+                href="#!"
                 onClick={() => handlePageChange(page)}
               >
+                <span className="sr-only">{page}</span>
                 {page}
-              </button>
-            ))}
-          </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+          )}
         </div>
       </div>
     </section>
@@ -103,7 +111,7 @@ export async function getServerSideProps({query}) {
     await connectDB();
     const totalDeals = await Account.countDocuments(); 
     const totalPages = Math.ceil(totalDeals / perPage); 
-    const accounts = await Account.find({}, { updatedAt: 0 }).lean().sort({ createdAt: -1 });;
+    const accounts = await Account.find({}, { updatedAt: 0 }).lean().sort({ createdAt: -1 });
 
     return {
       props: {

@@ -12,6 +12,7 @@ export default async function saleCreate(req, res) {
           return res.status(400).json({ error: field.message });
         }
       }
+      
       await sale.save();
       res.status(201).json({ success: 'Sale created successfully' });
     }

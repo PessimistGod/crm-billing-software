@@ -18,19 +18,16 @@ const DisplayAccount = ({ sales }) => {
   const [endDate, setEndDate] = useState('');
   const [selectValue, setSelectValue] = useState('');
 
-
-  const filteredSalesWithSelect = sales .filter((sale) => {
+  const filteredSalesWithSelect = sales.filter((sale) => {
     if (selectValue === '') {
-      return true; // No select value, include all sales
+      return true;
     } else {
-      return sale.dealName.startsWith(selectValue); // Filter based on the select value
+      return sale.subject.startsWith(selectValue); 
     }
   });
 
-  console.log(filteredSalesWithSelect);
-  // You can update the state or perform any other action based on the filtered data
-
-
+  const [perPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -45,44 +42,51 @@ const DisplayAccount = ({ sales }) => {
       console.error(error);
       router.push('/Authenticate/Login');
     }
-  }, []);
-  const myLoader = ({ src, item }) => {
-    return `/${sales[item].imageName}`;
+  }, [currentPage, perPage]);
+
+  const filteredSales = sales
+.filter((deal) => deal.author === registration)
+.filter((sale) => {
+  if (selectValue === '') {
+    return true;
+  } else {
+    return sale.subject.toLowerCase().startsWith(selectValue);
   }
+});
 
-console.log(sales.map(item=>item.createdAt))
+  const totalFilteredSales = filteredSales.length;
+  const totalPages = Math.ceil(totalFilteredSales / perPage);
 
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    router.push({
+      pathname: router.pathname,
+      query: { page: page, startDate: startDate || '', endDate: endDate || '',selectValue: selectValue || '', },
+    });
+  };
+const startIndex = (currentPage - 1) * perPage;
+const endIndex = startIndex + perPage;
+const slicedSales = filteredSales.slice(startIndex, endIndex);
 
-// function handleDateFilter(startDate, endDate) {
-//   const parsedStartDate = new Date(startDate);
-//   const parsedEndDate = new Date(endDate);
-  
-//   if (!isNaN(parsedStartDate) && !isNaN(parsedEndDate)) {
-//     console.log("Parsed start date:", parsedStartDate.toISOString());
-//     console.log("Parsed end date:", parsedEndDate.toISOString());
-
-//     const myDateFilter = sales.filter((filtSale) => {
-//       const saleDate = new Date(filtSale.createdAt);
-//       console.log("Parsed sale date:", saleDate.toISOString());
-//       return !isNaN(saleDate) && saleDate >= parsedStartDate && saleDate <= parsedEndDate;
-//     }).map((sale) => sale);
-
-//     console.log("Filtered sales:", myDateFilter);
-
-//     return myDateFilter; // Return the filtered sales array if needed
-//   }
-// }
-
-
-function handleResetFilter(e){
+function handleResetFilter(e) {
   setStartDate('');
-  setEndDate('')
+  setEndDate('');
+  setSelectValue('')
+  router.push('/Display/displaySales')
 }
-
   
+const handleConvert= async(id)=>{
+  // const response = await fetch(`/api/Update/approveSaleConvert?id=${id}`, { method: 'PUT' });
+  //     const data = await response.json();
+      if (id) {
+        router.push({
+          pathname: '/Display/displayTemplates',
+          query: { id: id }
+      })
+}
  
   
-  
+}
   return (
     <>
 <div className='flex justify-end px-2 py-4'><SaveAsPDFButton /></div>
@@ -187,35 +191,63 @@ function handleResetFilter(e){
                 </tr>
               </thead>
               <tbody className="bg-white">
-                {sales &&
-                Object.keys(sales)
-                .filter(
-                  (sale) =>
-                    sales[sale].author === registration  && (startDate === '' || sales[sale].createdAt >= startDate) && (endDate === '' || sales[sale].createdAt <= endDate)
-                ).filter((sale) => {
-                  if (selectValue === '') {
-                    return true; 
-                  } else {
-                    return sales[sale].dealName.startsWith(selectValue); 
-                  }
-                }).map((item) => (
-                      <tr key={sales[item]._id} className="text-gray-700">
-                        <td className="px-4 py-3 text-sm border">{sales[item].subject?sales[item].subject:<HiMinus size={16}/>}</td>
+              {slicedSales
+                  .filter(
+                    (sale) =>
+                      (startDate === '' || sale.createdAt >= startDate) &&
+                      (endDate === '' || sale.createdAt <= endDate)
+                  )
+                  .filter((sale) => {
+                    if (selectValue === '') {
+                      return true;
+                    } else {
+                      const lowerCaseSelectValue = selectValue.toLowerCase();
+      const upperCaseSelectValue = selectValue.toUpperCase();
+      const subject = sale.subject.toLowerCase();
+      return (
 
-                        <td className="px-4 py-3 text-sm border">{sales[item].status?sales[item].status:<HiMinus size={16}/>}</td>
-                        <td className="px-4 py-3 text-sm border">{sales[item].grandTotal?sales[item].grandTotal:<HiMinus size={16}/>}</td>
-                        <td className="px-4 py-3 text-sm border">{sales[item].dealName?sales[item].dealName:<HiMinus size={16}/>}</td>
-                        <td className="px-4 py-3 text-sm border">{sales[item].contactName?sales[item].contactName:<HiMinus size={16}/>}</td>
-                        <td className="px-4 py-3 text-sm border">{sales[item].accName?sales[item].accName:<HiMinus size={16}/>}</td>
+        subject.startsWith(lowerCaseSelectValue) ||
+        subject.startsWith(upperCaseSelectValue)  
+      );
+                    }
+                  })
+                  .map((item) => (
+                      <tr key={item._id} className="text-gray-700">
+                        <td className="px-4 py-3 text-sm border">{item.subject?item.subject:<HiMinus size={16}/>} {!item.converted && <button className='px-2 py-1 bg-red-300 ml-10 hover:bg-red-400 text-black hover:text-white font-semibold rounded-lg' onClick={(e)=>handleConvert(item._id)}>Convert Sale</button>}</td>
+
+                        <td className="px-4 py-3 text-sm border">{item.status?item.status:<HiMinus size={16}/>}</td>
+                        <td className="px-4 py-3 text-sm border">{item.grandTotal?item.grandTotal:<HiMinus size={16}/>}</td>
+                        <td className="px-4 py-3 text-sm border">{item.dealName?item.dealName:<HiMinus size={16}/>}</td>
+                        <td className="px-4 py-3 text-sm border">{item.contactName?item.contactName:<HiMinus size={16}/>}</td>
+                        <td className="px-4 py-3 text-sm border">{item.accName?item.accName:<HiMinus size={16}/>}</td>
 
                 
 
-                        <td className="px-4 py-3 text-sm border">{sales[item].salesOwner}</td>
+                        <td className="px-4 py-3 text-sm border">{item.salesOwner?item.salesOwner:<HiMinus size={16}/>}</td>
 
                        </tr>
                     ))}
               </tbody>
             </table>
+  
+            <div className="flex justify-center mt-4 py-2">
+    <ul className="flex space-x-1">
+      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+        <li key={page} aria-current={page === currentPage ? 'page' : undefined}>
+          <a
+            className={`px-2 py-1 mx-1 rounded-lg ${
+              page === currentPage ? 'bg-gray-300' : 'bg-gray-200'
+            }`}
+            href="#!"
+            onClick={() => handlePageChange(page)}
+          >
+            <span className="sr-only">{page}</span>
+            {page}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
           </div>
         </div>
       </section>
@@ -225,23 +257,39 @@ function handleResetFilter(e){
 
 export default DisplayAccount;
 
-export async function getServerSideProps(context) {
+
+
+
+
+export async function getServerSideProps({ query }) {
+  const { page = 1, startDate, endDate } = query;
+  const perPage = 5;
+
   try {
     await connectDB();
 
-    const { startDate, endDate } = context.query;
-
     let sales;
+    let totalFilteredSales;
     if (startDate && endDate) {
-      sales = await Sales.find({
-        createdAt: {
-          $gte: new Date(startDate),
-          $lte: new Date(endDate),
+      sales = await Sales.find(
+        {
+          createdAt: {
+            $gte: new Date(startDate),
+            $lte: new Date(endDate),
+          },
         },
-      }, { updatedAt: 0 }).lean();
+        { updatedAt: 0 }
+      )
+        .lean()
+        .sort({ createdAt: -1 });
+
+      totalFilteredSales = sales.length;
     } else {
-      sales = await Sales.find({}, { updatedAt: 0 }).lean();
+      sales = await Sales.find({}, { updatedAt: 0 }).lean().sort({ createdAt: -1 });
+      totalFilteredSales = sales.length;
     }
+
+    const totalPages = Math.ceil(totalFilteredSales / perPage);
 
     return {
       props: {
@@ -255,12 +303,13 @@ export async function getServerSideProps(context) {
           author: sale.author ? String(sale.author) : '',
           createdAt: sale.createdAt.toISOString(),
         })),
+        totalPages,
       },
     };
   } catch (error) {
     console.log(error);
     return {
-      props: { sales: [] },
+      props: { sales: [], totalPages: 0 },
     };
   }
 }

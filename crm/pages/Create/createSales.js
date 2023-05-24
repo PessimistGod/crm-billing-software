@@ -160,6 +160,9 @@ const createSales = ({ companies }) => {
         if (e.target.name == 'billingCountry') {
             setBillingCountry(e.target.value)
         }
+        if (e.target.name == 'shippingStreet') {
+            setShippingStreet(e.target.value)
+        }
         if (e.target.name == 'shippingCity') {
             setShippingCity(e.target.value)
         }
@@ -628,10 +631,10 @@ const createSales = ({ companies }) => {
                                 Amount
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Tax
+                                Tax in %
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Discount
+                                Discount in %
                             </th>
 
                             <th scope="col" className="px-6 py-3">
@@ -728,7 +731,7 @@ const createSales = ({ companies }) => {
                             <td className="px-6 py-4">
                                 <input
                                     type="text"
-                                    value={selectedProducts[index]?.tax}
+                                    value={selectedProducts[index]?.tax || 0}
                                     className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-2 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500 w-24"
                                     readOnly
                                 />

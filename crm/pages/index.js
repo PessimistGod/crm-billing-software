@@ -38,10 +38,10 @@ const Home = ({ company, images }) => {
     : (
       <Link href="/Create/createCompany">
         
-        <div><Image src={'/greet.jpg'} width={500} height={650} /></div>
-        <div className='flex justify-center items-center'>
-          <button className="px-8 mt-5 py-3 bg-blue-600">Add Company</button>
+        <div className='flex justify-center flex-col items-center h-screen'>
+        <Image src={'/greet.jpg'} width={500} height={650} />
 
+          <button className="px-8 mt-5 py-3 bg-blue-600">Add Company</button>
         </div>
 
       </Link>
@@ -60,88 +60,81 @@ const Home = ({ company, images }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <section className="container bg- flex items-center justify-center h-screen flex-col">
+      <section className="">
+  {addButton}
+  {company &&
+    company.some(item => item.author === registration) &&
+    images.some(item => item.author === registration) &&
+    company
+      .filter(item => item.author === registration)
+      .map(item => (
+        <div key={item._id} className="h-screen bg-gray-200 pt-20">
+          <div className="max-w-sm mx-auto bg-white rounded-lg overflow-hidden shadow-lg">
+            <div className="border-b px-4 pb-6">
+              <div className="text-center my-4">
+              {filteredImages.map(item=>(
 
-
-
-
-        {addButton}
-        {company &&
-         (company.some(item => item.author === registration) && images.some(item => item.author === registration)) &&
-          
-              company.filter((item) => item.author === registration)
-            .map((item) => (
-              <div key={item._id}>
-
-                <div className='w-100'>
-                  <div >
-
-                    <div className="bg-white relative px-24 shadow rounded-lg  mx-auto py-10">
-                    {filteredImages.map((item) => (
-                      <Image className='object-contain' src={`/uploads/${item.url.slice(15)}`} width={300} height={350} alt='image'/>
-
-                    ))}
-                      <div className="mt-8">
-                        <h1 className="font-bold text-center text-3xl text-gray-900">{item.companyName}</h1>
-                        <p className="text-center text-sm text-gray-400 font-medium">{item.gstin}</p>
-                        <p>
-                          <span>
-
-                          </span>
-                        </p>
-                        <div className="my-5 px-6">
-                          <a target='_blank' href={`http://${item.companyWebsite}`} className="text-gray-200 block rounded-lg text-center font-medium leading-6 px-6 py-3 bg-gray-900 hover:bg-black hover:text-white">Website: <span className="font-bold">{item.companyWebsite}</span></a>
-                        </div>
-
-
-                        <div className="w-full">
-                          <h3 className="font-medium text-gray-900 text-left px-6">Details</h3>
-                          <div className="mt-5 w-full flex flex-col items-center overflow-hidden text-sm">
-                            <a className="border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150">
-
-                              Your Name:
-                              <span className="text-gray-500 text-xs px-2">{item.ownerName}</span>
-                            </a>
-
-                            <a href="#" className="border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150">
-
-                              Added new profile picture
-                              <span className="text-gray-500 text-xs">42 min ago</span>
-                            </a>
-
-                            <a href="#" className=" border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150">
-
-                              Posted new article in <span className="font-bold">#Web Dev</span>
-                              <span className="text-gray-500 text-xs">49 min ago</span>
-                            </a>
-
-                            <a href="#" className=" border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150">
-
-                              Edited website settings
-                              <span className="text-gray-500 text-xs">1 day ago</span>
-                            </a>
-
-                            <a href="#" className="border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150 overflow-hidden">
-
-                              Added new rank
-                              <span className="text-gray-500 text-xs">5 days ago</span>
-                            </a>
-
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                <Image width={300} height={350} alt='image' key={item._id}
+                className="h-32 w-32 rounded-full border-4 border-white mx-auto my-4"
+                src={`/uploads/${item.url.slice(15)}`}
+                />
+                ))}
+                <div className="py-2">
+                  <h3 className="font-bold text-2xl mb-1">{item.companyName.toUpperCase()}</h3>
+                  <div className="inline-flex text-gray-700 items-center">
+                    <svg
+                      className="h-5 w-5 text-gray-400 mr-1"
+                      fill="currentColor"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      height="24"
+                    >
+                      <path
+                        className=""
+                        d="M5.64 16.36a9 9 0 1 1 12.72 0l-5.65 5.66a1 1 0 0 1-1.42 0l-5.65-5.66zm11.31-1.41a7 7 0 1 0-9.9 0L12 19.9l4.95-4.95zM12 14a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0-2a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"
+                      />
+                    </svg>
+                    {item.companyState}, {item.companyCountry}
                   </div>
                 </div>
+                <div className="bg-white rounded-lg p-4 mb-4">
+  <div className="flex justify-between mb-2">
+    <div className="font-semibold">Your Name:</div>
+    <div className="font-bold">{item.ownerName}</div>
+  </div>
+
+  <div className="flex justify-between mb-2">
+    <div className="font-semibold">Company Name:</div>
+    <div className="font-bold">{item.companyName}</div>
+  </div>
+
+  <div className="flex justify-between mb-2">
+    <div className="font-semibold">Your Website:</div>
+    <a className="font-bold" href={`http://${item.companyWebsite}`}>
+      {item.companyWebsite}
+    </a>
+  </div>
+
+  <div className="flex justify-between">
+    <div className="font-semibold">Your GSTIN:</div>
+    <div className="font-bold">{item.gstin}</div>
+  </div>
+</div>
+
+             
               </div>
+            </div>
+            
+          </div>
+        </div>
+      ))}
+</section>
 
 
-            ))}
 
 
 
-
-      </section>
     </>
   );
 };

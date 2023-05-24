@@ -28,7 +28,10 @@ const DisplayContact = ({ contacts }) => {
     }
   }, [currentPage, perPage]);
 
-  const totalPages = Math.ceil(contacts.length / perPage);
+
+  const filteredContacts = contacts.filter((deal) => deal.author === registration);
+  const totalFilteredContacts = filteredContacts.length;
+  const totalPages = Math.ceil(totalFilteredContacts / perPage);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -39,7 +42,7 @@ const DisplayContact = ({ contacts }) => {
   };
   const startIndex = (currentPage - 1) * perPage;
   const endIndex = startIndex + perPage;
-  const slicedContacts = contacts.slice(startIndex, endIndex);
+  const slicedContacts = filteredContacts.slice(startIndex, endIndex);
 
     const myLoader=({src, item})=>{
         return `/${contacts[item].imageName}`;
@@ -65,7 +68,7 @@ const DisplayContact = ({ contacts }) => {
                   <tr key={item._id} className="text-gray-700">
               
                     <td className="px-4 py-3 text-ms font-semibold border">{item.companyName?item.companyName:<HiMinus size={16}/>}</td>
-                    <td className="px-4 py-3 text-sm border">{item.companyName?item.accountName:<HiMinus size={16}/>}</td>
+                    <td className="px-4 py-3 text-sm border">{item.accountName?item.accountName:<HiMinus size={16}/>}</td>
                     <td className="px-4 py-3 text-sm border">{item.email?item.email:<HiMinus size={16}/>}</td>
                     <td className="px-4 py-3 text-sm border">{item.phone?item.phone:<HiMinus size={16}/>}</td> 
                     <td className="px-4 py-3 text-sm border">{item.contactOwner?item.contactOwner:<HiMinus size={16}/>}</td> 
@@ -73,19 +76,26 @@ const DisplayContact = ({ contacts }) => {
                 ))}
             </tbody>
           </table>
-          <div className="flex justify-center mt-4">
+          {totalFilteredContacts  > perPage && (
+          <div className="flex justify-center mt-4 py-2">
+          <ul className="flex space-x-1">
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-              <button
-                key={page}
-                className={`px-2 py-1 mx-1 rounded-lg ${
-                  page === currentPage ? 'bg-gray-300' : 'bg-gray-200'
-                }`}
-                onClick={() => handlePageChange(page)}
-              >
-                {page}
-              </button>
+              <li key={page} aria-current={page === currentPage ? 'page' : undefined}>
+                <a
+                  className={`px-2 py-1 mx-1 rounded-lg ${
+                    page === currentPage ? 'bg-gray-300' : 'bg-gray-200'
+                  }`}
+                  href="#!"
+                  onClick={() => handlePageChange(page)}
+                >
+                  <span className="sr-only">{page}</span>
+                  {page}
+                </a>
+              </li>
             ))}
-          </div>
+          </ul>
+        </div>
+          )}
         </div>
       </div>
     </section>

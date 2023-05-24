@@ -207,17 +207,17 @@ const router = useRouter()
                     progress: undefined,
                     theme: "light",
                 });
-                router.push(
-                    {
-                      pathname: '/Create/Invoice/selectTemplate', // not router.asPath
-                      query: { 
-                        ...data,
-                        rowSn: data.rows.sn,
-                        rowProdName: data.rows.prodName,
-                        rowQty: data.rows.qty,
-                    },
-                    }
-                )
+                // router.push(
+                //     {
+                //       pathname: '/Create/Invoice/selectTemplate', // not router.asPath
+                //       query: { 
+                //         ...data,
+                //         rowSn: data.rows.sn,
+                //         rowProdName: data.rows.prodName,
+                //         rowQty: data.rows.qty,
+                //     },
+                //     }
+                // )
 
                 setPurchaseOwner("")
                 setVendorName("")
@@ -567,10 +567,10 @@ const router = useRouter()
                                 Amount
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Tax
+                                Tax in %
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Discount
+                                Discount in %
                             </th>
 
                             <th scope="col" className="px-6 py-3">

@@ -12,6 +12,8 @@ const DisplayAccount = ({ products }) => {
 
   const router = useRouter()
   const [registration, setRegistration] = useState('');
+  const [perPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -26,7 +28,24 @@ const DisplayAccount = ({ products }) => {
       console.error(error);
       router.push('/Authenticate/Login');
     }
-  }, []);
+  }, [currentPage, perPage]);
+
+  const filteredProducts = products.filter((deal) => deal.author === registration);
+  const totalFilteredProducts = filteredProducts.length;
+  const totalPages = Math.ceil(totalFilteredProducts / perPage);
+
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    router.push({
+      pathname: router.pathname,
+      query: { page: page },
+    });
+  };
+  const startIndex = (currentPage - 1) * perPage;
+  const endIndex = startIndex + perPage;
+  const slicedProducts = filteredProducts.slice(startIndex, endIndex);
+
     const myLoader=({src, item})=>{
         return `/${products[item].imageName}`;
       }
@@ -47,25 +66,44 @@ const DisplayAccount = ({ products }) => {
               </tr>
             </thead>
             <tbody className="bg-white">
-              {products &&
-                Object.keys(products).filter((product) => (products[product].author === registration)).map((item) => (
-                  <tr key={products[item]._id} className="text-gray-700">
-                    <td className="px-4 py-3 text-sm border">{products[item].productName?products[item].productName:<HiMinus size={16}/>}</td>
-                    <td className="px-4 py-3 text-sm border">{products[item].productCode?products[item].productCode:<HiMinus size={16}/>}</td>
+            {slicedProducts.map((item) => (
+                  <tr key={item._id} className="text-gray-700">
+                    <td className="px-4 py-3 text-sm border">{item.productName?item.productName:<HiMinus size={16}/>}</td>
+                    <td className="px-4 py-3 text-sm border">{item.productCode?item.productCode:<HiMinus size={16}/>}</td>
 
-                    <td className="px-4 py-3 text-sm border">{products[item].unitPrice?products[item].unitPrice:<HiMinus size={16}/>}</td>
-                    <td className="px-4 py-3 text-sm border">{products[item].qty?products[item].qty:<HiMinus size={16}/>}</td>
+                    <td className="px-4 py-3 text-sm border">{item.unitPrice?item.unitPrice:<HiMinus size={16}/>}</td>
+                    <td className="px-4 py-3 text-sm border">{item.qty?item.qty:<HiMinus size={16}/>}</td>
 
 
               
-                    <td className="px-4 py-3 text-sm border">{products[item].vendorName?products[item].vendorName:<HiMinus size={16}/>}</td>
-                    <td className="px-4 py-3 text-sm border">{products[item].productOwner?products[item].productOwner:<HiMinus size={16}/>}</td> 
+                    <td className="px-4 py-3 text-sm border">{item.vendorName?item.vendorName:<HiMinus size={16}/>}</td>
+                    <td className="px-4 py-3 text-sm border">{item.productOwner?item.productOwner:<HiMinus size={16}/>}</td> 
 
 
                   </tr>
                 ))}
             </tbody>
           </table>
+          {totalFilteredProducts > perPage && (
+         <div className="flex justify-center mt-4 py-2">
+         <ul className="flex space-x-1">
+           {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+             <li key={page} aria-current={page === currentPage ? 'page' : undefined}>
+               <a
+                 className={`px-2 py-1 mx-1 rounded-lg ${
+                   page === currentPage ? 'bg-gray-300' : 'bg-gray-200'
+                 }`}
+                 href="#!"
+                 onClick={() => handlePageChange(page)}
+               >
+                 <span className="sr-only">{page}</span>
+                 {page}
+               </a>
+             </li>
+           ))}
+         </ul>
+       </div>
+          )}
         </div>
       </div>
     </section>
@@ -74,11 +112,14 @@ const DisplayAccount = ({ products }) => {
 
 export default DisplayAccount;
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps({query}) {
+  const { page = 1 } = query; 
+  const perPage = 5;
   try {
     await connectDB();
-
-    const products = await ProductList.find({}, { updatedAt: 0 }).lean();
+    const totalDeals = await ProductList.countDocuments(); 
+    const totalPages = Math.ceil(totalDeals / perPage); 
+    const products = await ProductList.find({}, { updatedAt: 0 }).lean().sort({ createdAt: -1 });
 
     return {
       props: {
@@ -88,13 +129,14 @@ export async function getServerSideProps(context) {
           author: (product.author) ? ((JSON.stringify(product.author)).slice(1,-1)) : '',
           createdAt: product.createdAt.toISOString(),
         })),
+        totalPages,
       },
     };
   } 
   catch (error) {
     console.log(error);
     return {
-      props: { products: [] },
+      props: { products: [], totalPages:0 },
     };
   }
 }

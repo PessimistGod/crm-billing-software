@@ -38,6 +38,14 @@ const companySchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  companyPhone:{
+    type: String,
+    required: true,
+  },
+  companyEmail:{
+    type: String,
+    required: true,
+  },
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Signup',

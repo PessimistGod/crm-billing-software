@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { RiUser3Fill } from 'react-icons/ri'
 import { RxHamburgerMenu } from 'react-icons/rx'
+import { AiOutlinePlus } from 'react-icons/ai'
+
 import { MdClose } from 'react-icons/md'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -84,9 +86,9 @@ const Navbar = () => {
             <div className="w-60 max-w-full px-4">
               <Link href={'#'} className="block w-full py-5">
                 <Image width={300} height={10}
-                  src=""
+                  src="/crmLogo.jpg"
                   alt="logo"
-                  className="w-full"
+                  className="w-16 px-2 ml-6 object-contain mix-blend-color-burn"
                 />
               </Link>
             </div>
@@ -163,15 +165,47 @@ const Navbar = () => {
                             <Link href={'/Display/displayVendor'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-3">Vendors</Link>
                           </div>
                           <div className="py-1" role="none">
-                            <Link href={'/Display/displayInvoice'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-4">Invoices</Link>
+  <div className="relative group">
+    <Link
+      href={'#'}
+      className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600"
+      role="menuitem"
+      tabIndex="-1"
+      id="menu-item-4"
+    >
+      Invoices <span className="ml-1">&#8250;</span>
+    </Link>
+    <div className="absolute -top-3 left-full mt-2 opacity-0 group-hover:opacity-100 bg-white shadow-md ">
+      <Link
+        href={'#'}
+        className="text-gray-700 block px-10 w-48 py-2 text-sm hover:text-blue-600 border-b-[0.5px]"
+        role="menuitem"
+        tabIndex="-1"
+        id="menu-item-5"
+      >
+        Sales Invoice
+      </Link>
+      <Link
+        href={'#'}
+        className="text-gray-700 block px-10 w-48 py-2 text-sm hover:text-blue-600"
+        role="menuitem"
+        tabIndex="-1"
+        id="menu-item-6"
+      >
+        Purchase Invoice
+      </Link>
+    </div>
+  </div>
+</div>
 
-                          </div>
-                          <div className="py-1" role="none">
+
+
+                          {/* <div className="py-1" role="none">
                             <Link href={'#'} className="text-gray-700 px-4 py-2 text-sm flex items-center" role="menuitem" tabIndex="-1" id="menu-item-6"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4 mr-1">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
                             </svg>
                               New Module</Link>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
 
@@ -200,25 +234,25 @@ const Navbar = () => {
                       </button>
                     </div >
                     <div id='additionalRightMenuID' onMouseLeave={RightDisplayDrop} className="absolute hidden right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex="-1" >
-                      <div className="py-1" role="none">
-                        <Link href={'/Create/createLead'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-0">Create Lead</Link>
-                        <Link href={'/Create/createContact'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-1">Create Contact</Link>
+                      <div className="py-1 " role="none">
+                        <Link href={'/Create/createLead'} className="text-gray-700 px-4 py-2 text-sm flex items-center hover:bg-black hover:text-white" role="menuitem" tabIndex="-1" id="menu-item-0"><AiOutlinePlus className='mr-2 flex items-center mt-[0.9px] hover:text-white' size={16}/> Lead</Link>
+                        <Link href={'/Create/createContact'} className="text-gray-700  px-4 py-2 text-sm flex items-center hover:bg-black hover:text-white" role="menuitem" tabIndex="-1" id="menu-item-1"><AiOutlinePlus className='mr-2 flex items-center mt-[0.9px] hover:text-white' size={16}/> Contact</Link>
                       </div>
                       <div className="py-1" role="none">
-                        <Link href={'/Create/createAccounts'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-2">Create Accounts</Link>
-                        <Link href={'/Create/createDeal'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-3">Create Deals</Link>
+                        <Link href={'/Create/createAccounts'} className="text-gray-700 px-4 py-2 text-sm flex items-center hover:bg-black hover:text-white" role="menuitem" tabIndex="-1" id="menu-item-2"><AiOutlinePlus className='mr-2 flex items-center mt-[0.9px] hover:text-white' size={16}/> Accounts</Link>
+                        <Link href={'/Create/createDeal'} className="text-gray-700 px-4 py-2 text-sm flex items-center hover:bg-black hover:text-white" role="menuitem" tabIndex="-1" id="menu-item-3"><AiOutlinePlus className='mr-2 flex items-center mt-[0.9px] hover:text-white' size={16}/> Deals</Link>
                       </div>
                       <div className="py-1" role="none">
-                        <Link href={'/Create/createProduct'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-4">Create Product</Link>
-                        <Link href={'/Create/createSales'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-5">Create Sales</Link>
+                        <Link href={'/Create/createProduct'} className="text-gray-700 px-4 py-2 text-sm flex items-center hover:bg-black hover:text-white" role="menuitem" tabIndex="-1" id="menu-item-4"><AiOutlinePlus className='mr-2 flex items-center mt-[0.9px] hover:text-white' size={16}/> Product</Link>
+                        <Link href={'/Create/createSales'} className="text-gray-700 px-4 py-2 text-sm flex items-center hover:bg-black hover:text-white" role="menuitem" tabIndex="-1" id="menu-item-5"><AiOutlinePlus className='mr-2 flex items-center mt-[0.9px] hover:text-white' size={16}/> Sales</Link>
                       </div>
                       <div className="py-1" role="none">
-                        <Link href={'/Create/createPurchase'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-4">Create Purchase</Link>
-                        <Link href={'/Create/createVendor'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-5">Create Vendors</Link>
+                        <Link href={'/Create/createPurchase'} className="text-gray-700 px-4 py-2 text-sm flex items-center hover:bg-black hover:text-white" role="menuitem" tabIndex="-1" id="menu-item-4"><AiOutlinePlus className='mr-2 flex items-center mt-[0.9px] hover:text-white' size={16}/> Purchase</Link>
+                        <Link href={'/Create/createVendor'} className="text-gray-700 px-4 py-2 text-sm flex items-center hover:bg-black hover:text-white" role="menuitem" tabIndex="-1" id="menu-item-5"><AiOutlinePlus className='mr-2 flex items-center mt-[0.9px] hover:text-white' size={16}/> Vendors</Link>
                       </div>
-                      <div className="py-1" role="none">
+                      {/* <div className="py-1" role="none">
                         <Link href={'/Create/createInvoice'} className="text-gray-700 block px-4 py-2 text-sm hover:text-blue-600" role="menuitem" tabIndex="-1" id="menu-item-6">Create Invoice</Link>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>

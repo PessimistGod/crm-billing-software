@@ -6,10 +6,9 @@ import { useRouter } from 'next/router';
 import jwt_decode from 'jwt-decode';
 import SaveAsPDFButton from '@/Components/saveAsPdf';
 import moment from 'moment'
-import { HiMinus } from 'react-icons/hi'
+import { HiMinus } from 'react-icons/hi';
 
-const DisplayPurchase = ({ purchases }) => {
-  console.log(purchases);
+const DisplayAccount = ({ purchases }) => {
 
 
   const router = useRouter()
@@ -18,19 +17,16 @@ const DisplayPurchase = ({ purchases }) => {
   const [endDate, setEndDate] = useState('');
   const [selectValue, setSelectValue] = useState('');
 
-
-  const filteredSalesWithSelect = purchases.filter((purchase) => {
+  const filteredPurchasesWithSelect = purchases.filter((purchase) => {
     if (selectValue === '') {
-      return true; // No select value, include all purchases
+      return true;
     } else {
-      return purchase.dealName.startsWith(selectValue); // Filter based on the select value
+      return purchase.subject.startsWith(selectValue); 
     }
   });
 
-  console.log(filteredSalesWithSelect);
-  // You can update the state or perform any other action based on the filtered data
-
-
+  const [perPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -45,44 +41,52 @@ const DisplayPurchase = ({ purchases }) => {
       console.error(error);
       router.push('/Authenticate/Login');
     }
-  }, []);
-  const myLoader = ({ src, item }) => {
-    return `/${purchases[item].imageName}`;
+  }, [currentPage, perPage]);
+
+  const filteredPurchases = purchases
+.filter((deal) => deal.author === registration)
+.filter((purchase) => {
+  if (selectValue === '') {
+    return true;
+  } else {
+    return purchase.subject.toLowerCase().startsWith(selectValue);
   }
+});
 
-console.log(purchases.map(item=>item.createdAt))
+  const totalFilteredPurchases = filteredPurchases.length;
+  const totalPages = Math.ceil(totalFilteredPurchases / perPage);
 
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    router.push({
+      pathname: router.pathname,
+      query: { page: page, startDate: startDate || '', endDate: endDate || '',selectValue: selectValue || '', },
+    });
+  };
+const startIndex = (currentPage - 1) * perPage;
+const endIndex = startIndex + perPage;
+const slicedPurchases = filteredPurchases.slice(startIndex, endIndex);
 
-// function handleDateFilter(startDate, endDate) {
-//   const parsedStartDate = new Date(startDate);
-//   const parsedEndDate = new Date(endDate);
-  
-//   if (!isNaN(parsedStartDate) && !isNaN(parsedEndDate)) {
-//     console.log("Parsed start date:", parsedStartDate.toISOString());
-//     console.log("Parsed end date:", parsedEndDate.toISOString());
-
-//     const myDateFilter = purchases.filter((filtSale) => {
-//       const saleDate = new Date(filtSale.createdAt);
-//       console.log("Parsed purchase date:", saleDate.toISOString());
-//       return !isNaN(saleDate) && saleDate >= parsedStartDate && saleDate <= parsedEndDate;
-//     }).map((purchase) => purchase);
-
-//     console.log("Filtered purchases:", myDateFilter);
-
-//     return myDateFilter; // Return the filtered purchases array if needed
-//   }
-// }
-
-
-function handleResetFilter(e){
+function handleResetFilter(e) {
   setStartDate('');
-  setEndDate('')
+  setEndDate('');
+  setSelectValue('')
+  router.push('/Display/displayPurchase')
 }
-
   
+const handleConvert= async(id)=>{
+  const response = await fetch(`/api/Update/approvePurchaseConvert?id=${id}`, { method: 'PUT' });
+      const data = await response.json();
+      if (data.success) {
+        console.log(data.success)
+        router.push({
+          pathname: '/Display/displayTemplates',
+          query: { id: id }
+      })
+}
  
   
-  
+}
   return (
     <>
 <div className='flex justify-end px-2 py-4'><SaveAsPDFButton /></div>
@@ -180,35 +184,64 @@ function handleResetFilter(e){
                   <th className="px-4 -py-3">Grand Total</th>
                   <th className="px-4 py-3">Vendor Name</th>
                   <th className="px-4 py-3">Contact Name</th>
-                  <th className="px-4 py-3">Purchase Order Owner</th>
+                  <th className="px-4 py-3">Purchases Order Owner</th>
 
 
                 </tr>
               </thead>
               <tbody className="bg-white">
-                {purchases &&
-                Object.keys(purchases)
-                .filter(
-                  (purchase) =>
-                    purchases[purchase].author === registration  && (startDate === '' || purchases[purchase].createdAt >= startDate) && (endDate === '' || purchases[purchase].createdAt <= endDate)
-                ).filter((purchase) => {
-                  if (selectValue === '') {
-                    return true; 
-                  } else {
-                    return purchases[purchase].dealName.startsWith(selectValue); 
-                  }
-                }).map((item) => (
-                      <tr key={purchases[item]._id} className="text-gray-700">
-                        <td className="px-4 py-3 text-sm border">{purchases[item].subject?purchases[item].subject:<HiMinus size={16}/>}</td>
-                        <td className="px-4 py-3 text-sm border">{purchases[item].status?purchases[item].status:<HiMinus size={16}/>}</td>
-                        <td className="px-4 py-3 text-sm border">{purchases[item].grandTotal?purchases[item].grandTotal:<HiMinus size={16}/>}</td>
-                        <td className="px-4 py-3 text-sm border">{purchases[item].vendorName?purchases[item].vendorName:<HiMinus size={16}/>}</td>
-                        <td className="px-4 py-3 text-sm border">{purchases[item].contactName?purchases[item].contactName:<HiMinus size={16}/>}</td>
-                        <td className="px-4 py-3 text-sm border">{purchases[item].purchaseOwner?purchases[item].purchaseOwner:<HiMinus size={16}/>}</td>
+              {slicedPurchases
+                  .filter(
+                    (purchase) =>
+                      (startDate === '' || purchase.createdAt >= startDate) &&
+                      (endDate === '' || purchase.createdAt <= endDate)
+                  )
+                  .filter((purchase) => {
+                    if (selectValue === '') {
+                      return true;
+                    } else {
+                      const lowerCaseSelectValue = selectValue.toLowerCase();
+    const upperCaseSelectValue = selectValue.toUpperCase();
+    const subject = purchase.subject.toLowerCase();
+    return subject.startsWith(lowerCaseSelectValue) || subject.startsWith(upperCaseSelectValue)
+                    }
+                  })
+                  .map((item) => (
+                      <tr key={item._id} className="text-gray-700">
+                        <td className="px-4 py-3 text-sm border">{item.subject?item.subject:<HiMinus size={16}/>} {!item.converted && <button className='px-2 py-1 bg-red-300 ml-10 hover:bg-red-400 text-black hover:text-white font-semibold rounded-lg' onClick={(e)=>handleConvert(item._id)}>Convert Purchase</button>}</td>
+
+                        <td className="px-4 py-3 text-sm border">{item.status?item.status:<HiMinus size={16}/>}</td>
+                        <td className="px-4 py-3 text-sm border">{item.grandTotal?item.grandTotal:<HiMinus size={16}/>}</td>
+                        <td className="px-4 py-3 text-sm border">{item.vendorName?item.vendorName:<HiMinus size={16}/>}</td>
+                        <td className="px-4 py-3 text-sm border">{item.contactName?item.contactName:<HiMinus size={16}/>}</td>
+
+                
+
+                        <td className="px-4 py-3 text-sm border">{item.purchaseOwner?item.purchaseOwner:<HiMinus size={16}/>}</td>
+
                        </tr>
                     ))}
               </tbody>
             </table>
+  
+            <div className="flex justify-center mt-4 py-2">
+    <ul className="flex space-x-1">
+      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+        <li key={page} aria-current={page === currentPage ? 'page' : undefined}>
+          <a
+            className={`px-2 py-1 mx-1 rounded-lg ${
+              page === currentPage ? 'bg-gray-300' : 'bg-gray-200'
+            }`}
+            href="#!"
+            onClick={() => handlePageChange(page)}
+          >
+            <span className="sr-only">{page}</span>
+            {page}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
           </div>
         </div>
       </section>
@@ -216,25 +249,41 @@ function handleResetFilter(e){
   );
 };
 
-export default DisplayPurchase;
+export default DisplayAccount;
 
-export async function getServerSideProps(context) {
+
+
+
+
+export async function getServerSideProps({ query }) {
+  const { page = 1, startDate, endDate } = query;
+  const perPage = 5;
+
   try {
     await connectDB();
 
-    const { startDate, endDate } = context.query;
-
     let purchases;
+    let totalFilteredPurchases;
     if (startDate && endDate) {
-      purchases = await Purchases.find({
-        createdAt: {
-          $gte: new Date(startDate),
-          $lte: new Date(endDate),
+      purchases = await Purchases.find(
+        {
+          createdAt: {
+            $gte: new Date(startDate),
+            $lte: new Date(endDate),
+          },
         },
-      }, { updatedAt: 0 }).lean();
+        { updatedAt: 0 }
+      )
+        .lean()
+        .sort({ createdAt: -1 });
+
+      totalFilteredPurchases = purchases.length;
     } else {
-      purchases = await Purchases.find({}, { updatedAt: 0 }).lean();
+      purchases = await Purchases.find({}, { updatedAt: 0 }).lean().sort({ createdAt: -1 });
+      totalFilteredPurchases = purchases.length;
     }
+
+    const totalPages = Math.ceil(totalFilteredPurchases / perPage);
 
     return {
       props: {
@@ -248,12 +297,13 @@ export async function getServerSideProps(context) {
           author: purchase.author ? String(purchase.author) : '',
           createdAt: purchase.createdAt.toISOString(),
         })),
+        totalPages,
       },
     };
   } catch (error) {
     console.log(error);
     return {
-      props: { purchases: [] },
+      props: { purchases: [], totalPages: 0 },
     };
   }
 }

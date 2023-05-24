@@ -18,6 +18,8 @@
     "eslint-config-next": "13.2.4",
     "fs-extra": "^11.1.1",
     "html2pdf.js": "^0.10.1",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.5.29",
     "jwt-decode": "^3.1.2",
     "lz-string": "^1.5.0",
     "moment": "^2.29.4",
