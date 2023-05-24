@@ -233,16 +233,16 @@ const TemplatePage = ({ images, company }) => {
                                 </span>
                                 <div>
                                     <div>
-                                        Jyothy Institute Of Technology
+                                        {salesData && salesData.shippingCompany}
                                     </div>
                                     <div>
                                         {salesData && salesData.shippingCity}, {salesData && salesData.shippingState}
                                     </div>
                                     <div>
-                                        +91 9035239238
+                                        {salesData && salesData.customerNumber}
                                     </div>
                                     {hasSalesTax && <div>
-                                        <span className='text-md'>GSTIN: </span> 29AMWPD4772D1ZJ
+                                        <span className='text-md'>GSTIN: </span> {salesData && salesData.customerNumber}
                                     </div>}
                                     <div>
                                         {salesData && "State Code:" + salesData.shippingCode}
@@ -285,10 +285,10 @@ const TemplatePage = ({ images, company }) => {
                                                 <td className="px-6 py-2 text-center whitespace-nowrap border border-fuchsia-800">{index + 1}</td>
                                                 <td className="px-6 py-2 text-center whitespace-nowrap border border-fuchsia-800">{row.prodName}</td>
                                                 <td className="px-6 py-2 text-center whitespace-nowrap border border-fuchsia-800">{row.qty}</td>
-                                                <td className="px-6 py-2 text-center whitespace-nowrap border border-fuchsia-800">{row.price || 0}₹</td>
+                                                <td className="px-6 py-2 text-center whitespace-nowrap border border-fuchsia-800">₹{row.price || 0}</td>
                                                 {hasSalesTax && <td className="px-6 py-2 text-center whitespace-nowrap border border-fuchsia-800">{row.tax && row.tax || 0}%</td>}
                                                 <td className="px-6 py-2 text-center whitespace-nowrap border border-fuchsia-800">{row.discount || 0}%</td>
-                                                <td className="px-6 py-2 text-center whitespace-nowrap border border-fuchsia-800">{row.total}₹</td>
+                                                <td className="px-6 py-2 text-center whitespace-nowrap border border-fuchsia-800">₹{row.total}</td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -298,10 +298,10 @@ const TemplatePage = ({ images, company }) => {
                                             <th className="px-6 py-2 text-center whitespace-nowrap border border-fuchsia-800"></th>
                                             <th className="px-6 py-2 text-center whitespace-nowrap border border-fuchsia-800">TOTAL</th>
                                             <th className="px-6 py-2 text-center whitespace-nowrap border border-fuchsia-800">{calculateTotalQty()}</th>
-                                            <th className="px-6 py-2 text-center whitespace-nowrap border border-fuchsia-800">{calculateTotalPrice() + "₹"}</th>
+                                            <th className="px-6 py-2 text-center whitespace-nowrap border border-fuchsia-800">₹{calculateTotalPrice()}</th>
                                             {hasSalesTax && <th className="px-6 py-2 text-center whitespace-nowrap border border-fuchsia-800">{calculateTotalTax() + "%"}</th>}
                                             <th className="px-6 py-2 text-center whitespace-nowrap border border-fuchsia-800">{calculateTotalDiscount()}%</th>
-                                            <th className="px-6 py-2 text-center whitespace-nowrap border border-fuchsia-800">{calculateTotalAmount()}₹</th>
+                                            <th className="px-6 py-2 text-center whitespace-nowrap border border-fuchsia-800">₹{calculateTotalAmount()}</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -327,12 +327,12 @@ const TemplatePage = ({ images, company }) => {
                                                             <tr>
                                                                 <td className="px-4 border-gray-600 border py-2">SGST</td>
                                                                 <td className="px-4 border-gray-600 border py-2">{row.tax / 2 || 0}%</td>
-                                                                <td className="px-4 border-gray-600 border py-2">{(row.total * (row.tax || 0)) / 100}₹</td>
+                                                                <td className="px-4 border-gray-600 border py-2">₹{(row.total * (row.tax || 0)) / 100}</td>
                                                             </tr>
                                                             <tr>
                                                                 <td className="px-4 border-gray-600 border py-2">CGST</td>
                                                                 <td className="px-4 border-gray-600 border py-2">{row.tax / 2 || 0}%</td>
-                                                                <td className="px-4 border-gray-600 border py-2">{(row.total * (row.tax || 0)) / 100}₹</td>
+                                                                <td className="px-4 border-gray-600 border py-2">₹{(row.total * (row.tax || 0)) / 100}</td>
                                                             </tr>
                                                         </React.Fragment>
                                                     ))}
@@ -360,7 +360,7 @@ const TemplatePage = ({ images, company }) => {
                                         </tr>
                                         <tr>
                                             <td className="px-4 border-gray-600 border py-2 my-auto">Sub Total</td>
-                                            {salesData && <td className="px-4 border-gray-600 border py-2 my-auto">{salesData.subTotal}₹</td>}
+                                            {salesData && <td className="px-4 border-gray-600 border py-2 my-auto">₹{salesData.subTotal}</td>}
                                         </tr>
                                         {hasSalesTax && <tr >
                                             <td className="px-4 border-gray-600 border py-2 my-auto">Total Tax</td>
@@ -372,7 +372,7 @@ const TemplatePage = ({ images, company }) => {
                                         </tr>
                                         <tr className='bg-fuchsia-300'>
                                             <td className="px-4 border-gray-600 border py-2 my-auto">Grand Total</td>
-                                            {salesData && <td className="px-4 border-gray-600 border py-2 my-auto">{salesData.grandTotal}₹</td>}
+                                            {salesData && <td className="px-4 border-gray-600 border py-2 my-auto">₹{salesData.grandTotal}</td>}
                                         </tr>
                                     </tbody>
                                 </table>
@@ -492,20 +492,18 @@ const TemplatePage = ({ images, company }) => {
                              </span>
                              <div>
                                  <div>
-                                     Jyothy Institute Of Technology
+                                     {salesData && salesData.shippingCompany}
                                  </div>
                                  <div>
                                      {salesData && salesData.shippingCity}, {salesData && salesData.shippingState}
                                  </div>
                                  <div>
-                                     +91 9035239238
+                                     {salesData && salesData.customerNumber}
                                  </div>
                                  {hasSalesTax && <div>
-                                     <span className='text-md'>GSTIN: </span> 29AMWPD4772D1ZJ
+                                     <span className='text-md'>GSTIN: </span> {salesData && salesData.shippingGSTIN}
                                  </div>}
-                                 <div>
-                                     {salesData && "State Code:" + salesData.shippingCode}
-                                 </div>
+                                
                              </div>
                          </div>
             
@@ -544,10 +542,10 @@ const TemplatePage = ({ images, company }) => {
                                              <td className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">{index + 1}</td>
                                              <td className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">{row.prodName}</td>
                                              <td className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">{row.qty}</td>
-                                             <td className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">{row.price || 0}₹</td>
+                                             <td className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">₹{row.price || 0}</td>
                                              {hasSalesTax && <td className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">{row.tax && row.tax || 0}%</td>}
                                              <td className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">{row.discount || 0}%</td>
-                                             <td className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">{row.total}₹</td>
+                                             <td className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">₹{row.total}</td>
                                          </tr>
                                      ))}
                                  </tbody>
@@ -556,11 +554,11 @@ const TemplatePage = ({ images, company }) => {
                                      <tr className="text-center">
                                          <th className="px-6 py-2 text-center whitespace-nowrap border border-sky-800"></th>
                                          <th className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">TOTAL</th>
-                                         <th className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">{calculateTotalQty()}</th>
-                                         <th className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">{calculateTotalPrice() + "₹"}</th>
+                                         <th className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">₹{calculateTotalQty()}</th>
+                                         <th className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">₹{calculateTotalPrice() + ""}</th>
                                          {hasSalesTax && <th className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">{calculateTotalTax() + "%"}</th>}
                                          <th className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">{calculateTotalDiscount()}%</th>
-                                         <th className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">{calculateTotalAmount()}₹</th>
+                                         <th className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">₹{calculateTotalAmount()}</th>
                                      </tr>
                                  </tfoot>
                              </table>
@@ -586,12 +584,12 @@ const TemplatePage = ({ images, company }) => {
                                                          <tr>
                                                              <td className="px-4 border-gray-600 border py-2">SGST</td>
                                                              <td className="px-4 border-gray-600 border py-2">{row.tax / 2 || 0}%</td>
-                                                             <td className="px-4 border-gray-600 border py-2">{(row.total * (row.tax || 0)) / 100}₹</td>
+                                                             <td className="px-4 border-gray-600 border py-2">₹{(row.total * (row.tax || 0)) / 100}</td>
                                                          </tr>
                                                          <tr>
                                                              <td className="px-4 border-gray-600 border py-2">CGST</td>
                                                              <td className="px-4 border-gray-600 border py-2">{row.tax / 2 || 0}%</td>
-                                                             <td className="px-4 border-gray-600 border py-2">{(row.total * (row.tax || 0)) / 100}₹</td>
+                                                             <td className="px-4 border-gray-600 border py-2">₹{(row.total * (row.tax || 0)) / 100}</td>
                                                          </tr>
                                                      </React.Fragment>
                                                  ))}
@@ -619,7 +617,7 @@ const TemplatePage = ({ images, company }) => {
                                      </tr>
                                      <tr>
                                          <td className="px-4 border-gray-600 border py-2 my-auto">Sub Total</td>
-                                         {salesData && <td className="px-4 border-gray-600 border py-2 my-auto">{salesData.subTotal}₹</td>}
+                                         {salesData && <td className="px-4 border-gray-600 border py-2 my-auto">₹{salesData.subTotal}</td>}
                                      </tr>
                                      {hasSalesTax && <tr >
                                          <td className="px-4 border-gray-600 border py-2 my-auto">Total Tax</td>
@@ -631,7 +629,7 @@ const TemplatePage = ({ images, company }) => {
                                      </tr>
                                      <tr className='bg-sky-300'>
                                          <td className="px-4 border-gray-600 border py-2 my-auto">Grand Total</td>
-                                         {salesData && <td className="px-4 border-gray-600 border py-2 my-auto">{salesData.grandTotal}₹</td>}
+                                         {salesData && <td className="px-4 border-gray-600 border py-2 my-auto">₹{salesData.grandTotal}</td>}
                                      </tr>
                                  </tbody>
                              </table>
@@ -735,20 +733,18 @@ const TemplatePage = ({ images, company }) => {
                              </span>
                              <div>
                                  <div>
-                                     Jyothy Institute Of Technology
+                                     {salesData && salesData.shippingCompany}
                                  </div>
                                  <div>
                                      {salesData && salesData.shippingCity}, {salesData && salesData.shippingState}
                                  </div>
                                  <div>
-                                     +91 9035239238
+                                     {salesData && salesData.customerNumber}
                                  </div>
                                  {hasSalesTax && <div>
-                                     <span className='text-md'>GSTIN: </span> 29AMWPD4772D1ZJ
+                                     <span className='text-md'>GSTIN: </span> {salesData && salesData.customerNumber}
                                  </div>}
-                                 <div>
-                                     {salesData && "State Code:" + salesData.shippingCode}
-                                 </div>
+                                
                              </div>
                          </div>
 
@@ -787,10 +783,10 @@ const TemplatePage = ({ images, company }) => {
                                              <td className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{index + 1}</td>
                                              <td className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{row.prodName}</td>
                                              <td className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{row.qty}</td>
-                                             <td className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{row.price || 0}₹</td>
+                                             <td className="px-6 py-2 text-center whitespace-nowrap border border-red-800">₹{row.price || 0}</td>
                                              {hasSalesTax && <td className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{row.tax && row.tax || 0}%</td>}
                                              <td className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{row.discount || 0}%</td>
-                                             <td className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{row.total}₹</td>
+                                             <td className="px-6 py-2 text-center whitespace-nowrap border border-red-800">₹{row.total}</td>
                                          </tr>
                                      ))}
                                  </tbody>
@@ -800,10 +796,10 @@ const TemplatePage = ({ images, company }) => {
                                          <th className="px-6 py-2 text-center whitespace-nowrap border border-red-800"></th>
                                          <th className="px-6 py-2 text-center whitespace-nowrap border border-red-800">TOTAL</th>
                                          <th className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{calculateTotalQty()}</th>
-                                         <th className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{calculateTotalPrice() + "₹"}</th>
+                                         <th className="px-6 py-2 text-center whitespace-nowrap border border-red-800">₹{calculateTotalPrice() + ""}</th>
                                          {hasSalesTax && <th className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{calculateTotalTax() + "%"}</th>}
                                          <th className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{calculateTotalDiscount()}%</th>
-                                         <th className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{calculateTotalAmount()}₹</th>
+                                         <th className="px-6 py-2 text-center whitespace-nowrap border border-red-800">₹{calculateTotalAmount()}</th>
                                      </tr>
                                  </tfoot>
                              </table>
@@ -829,12 +825,12 @@ const TemplatePage = ({ images, company }) => {
                                                          <tr>
                                                              <td className="px-4 border-gray-600 border py-2">SGST</td>
                                                              <td className="px-4 border-gray-600 border py-2">{row.tax / 2 || 0}%</td>
-                                                             <td className="px-4 border-gray-600 border py-2">{(row.total * (row.tax || 0)) / 100}₹</td>
+                                                             <td className="px-4 border-gray-600 border py-2">₹{(row.total * (row.tax || 0)) / 100}</td>
                                                          </tr>
                                                          <tr>
                                                              <td className="px-4 border-gray-600 border py-2">CGST</td>
                                                              <td className="px-4 border-gray-600 border py-2">{row.tax / 2 || 0}%</td>
-                                                             <td className="px-4 border-gray-600 border py-2">{(row.total * (row.tax || 0)) / 100}₹</td>
+                                                             <td className="px-4 border-gray-600 border py-2">₹{(row.total * (row.tax || 0)) / 100}</td>
                                                          </tr>
                                                      </React.Fragment>
                                                  ))}
@@ -862,7 +858,7 @@ const TemplatePage = ({ images, company }) => {
                                      </tr>
                                      <tr>
                                          <td className="px-4 border-gray-600 border py-2 my-auto">Sub Total</td>
-                                         {salesData && <td className="px-4 border-gray-600 border py-2 my-auto">{salesData.subTotal}₹</td>}
+                                         {salesData && <td className="px-4 border-gray-600 border py-2 my-auto">₹{salesData.subTotal}</td>}
                                      </tr>
                                      {hasSalesTax && <tr >
                                          <td className="px-4 border-gray-600 border py-2 my-auto">Total Tax</td>
@@ -874,7 +870,7 @@ const TemplatePage = ({ images, company }) => {
                                      </tr>
                                      <tr className='bg-red-300'>
                                          <td className="px-4 border-gray-600 border py-2 my-auto">Grand Total</td>
-                                         {salesData && <td className="px-4 border-gray-600 border py-2 my-auto">{salesData.grandTotal}₹</td>}
+                                         {salesData && <td className="px-4 border-gray-600 border py-2 my-auto">₹{salesData.grandTotal}</td>}
                                      </tr>
                                  </tbody>
                              </table>
@@ -990,20 +986,18 @@ const TemplatePage = ({ images, company }) => {
                              </span>
                              <div>
                                  <div>
-                                     Jyothy Institute Of Technology
+                                     {salesData && salesData.shippingCompany}
                                  </div>
                                  <div>
                                      {salesData && salesData.shippingCity}, {salesData && salesData.shippingState}
                                  </div>
                                  <div>
-                                     +91 9035239238
+                                     {salesData && salesData.customerNumber}
                                  </div>
                                  {hasSalesTax && <div>
-                                     <span className='text-md'>GSTIN: </span> 29AMWPD4772D1ZJ
+                                     <span className='text-md'>GSTIN: </span> {salesData && salesData.customerNumber}
                                  </div>}
-                                 <div>
-                                     {salesData && "State Code:" + salesData.shippingCode}
-                                 </div>
+                                
                              </div>
                          </div>
             
@@ -1042,10 +1036,10 @@ const TemplatePage = ({ images, company }) => {
                                              <td className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{index + 1}</td>
                                              <td className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{row.prodName}</td>
                                              <td className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{row.qty}</td>
-                                             <td className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{row.price || 0}₹</td>
+                                             <td className="px-6 py-2 text-center whitespace-nowrap border border-red-800">₹{row.price || 0}</td>
                                              {hasSalesTax && <td className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{row.tax && row.tax || 0}%</td>}
                                              <td className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{row.discount || 0}%</td>
-                                             <td className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{row.total}₹</td>
+                                             <td className="px-6 py-2 text-center whitespace-nowrap border border-red-800">₹{row.total}</td>
                                          </tr>
                                      ))}
                                  </tbody>
@@ -1055,10 +1049,10 @@ const TemplatePage = ({ images, company }) => {
                                          <th className="px-6 py-2 text-center whitespace-nowrap border border-red-800"></th>
                                          <th className="px-6 py-2 text-center whitespace-nowrap border border-red-800">TOTAL</th>
                                          <th className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{calculateTotalQty()}</th>
-                                         <th className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{calculateTotalPrice() + "₹"}</th>
+                                         <th className="px-6 py-2 text-center whitespace-nowrap border border-red-800">₹{calculateTotalPrice() + ""}</th>
                                          {hasSalesTax && <th className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{calculateTotalTax() + "%"}</th>}
                                          <th className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{calculateTotalDiscount()}%</th>
-                                         <th className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{calculateTotalAmount()}₹</th>
+                                         <th className="px-6 py-2 text-center whitespace-nowrap border border-red-800">₹{calculateTotalAmount()}</th>
                                      </tr>
                                  </tfoot>
                              </table>
@@ -1084,12 +1078,12 @@ const TemplatePage = ({ images, company }) => {
                                                          <tr>
                                                              <td className="px-4 border-gray-600 border py-2">SGST</td>
                                                              <td className="px-4 border-gray-600 border py-2">{row.tax / 2 || 0}%</td>
-                                                             <td className="px-4 border-gray-600 border py-2">{(row.total * (row.tax || 0)) / 100}₹</td>
+                                                             <td className="px-4 border-gray-600 border py-2">₹{(row.total * (row.tax || 0)) / 100}</td>
                                                          </tr>
                                                          <tr>
                                                              <td className="px-4 border-gray-600 border py-2">CGST</td>
                                                              <td className="px-4 border-gray-600 border py-2">{row.tax / 2 || 0}%</td>
-                                                             <td className="px-4 border-gray-600 border py-2">{(row.total * (row.tax || 0)) / 100}₹</td>
+                                                             <td className="px-4 border-gray-600 border py-2">₹{(row.total * (row.tax || 0)) / 100}</td>
                                                          </tr>
                                                      </React.Fragment>
                                                  ))}
@@ -1117,7 +1111,7 @@ const TemplatePage = ({ images, company }) => {
                                      </tr>
                                      <tr>
                                          <td className="px-4 border-gray-600 border py-2 my-auto">Sub Total</td>
-                                         {salesData && <td className="px-4 border-gray-600 border py-2 my-auto">{salesData.subTotal}₹</td>}
+                                         {salesData && <td className="px-4 border-gray-600 border py-2 my-auto">₹{salesData.subTotal}</td>}
                                      </tr>
                                      {hasSalesTax && <tr >
                                          <td className="px-4 border-gray-600 border py-2 my-auto">Total Tax</td>
@@ -1129,7 +1123,7 @@ const TemplatePage = ({ images, company }) => {
                                      </tr>
                                      <tr className='bg-red-300'>
                                          <td className="px-4 border-gray-600 border py-2 my-auto">Grand Total</td>
-                                         {salesData && <td className="px-4 border-gray-600 border py-2 my-auto">{salesData.grandTotal}₹</td>}
+                                         {salesData && <td className="px-4 border-gray-600 border py-2 my-auto">₹{salesData.grandTotal}</td>}
                                      </tr>
                                  </tbody>
                              </table>
@@ -1245,16 +1239,16 @@ const TemplatePage = ({ images, company }) => {
                  </span>
                  <div>
                      <div>
-                         Jyothy Institute Of Technology
+                         {salesData && salesData.shippingCompany}
                      </div>
                      <div>
                          {salesData && salesData.shippingCity}, {salesData && salesData.shippingState}
                      </div>
                      <div>
-                         +91 9035239238
+                         {salesData && salesData.customerNumber}
                      </div>
                      {hasSalesTax && <div>
-                         <span className='text-md'>GSTIN: </span> 29AMWPD4772D1ZJ
+                         <span className='text-md'>GSTIN: </span> {salesData && salesData.customerNumber}
                      </div>}
                      <div>
                          {salesData && "State Code:" + salesData.shippingCode}
@@ -1297,10 +1291,10 @@ const TemplatePage = ({ images, company }) => {
                                  <td className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">{index + 1}</td>
                                  <td className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">{row.prodName}</td>
                                  <td className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">{row.qty}</td>
-                                 <td className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">{row.price || 0}₹</td>
+                                 <td className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">₹{row.price || 0}</td>
                                  {hasSalesTax && <td className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">{row.tax && row.tax || 0}%</td>}
                                  <td className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">{row.discount || 0}%</td>
-                                 <td className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">{row.total}₹</td>
+                                 <td className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">₹{row.total}</td>
                              </tr>
                          ))}
                      </tbody>
@@ -1310,10 +1304,10 @@ const TemplatePage = ({ images, company }) => {
                              <th className="px-6 py-2 text-center whitespace-nowrap border border-sky-800"></th>
                              <th className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">TOTAL</th>
                              <th className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">{calculateTotalQty()}</th>
-                             <th className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">{calculateTotalPrice() + "₹"}</th>
+                             <th className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">₹{calculateTotalPrice() + ""}</th>
                              {hasSalesTax && <th className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">{calculateTotalTax() + "%"}</th>}
                              <th className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">{calculateTotalDiscount()}%</th>
-                             <th className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">{calculateTotalAmount()}₹</th>
+                             <th className="px-6 py-2 text-center whitespace-nowrap border border-sky-800">₹{calculateTotalAmount()}</th>
                          </tr>
                      </tfoot>
                  </table>
@@ -1339,12 +1333,12 @@ const TemplatePage = ({ images, company }) => {
                                              <tr>
                                                  <td className="px-4 border-gray-600 border py-2">SGST</td>
                                                  <td className="px-4 border-gray-600 border py-2">{row.tax / 2 || 0}%</td>
-                                                 <td className="px-4 border-gray-600 border py-2">{(row.total * (row.tax || 0)) / 100}₹</td>
+                                                 <td className="px-4 border-gray-600 border py-2">₹{(row.total * (row.tax || 0)) / 100}</td>
                                              </tr>
                                              <tr>
                                                  <td className="px-4 border-gray-600 border py-2">CGST</td>
                                                  <td className="px-4 border-gray-600 border py-2">{row.tax / 2 || 0}%</td>
-                                                 <td className="px-4 border-gray-600 border py-2">{(row.total * (row.tax || 0)) / 100}₹</td>
+                                                 <td className="px-4 border-gray-600 border py-2">₹{(row.total * (row.tax || 0)) / 100}</td>
                                              </tr>
                                          </React.Fragment>
                                      ))}
@@ -1372,7 +1366,7 @@ const TemplatePage = ({ images, company }) => {
                          </tr>
                          <tr>
                              <td className="px-4 border-gray-600 border py-2 my-auto">Sub Total</td>
-                             {salesData && <td className="px-4 border-gray-600 border py-2 my-auto">{salesData.subTotal}₹</td>}
+                             {salesData && <td className="px-4 border-gray-600 border py-2 my-auto">₹{salesData.subTotal}</td>}
                          </tr>
                          {hasSalesTax && <tr >
                              <td className="px-4 border-gray-600 border py-2 my-auto">Total Tax</td>
@@ -1384,7 +1378,7 @@ const TemplatePage = ({ images, company }) => {
                          </tr>
                          <tr className='bg-sky-300'>
                              <td className="px-4 border-gray-600 border py-2 my-auto">Grand Total</td>
-                             {salesData && <td className="px-4 border-gray-600 border py-2 my-auto">{salesData.grandTotal}₹</td>}
+                             {salesData && <td className="px-4 border-gray-600 border py-2 my-auto">₹{salesData.grandTotal}</td>}
                          </tr>
                      </tbody>
                  </table>
@@ -1501,16 +1495,16 @@ const TemplatePage = ({ images, company }) => {
                  </span>
                  <div>
                      <div>
-                         Jyothy Institute Of Technology
+                         {salesData && salesData.shippingCompany}
                      </div>
                      <div>
                          {salesData && salesData.shippingCity}, {salesData && salesData.shippingState}
                      </div>
                      <div>
-                         +91 9035239238
+                         {salesData && salesData.customerNumber}
                      </div>
                      {hasSalesTax && <div>
-                         <span className='text-md'>GSTIN: </span> 29AMWPD4772D1ZJ
+                         <span className='text-md'>GSTIN: </span> {salesData && salesData.customerNumber}
                      </div>}
                      <div>
                          {salesData && "State Code:" + salesData.shippingCode}
@@ -1553,10 +1547,10 @@ const TemplatePage = ({ images, company }) => {
                                  <td className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{index + 1}</td>
                                  <td className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{row.prodName}</td>
                                  <td className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{row.qty}</td>
-                                 <td className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{row.price || 0}₹</td>
+                                 <td className="px-6 py-2 text-center whitespace-nowrap border border-red-800">₹{row.price || 0}</td>
                                  {hasSalesTax && <td className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{row.tax && row.tax || 0}%</td>}
                                  <td className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{row.discount || 0}%</td>
-                                 <td className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{row.total}₹</td>
+                                 <td className="px-6 py-2 text-center whitespace-nowrap border border-red-800">₹{row.total}</td>
                              </tr>
                          ))}
                      </tbody>
@@ -1566,10 +1560,10 @@ const TemplatePage = ({ images, company }) => {
                              <th className="px-6 py-2 text-center whitespace-nowrap border border-red-800"></th>
                              <th className="px-6 py-2 text-center whitespace-nowrap border border-red-800">TOTAL</th>
                              <th className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{calculateTotalQty()}</th>
-                             <th className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{calculateTotalPrice() + "₹"}</th>
+                             <th className="px-6 py-2 text-center whitespace-nowrap border border-red-800">₹{calculateTotalPrice() + ""}</th>
                              {hasSalesTax && <th className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{calculateTotalTax() + "%"}</th>}
                              <th className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{calculateTotalDiscount()}%</th>
-                             <th className="px-6 py-2 text-center whitespace-nowrap border border-red-800">{calculateTotalAmount()}₹</th>
+                             <th className="px-6 py-2 text-center whitespace-nowrap border border-red-800">₹{calculateTotalAmount()}</th>
                          </tr>
                      </tfoot>
                  </table>
@@ -1595,12 +1589,12 @@ const TemplatePage = ({ images, company }) => {
                                              <tr>
                                                  <td className="px-4 border-gray-600 border py-2">SGST</td>
                                                  <td className="px-4 border-gray-600 border py-2">{row.tax / 2 || 0}%</td>
-                                                 <td className="px-4 border-gray-600 border py-2">{(row.total * (row.tax || 0)) / 100}₹</td>
+                                                 <td className="px-4 border-gray-600 border py-2">₹{(row.total * (row.tax || 0)) / 100}</td>
                                              </tr>
                                              <tr>
                                                  <td className="px-4 border-gray-600 border py-2">CGST</td>
                                                  <td className="px-4 border-gray-600 border py-2">{row.tax / 2 || 0}%</td>
-                                                 <td className="px-4 border-gray-600 border py-2">{(row.total * (row.tax || 0)) / 100}₹</td>
+                                                 <td className="px-4 border-gray-600 border py-2">₹{(row.total * (row.tax || 0)) / 100}</td>
                                              </tr>
                                          </React.Fragment>
                                      ))}
@@ -1628,7 +1622,7 @@ const TemplatePage = ({ images, company }) => {
                          </tr>
                          <tr>
                              <td className="px-4 border-gray-600 border py-2 my-auto">Sub Total</td>
-                             {salesData && <td className="px-4 border-gray-600 border py-2 my-auto">{salesData.subTotal}₹</td>}
+                             {salesData && <td className="px-4 border-gray-600 border py-2 my-auto">₹{salesData.subTotal}</td>}
                          </tr>
                          {hasSalesTax && <tr >
                              <td className="px-4 border-gray-600 border py-2 my-auto">Total Tax</td>
@@ -1640,7 +1634,7 @@ const TemplatePage = ({ images, company }) => {
                          </tr>
                          <tr className='bg-red-300'>
                              <td className="px-4 border-gray-600 border py-2 my-auto">Grand Total</td>
-                             {salesData && <td className="px-4 border-gray-600 border py-2 my-auto">{salesData.grandTotal}₹</td>}
+                             {salesData && <td className="px-4 border-gray-600 border py-2 my-auto">₹{salesData.grandTotal}</td>}
                          </tr>
                      </tbody>
                  </table>

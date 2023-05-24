@@ -155,6 +155,14 @@ subTotal:{
   template:{
     type:String,
     required:false,
+  },
+  shippingGSTIN:{
+    type:String,
+    required:false,
+  },
+  shippingCompanyName:{
+    type:String,
+    required:false,
   }
 }, { timestamps: true });
 

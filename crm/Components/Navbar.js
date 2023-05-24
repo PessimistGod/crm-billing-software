@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { RiUser3Fill } from 'react-icons/ri'
 import { RxHamburgerMenu } from 'react-icons/rx'
 import { AiOutlinePlus } from 'react-icons/ai'
+import Signup from '@/Models/signup'
+import connectDB from '@/Middleware/db'
 
 import { MdClose } from 'react-icons/md'
 import Image from 'next/image'
@@ -12,7 +14,7 @@ import {
 } from "react-icons/md";
 
 
-const Navbar = () => {
+const Navbar = ({ users }) => {
   const [menuClose, setMenuClose] = useState(true)
 
 
@@ -74,6 +76,25 @@ const Navbar = () => {
 
 
   }
+  const [registration, setRegistration] = useState("")
+
+
+  useEffect(() => {
+      try {
+          const token = localStorage.getItem('token');
+          if (token) {
+              const decodedToken = jwt_decode(token);
+              if (decodedToken) {
+                  setRegistration(decodedToken.id);
+              } else {
+                  setRegistration("");
+              }
+          }
+      } catch (error) {
+          console.log(error);
+          setRegistration("");
+      }
+  }, [])
 
 
   return (
@@ -258,6 +279,12 @@ const Navbar = () => {
                 </div>
 
 
+                <div>
+  {users &&
+    users
+      .filter(item => item._id === registration)
+      .map(item => <div key={item._id}>{item.username}</div>)}
+</div>
 
                 <div className='pr-4'>
 
@@ -293,3 +320,26 @@ const Navbar = () => {
 }
 
 export default Navbar
+
+
+
+export async function getServerSideProps(context) {
+  try {
+    await connectDB();
+
+    const user = await Signup.find({}, { _id: 0, updatedAt: 0 ,createdAt:0}).lean();
+
+    return {
+      props: {
+          users: user.map((user) => ({
+          ...user
+        })),
+    },
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      props: { users: [] },
+    };
+  }
+}

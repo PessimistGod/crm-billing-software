@@ -6,6 +6,7 @@ import 'nprogress/nprogress.css';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import jwt_decode from 'jwt-decode'
+import LogNav from '@/Components/LogoutNav';
 export default function App({ Component, pageProps }) {
   const router = useRouter();
 
@@ -51,7 +52,8 @@ return (
         <Sidebar />
         <Navbar />
       </>
-    ) : null}
+    ) : <><LogNav/>
+    </>}
     <Component {...pageProps} />
   </>
 )

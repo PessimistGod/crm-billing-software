@@ -32,6 +32,9 @@ const createSales = ({ companies }) => {
     const [shippingState, setShippingState] = useState("")
     const [shippingCode, setShippingCode] = useState("")
     const [shippingCountry, setShippingCountry] = useState("")
+    const [shippingGSTIN, setShippingGSTIN] = useState("")
+    const [shippingCompanyName, setShippingCompanyName] = useState("")
+
 
     const [rows, setRows] = useState([
         {
@@ -98,18 +101,18 @@ const createSales = ({ companies }) => {
 
     const [products, setProducts] = useState([]);
 
- 
-  
 
-      const fetchProducts = async () => {
+
+
+    const fetchProducts = async () => {
         try {
-          const response = await fetch('/api/fetchProduct');
-          const data = await response.json();
-          setProducts(data);
+            const response = await fetch('/api/fetchProduct');
+            const data = await response.json();
+            setProducts(data);
         } catch (error) {
-          console.log(error);
+            console.log(error);
         }
-      };
+    };
 
     const handleChange = (e) => {
         if (e.target.name == 'salesOwner') {
@@ -190,12 +193,18 @@ const createSales = ({ companies }) => {
         if (e.target.name == 'createDate') {
             setCreateDate(e.target.value)
         }
+        if (e.target.name == 'shippingGSTIN') {
+            setShippingGSTIN(e.target.value)
+        }
+        if (e.target.name == 'shippingCompanyName') {
+            setShippingCompanyName(e.target.value)
+        }
     }
 
     const SaleCreate = async () => {
         try {
 
-            const data = { salesOwner, dealName, subject, purchaseOrder, customerNumber, dueDate, carrier, contactName, salesCommission, status, accName, billingStreet, shippingStreet, billingCity, billingState, billingCode, billingCountry, shippingCity, shippingState, shippingCode, shippingCountry, subTotal, totalDiscount, totalTax, grandTotal, rows, author: registration, createDate };
+            const data = { salesOwner, dealName, subject, purchaseOrder, customerNumber, dueDate, carrier, contactName, salesCommission, status, accName, billingStreet, shippingStreet, billingCity, billingState, billingCode, billingCountry, shippingCity, shippingState, shippingCode, shippingCountry, subTotal, totalDiscount, totalTax, grandTotal, rows, author: registration, createDate,shippingGSTIN,shippingCompanyName };
 
 
             // const totalQty = rows && Array.isArray(rows) ? (rows.reduce((acc, row) => acc + row.qty, 0), 0) : 0;
@@ -271,6 +280,8 @@ const createSales = ({ companies }) => {
                 setTotalTax("")
                 setGrandTotal("")
                 setCreateDate("")
+                setShippingGSTIN("")
+                setShippingCompanyName("")
 
 
 
@@ -336,7 +347,7 @@ const createSales = ({ companies }) => {
     };
 
 
-     function checkQuantity(prodName, requestedQuantity) {
+    function checkQuantity(prodName, requestedQuantity) {
         try {
 
             const product = products.find((item) => item.productName === prodName);
@@ -360,17 +371,17 @@ const createSales = ({ companies }) => {
             console.log(e)
         }
     }
- 
 
 
 
-  
 
-  
-    
-    console.log({" Products": products });
-    
-    
+
+
+
+
+    console.log({ " Products": products });
+
+
     return (
         <section>
             <ToastContainer
@@ -563,7 +574,28 @@ const createSales = ({ companies }) => {
                             </div>
 
 
+
+
+
                             <div className="flex flex-wrap -mx-3 mt-6">
+
+                            <div className="w-full md:w-1/2 px-3">
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="shippingCity">
+                                        Shipping Company Name
+                                    </label>
+                                    <input onChange={handleChange} name='shippingCompanyName' value={shippingCompanyName} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500" id="shippingCompanyName" type="text" placeholder="Shipping City" />
+                                </div>
+
+                                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="shippingStreet">
+                                        Shipping GSTIN
+                                    </label>
+                                    <input onChange={handleChange} name='shippingGSTIN' value={shippingGSTIN} className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 contacting-tight focus:outline-none focus:bg-white" id="shippingGSTIN" type="text" placeholder="Shipping GSTIN" />
+                                </div>
+                             
+                            </div>
+
+                            <div className="flex flex-wrap -mx-3 mb-2">
 
                                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="shippingStreet">
@@ -652,12 +684,12 @@ const createSales = ({ companies }) => {
                             </th>
 
 
-                            <td  className="px-6 py-4 relative">
+                            <td className="px-6 py-4 relative">
                                 <select
                                     type="text"
                                     value={row.prodName}
                                     className="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-2 contacting-tight focus:outline-none focus:bg-white focus:border-gray-500 w-40"
-                                    
+
                                     onChange={(e) => {
                                         const updatedRows = [...rows];
                                         updatedRows[index].prodName = e.target.value;
@@ -669,7 +701,7 @@ const createSales = ({ companies }) => {
                                     id='type'
                                 >
                                     <option value={''}></option>
-                                    {products.filter(item=>item.author===registration).map((item) => (
+                                    {products.filter(item => item.author === registration).map((item) => (
                                         <option key={item._id} value={item.productName} defaultValue={row.prodName === item.productName}>{item.productName}</option>))}
 
 
