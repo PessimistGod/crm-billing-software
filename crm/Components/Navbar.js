@@ -8,14 +8,33 @@ import connectDB from '@/Middleware/db'
 import { MdClose } from 'react-icons/md'
 import Image from 'next/image'
 import Link from 'next/link'
+import jwt_decode from 'jwt-decode'
 import {
   MdOutlineMoreHoriz
 
 } from "react-icons/md";
+import { useRouter } from 'next/router'
 
 
 const Navbar = ({ users }) => {
+  console.log(users)
   const [menuClose, setMenuClose] = useState(true)
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const handleDropdownToggle = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const router = useRouter();
+
+  const handleLogout = () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      localStorage.clear();
+      router.push('/Authenticate/Login');
+    }
+  };
 
 
   function showLeftMenu() {
@@ -286,16 +305,13 @@ const Navbar = ({ users }) => {
       .map(item => <div key={item._id}>{item.username}</div>)}
 </div>
 
-                <div className='pr-4'>
-
-
+                <div className='pr-4 '>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-8 w-8 ">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
-
-
-
                 </div>
+<div className='flex' onClick={handleLogout}>Logout</div> 
+
                 <div className='md:hidden pr-4'>
                   {menuClose ? (<RxHamburgerMenu size={28} className="absolute right-7 top-[1.10rem]" onClick={showLeftMenu} />) : (<MdClose size={30} className="absolute right-7 top-[1.10rem]" onClick={showLeftMenu} />)}
                 </div>
