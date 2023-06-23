@@ -10,7 +10,6 @@ import { useRouter } from 'next/router';
 
 const CreateLead = ({ companies }) => {
 
-
     const router = useRouter()
     const [registration, setRegistration] = useState("")
     useEffect(() => {
@@ -51,6 +50,7 @@ const CreateLead = ({ companies }) => {
     const [city, setCity] = useState("")
     const [zipcode, setZipcode] = useState("")
     const [isImageLoaded, setIsImageLoaded] = useState(false);
+    
 
 
 
